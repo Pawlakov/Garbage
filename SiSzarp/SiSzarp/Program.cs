@@ -1,22 +1,60 @@
 ﻿using System;
 
+class Elevator
+{
+    private int currentFloor;
+    private int requestedFloor;
+    private int totalFloorsTraveled;
+    private Person passenger;
+
+    public void LoadPassenger()
+    {
+        passenger = new Person();
+    }
+
+    public void InitiateNewFloorRequest()
+    {
+        requestedFloor = passenger.NewFloorRequest();
+        Console.WriteLine("Odjazd z pietra " + currentFloor + " na pietro " + requestedFloor);
+        totalFloorsTraveled = totalFloorsTraveled + Math.Abs(currentFloor - requestedFloor);
+        currentFloor = requestedFloor;
+    }
+
+    public void ReportStatistic()
+    {
+        Console.WriteLine("Ilosc przebytych do pieter: " + totalFloorsTraveled);
+        Console.ReadKey();
+    }
+}
+
+class Person
+{
+    private Random randomNumberGenerator;
+
+    public Person()
+    {
+        randomNumberGenerator = new Random();
+    }
+
+    public int NewFloorRequest()
+    {
+        return randomNumberGenerator.Next(1, 30);
+    }
+}
+
 class Program
 {
+    public static Elevator elevatorA;
+
     public static void Main()
     {
-        int x;
-        int y;
-
-        Console.Write("Podaj x: ");
-        x = Convert.ToInt32(Console.ReadLine());
-        Console.Write("Podaj y: ");
-        y = Convert.ToInt32(Console.ReadLine());
-        Console.WriteLine("Suma: " + (x + y));
-        Console.WriteLine("Roznica: " + (x - y));
-        Console.WriteLine("Iloczyn: " + (x * y));
-        Console.WriteLine("Iloraz: " + (x / y));
-        Console.WriteLine("Minimum: " + Math.Min(x, y));
-        Console.WriteLine("Maksimum: " + Math.Max(x, y));
-        Console.Read();
+        elevatorA = new Elevator();
+        elevatorA.LoadPassenger();
+        elevatorA.InitiateNewFloorRequest();
+        elevatorA.InitiateNewFloorRequest();
+        elevatorA.InitiateNewFloorRequest();
+        elevatorA.InitiateNewFloorRequest();
+        elevatorA.InitiateNewFloorRequest();
+        elevatorA.ReportStatistic();
     }
 }
