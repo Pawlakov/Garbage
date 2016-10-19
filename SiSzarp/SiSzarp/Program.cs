@@ -26,13 +26,13 @@ class Elevator
         totalFloorsTraveled = totalFloorsTraveled + Math.Abs(currentFloor - requestedFloor);
         totalTripsTraveled = totalTripsTraveled + 1;
         currentFloor = requestedFloor;
+        Console.Beep();
     }
 
     public void ReportStatistic()
     {
         Console.WriteLine("Ilosc zrobionych kursow: " + totalTripsTraveled);
         Console.WriteLine("Ilosc przebytych do pieter: " + totalFloorsTraveled);
-        Console.ReadKey();
     }
 }
 
@@ -51,11 +51,100 @@ class Person
     }
 }
 
+class BliposClock
+{
+    private byte seconds;
+    private short minutes;
+
+    public BliposClock()
+    {
+        seconds = 0;
+        minutes = 0;
+    }
+
+    public void OneForward()
+    {
+        byte originalSeconds = seconds;
+
+        seconds++;
+        if (originalSeconds > seconds)
+            minutes++;
+    }
+
+    public void OneBackward()
+    {
+        byte originalSeconds = seconds;
+
+        seconds--;
+        if (originalSeconds < seconds)
+            minutes--;
+    }
+
+    public void FastForward()
+    {
+        byte originalSeconds = seconds;
+
+        seconds += 50;
+        if (originalSeconds > seconds)
+            minutes++;
+    }
+
+    public void FastBackward()
+    {
+        byte originalSeconds = seconds;
+
+        seconds -=50;
+        if (originalSeconds < seconds)
+            minutes--;
+    }
+
+    public void FasterForward()
+    {
+        byte originalSeconds = seconds;
+
+        seconds += 100;
+        if (originalSeconds > seconds)
+            minutes++;
+    }
+
+    public void FasterBackward()
+    {
+        byte originalSeconds = seconds;
+
+        seconds -= 100;
+        if (originalSeconds < seconds)
+            minutes--;
+    }
+
+    public void SetSeconds(byte sec)
+    {
+        seconds = sec;
+    }
+
+    public void SetMinutes(short min)
+    {
+        minutes = min;
+    }
+
+    public void ShowTime()
+    {
+        Console.WriteLine(minutes + ":" + seconds);
+    }
+}
+
 class Program
 {
     public static Elevator elevatorA;
 
     public static void Main()
+    {
+        //ElevatorsSimulator();
+        //BliposClock();
+        //Console.WriteLine(0x262925.ToString("d"));
+        Console.ReadKey();
+    }
+
+    static void ElevatorsSimulator()
     {
         Console.WriteLine("Symulacja rozpoczeta.");
         elevatorA = new Elevator("Winda_A");
@@ -72,5 +161,37 @@ class Program
         elevatorA.InitiateNewFloorRequest();
         elevatorA.ReportStatistic();
         Console.WriteLine("Symulacja zakonczona.");
+    }
+
+    static void BliposClock()
+    {
+        string command;
+
+        Console.WriteLine("Witamy w zegarze Blipos. 256s/min 65536min/d");
+        BliposClock myClock = new BliposClock();
+        Console.WriteLine("Ustaw zegar.");
+        Console.Write("Sekundy: ");
+        myClock.SetSeconds(Convert.ToByte(Console.ReadLine()));
+        Console.Write("Minuty: ");
+        myClock.SetMinutes(Convert.ToInt16(Console.ReadLine()));
+        Console.WriteLine("F = +1 :: B = -1 :: A = +50 :: D = -50 :: T = koniec");
+
+        do
+        {
+            command = Console.ReadLine().ToUpper();
+            if (command == "F")
+                myClock.OneForward();
+            if (command == "B")
+                myClock.OneBackward();
+            if (command == "A")
+                myClock.FastForward();
+            if (command == "D")
+                myClock.FastBackward();
+            if (command == "H")
+                myClock.FasterForward();
+            if (command == "M")
+                myClock.FasterBackward();
+            myClock.ShowTime();
+        } while (command != "T");
     }
 }
