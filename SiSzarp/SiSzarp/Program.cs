@@ -140,7 +140,7 @@ class Program
     {
         //ElevatorsSimulator();
         //BliposClock();
-        //Console.WriteLine(0x262925.ToString("d"));
+        //MetadataAccesor();
         Console.ReadKey();
     }
 
@@ -193,5 +193,14 @@ class Program
                 myClock.FasterBackward();
             myClock.ShowTime();
         } while (command != "T");
+    }
+
+    static void MetadataAccesor()
+    {
+        Type typeContainer;
+
+        double casualNothing = 22.0;
+        typeContainer =  casualNothing.GetType();
+        Console.WriteLine(typeContainer.FullName);
     }
 }
