@@ -134,18 +134,19 @@ class BliposClock
 
 class Program
 {
-    public static Elevator elevatorA;
-
     public static void Main()
     {
         //ElevatorsSimulator();
         //BliposClock();
         //MetadataAccesor();
+        //bliposTax();
         Console.ReadKey();
     }
 
     static void ElevatorsSimulator()
     {
+        Elevator elevatorA;
+
         Console.WriteLine("Symulacja rozpoczeta.");
         elevatorA = new Elevator("Winda_A");
         elevatorA.LoadPassenger();
@@ -202,5 +203,42 @@ class Program
         double casualNothing = 22.0;
         typeContainer =  casualNothing.GetType();
         Console.WriteLine(typeContainer.FullName);
+    }
+
+    static void bliposTax()
+    {
+        int amount;
+        float tax;
+
+        Console.Write("Podaj kwotę: ");
+        amount = Convert.ToInt32(Console.ReadLine());
+
+        tax = BliposTaxCalc(amount);
+
+        Console.WriteLine("Podatek = " + tax);
+    }
+
+    static float BliposTaxCalc(int amount)
+    {
+        if (amount <= 10000)
+        {
+            return 0;
+        }
+        else if (amount <= 25000)
+        {
+            return 0.05f * (amount - 10000) + BliposTaxCalc(10000);
+        }
+        else if (amount <= 50000)
+        {
+            return 0.1f * (amount - 25000) + BliposTaxCalc(25000);
+        }
+        else if (amount <= 100000)
+        {
+            return 0.15f * (amount - 50000) + BliposTaxCalc(50000);
+        }
+        else
+        {
+            return 0.20f * (amount - 100000) + BliposTaxCalc(100000);
+        }
     }
 }
