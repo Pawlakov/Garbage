@@ -134,7 +134,7 @@ class BliposClock
 
 class Program
 {
-    public static void Main()
+	public static void Main()
     {
         //ElevatorsSimulator();
         //BliposClock();
@@ -241,4 +241,49 @@ class Program
             return 0.20f * (amount - 100000) + BliposTaxCalc(100000);
         }
     }
+	
+	static void GuessTwoLetters()
+	{
+		string letterCode;
+		string letterGuess;
+		string letters = "ABCD";
+		int ccCounter;
+		int cwCounter;
+		int guessCounter = 0;
+		string anotherGame;
+		Random Randomizer = new Random();
+		do
+		{
+			guessCounter = 0;
+			letterCode = letters[Randomizer.Next(0, 4)].ToString() + letters[Randomizer.Next(0, 4)].ToString();
+			Console.WriteLine("Wybierz 2 z 4 liter: A, B, C, D");
+
+			do
+			{
+				ccCounter = 0;
+				cwCounter = 0;
+				letterGuess = Console.ReadLine().ToUpper();
+				if (letterGuess[0] == letterCode[0])
+					ccCounter++;
+				if (letterGuess[1] == letterCode[1])
+					ccCounter++;
+
+				if(ccCounter == 0)
+				{
+					if (letterCode[0] == letterCode[1])
+						cwCounter++;
+					if (letterCode[1] == letterCode[0])
+						cwCounter++;
+				}
+				Console.WriteLine("Dobre miejsca: {0} Dobre litery (złe miejsca): {1}", ccCounter, cwCounter);
+				guessCounter++;
+			} while (letterCode == letterGuess);
+
+			Console.WriteLine((guessCounter < 8) ? "Dobra robota!" : "Nareszcie!");
+			Console.WriteLine("Podałeś rozwiązanie po {0} próbach", guessCounter);
+			Console.WriteLine("Czy jeszcze raz [T/N]?");
+			anotherGame = Console.ReadLine().ToUpper();
+		} while (anotherGame == "T");
+		Console.WriteLine("Miło się grało, do zobaczenia!");
+	}
 }
