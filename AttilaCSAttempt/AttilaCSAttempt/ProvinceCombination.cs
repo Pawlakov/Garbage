@@ -54,7 +54,7 @@
 //	int food;
 //	int order;
 //	int[] sanitation;
-//	Wealth[] wealth;
+//	ProvinceWealth wealth;
 
 //	ProvinceCombination(ProvinceData data)
 //	{

@@ -37,7 +37,7 @@ class ProvinceData
 			justAfterDotPos = nextDotPos + 1;
 		}
 		//
-		
+
 		// Przetwarza informacje dla regionów.
 		for (int i = 0; i < 3; i++)
 		{
@@ -59,7 +59,6 @@ class ProvinceData
 			// Wyłuskuje typ zasobu.
 			nextCommaPos = lines[i].IndexOf(',', justAfterCommaPos);
 			Enum.TryParse(lines[i].Substring(justAfterCommaPos, nextCommaPos - justAfterCommaPos), out resources[i]);
-			justAfterCommaPos = nextCommaPos + 1;
 			//
 		}
 		//
