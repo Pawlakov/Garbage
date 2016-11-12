@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-enum Resource { NONE, MARBLE, OLIVE };
-enum StatDesire { LESS_THAN, NO_MORE_THAN, EQUAL_AS, MORE_THAN, NO_LESS_THAN };
-enum BuildingType { TOWN, CITY, COAST, RESOURCE };
-enum BonusCategory { EXAMPLE0, EXAMPLE1 };
+enum Resource { NONE, MARBLE, OLIVE, GOLD, IRON, WINE, WOOD, GEMSTONE, DYE, SALT, SILK, FUR, LEAD };
+enum BuildingType { TOWN, CENTER_TOWN, CITY, CENTER_CITY, COAST, RESOURCE };
+enum BonusCategory { AGRICULTURE, CULTURE, INDUSTRY, LIVESTOCK, LOCAL_COMMERCE, MARITIME_COMMERCE, SUBSISTENCE };
 
 class AttilaSimulator
 {
-	public const int constWealthTypesNumber = 2;
+	public const int constWealthTypesNumber = 7;
 
 	public static void Main()
 	{
@@ -23,6 +22,17 @@ class AttilaSimulator
 		//decimal a1 = test.GetWealth(1);
 		//decimal a2 = test.GetWealth(2);
 
+		//string[] testString = new string[9];
+		//testString[0] = "City_Major.CENTER_CITY";
+		//testString[1] = "(-1.0.-30.2.";
+		//testString[2] = "SUBSISTENCE.false.false.300.";
+		//testString[3] = "(-2.0.-60.3.";
+		//testString[4] = "SUBSISTENCE.false.false.400.";
+		//testString[5] = "(-3.0.-100.4.";
+		//testString[6] = "SUBSISTENCE.false.false.500.";
+		//testString[7] = "(-4.0.-140.5.";
+		//testString[8] = "SUBSISTENCE.false.false.600.";
+		//Building test = new Building(testString);
 
 		Console.ReadKey();
 	}

@@ -75,28 +75,27 @@ class ProvinceWealth
 		{
 			if (bonuses[i][j].isMultiplier)
 			{
-				switch (bonuses[i][j].category)
-				{
-					case BonusCategory.EXAMPLE0:
-						multipliers[i][0] += bonuses[i][j].number;
-						break;
-					case BonusCategory.EXAMPLE1:
-						multipliers[i][1] += bonuses[i][j].number;
-						break;
-				}
+				//switch (bonuses[i][j].category)
+				//{
+				//	case BonusCategory.AGRICULTURE:
+				//		multipliers[i][0] += bonuses[i][j].number;
+				//		break;
+				//	case BonusCategory.CULTURE:
+				//		multipliers[i][1] += bonuses[i][j].number;
+				//		break;
+				//	case BonusCategory.INDUSTRY:
+				//		multipliers[i][2] += bonuses[i][j].number;
+				//		break;
+				//	case BonusCategory.LIVESTOCK:
+				//		multipliers[i][3] += bonuses[i][j].number;
+				//		break;
+				//	and do on, and so on, and so on...
+				//}
+				multipliers[i][(int)bonuses[i][j].category] += bonuses[i][j].number;
 			}
 			else
 			{
-				switch (bonuses[i][j].category)
-				{
-					case BonusCategory.EXAMPLE0:
-						numbers[i][0] += bonuses[i][j].number;
-						break;
-					case BonusCategory.EXAMPLE1:
-						numbers[i][1] += bonuses[i][j].number;
-						break;
-
-				}
+					numbers[i][(int)bonuses[i][j].category] += bonuses[i][j].number;
 			}
 		}
 		else
@@ -105,28 +104,11 @@ class ProvinceWealth
 			{
 				if (bonuses[i][j].isMultiplier)
 				{
-					switch (bonuses[i][j].category)
-					{
-						case BonusCategory.EXAMPLE0:
-							multipliers[k][0] += bonuses[i][j].number;
-							break;
-						case BonusCategory.EXAMPLE1:
-							multipliers[k][1] += bonuses[i][j].number;
-							break;
-					}
+					multipliers[k][(int)bonuses[i][j].category] += bonuses[i][j].number;
 				}
 				else
 				{
-					switch (bonuses[i][j].category)
-					{
-						case BonusCategory.EXAMPLE0:
-							numbers[k][0] += bonuses[i][j].number;
-							break;
-						case BonusCategory.EXAMPLE1:
-							numbers[k][1] += bonuses[i][j].number;
-							break;
-
-					}
+					numbers[k][(int)bonuses[i][j].category] += bonuses[i][j].number;
 				}
 			}
 		}
