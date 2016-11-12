@@ -1,0 +1,2 @@
+﻿Carthaginensis.Carthago_Nova,true,NONE,.Segobriga,false,OLIVE,.Toletum,false,NONE,.
+Tarraconensis.Tarraco,true,NONE,.Caesaraugusta,false,NONE,.Pompaelo,false,MARBLE,.
