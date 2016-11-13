@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-enum Resource { NONE, MARBLE, OLIVE, GOLD, IRON, WINE, WOOD, GEMSTONE, DYE, SALT, SILK, FUR, LEAD };
+enum Resource { NONE, MARBLE, OLIVE, GOLD, IRON, WINE, WOOD, GEMSTONE, DYE, SALT, SILK, FUR, LEAD, SPICE };
 enum BuildingType { TOWN, CENTER_TOWN, CITY, CENTER_CITY, COAST, RESOURCE };
 enum BonusCategory { AGRICULTURE, CULTURE, INDUSTRY, LIVESTOCK, LOCAL_COMMERCE, MARITIME_COMMERCE, SUBSISTENCE };
 
@@ -9,7 +9,7 @@ class AttilaSimulator
 {
 	public const int constWealthTypesNumber = 7;
 	public const int constBuildingTypesNumber = 6;
-	public const int constResourceTypesNumber = 13;
+	public const int constResourceTypesNumber = 14;
 
 	public static void Main()
 	{
