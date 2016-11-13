@@ -57,7 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Buildings.txt" />
-    <Content Include="Map.txt" />
+    <Content Include="GreatCampaign.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

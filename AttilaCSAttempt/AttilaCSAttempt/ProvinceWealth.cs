@@ -20,16 +20,16 @@ class ProvinceWealth
 		//
 
 		// A tu się dzieją powalone rzeczy.
-		for (int i = 0; i < 3; i++)
+		for (int whichRegion = 0; whichRegion < 3; whichRegion++)
 		{
-			multipliers[i] = new decimal[AttilaSimulator.constWealthTypesNumber];
-			numbers[i] = new decimal[AttilaSimulator.constWealthTypesNumber];
-			bonuses[i] = new List<WealthBonus>();
+			multipliers[whichRegion] = new decimal[AttilaSimulator.constWealthTypesNumber];
+			numbers[whichRegion] = new decimal[AttilaSimulator.constWealthTypesNumber];
+			bonuses[whichRegion] = new List<WealthBonus>();
 
-			for (int j = 0; j < AttilaSimulator.constWealthTypesNumber; j++)
+			for (int whichCategory = 0; whichCategory < AttilaSimulator.constWealthTypesNumber; whichCategory++)
 			{
-				multipliers[i][j] = 0;
-				numbers[i][j] = 0;
+				multipliers[whichRegion][whichCategory] = 0;
+				numbers[whichRegion][whichCategory] = 0;
 			}
 		}
 		//
@@ -38,13 +38,11 @@ class ProvinceWealth
 	// Zwraca przeliczony dochód dla danego rwgionu.
 	public decimal GetWealth(int whichRegion)
 	{
-		ExecuteAllBonuses();
-
 		decimal result = 0;
 
-		for (int i = 0; i < AttilaSimulator.constWealthTypesNumber; i++)
+		for (int whichCategory = 0; whichCategory < AttilaSimulator.constWealthTypesNumber; whichCategory++)
 		{
-			result += ((1 + multipliers[whichRegion][i]) * numbers[whichRegion][i]);
+			result += ((1 + multipliers[whichRegion][whichCategory]) * numbers[whichRegion][whichCategory]);
 		}
 
 		return result;
@@ -57,58 +55,58 @@ class ProvinceWealth
 	}
 
 	//Wykonuje bonusy z listy zapełniając przy tym multipliers i numbers.
-	private void ExecuteAllBonuses()
+	public void ExecuteAllBonuses()
 	{
-		for (int i = 0; i < 3; i++)
+		for (int whichRegion = 0; whichRegion < 3; whichRegion++)
 		{
-			for (int j = 0; j < bonuses[i].Count; j++)
+			for (int whichBonus = 0; whichBonus < bonuses[whichRegion].Count; whichBonus++)
 			{
-				ExecuteBonus(i, j);
+				ExecuteBonus(whichRegion, whichBonus);
 			}
 		}
 	}
 
 	// Pomocnicza dla powyższej.
-	private void ExecuteBonus(int i, int j)
+	private void ExecuteBonus(int whichRegion, int whichBonus)
 	{
-		if (!bonuses[i][j].affectsWholeProvince)
+		if (!bonuses[whichRegion][whichBonus].affectsWholeProvince)
 		{
-			if (bonuses[i][j].isMultiplier)
+			if (bonuses[whichRegion][whichBonus].isMultiplier)
 			{
-				//switch (bonuses[i][j].category)
+				//switch (bonuses[whichRegion][j].category)
 				//{
 				//	case BonusCategory.AGRICULTURE:
-				//		multipliers[i][0] += bonuses[i][j].number;
+				//		multipliers[whichRegion][0] += bonuses[whichRegion][j].number;
 				//		break;
 				//	case BonusCategory.CULTURE:
-				//		multipliers[i][1] += bonuses[i][j].number;
+				//		multipliers[whichRegion][1] += bonuses[whichRegion][j].number;
 				//		break;
 				//	case BonusCategory.INDUSTRY:
-				//		multipliers[i][2] += bonuses[i][j].number;
+				//		multipliers[whichRegion][2] += bonuses[whichRegion][j].number;
 				//		break;
 				//	case BonusCategory.LIVESTOCK:
-				//		multipliers[i][3] += bonuses[i][j].number;
+				//		multipliers[whichRegion][3] += bonuses[whichRegion][j].number;
 				//		break;
 				//	and do on, and so on, and so on...
 				//}
-				multipliers[i][(int)bonuses[i][j].category] += bonuses[i][j].number;
+				multipliers[whichRegion][(int)bonuses[whichRegion][whichBonus].category] += bonuses[whichRegion][whichBonus].number;
 			}
 			else
 			{
-					numbers[i][(int)bonuses[i][j].category] += bonuses[i][j].number;
+				numbers[whichRegion][(int)bonuses[whichRegion][whichBonus].category] += bonuses[whichRegion][whichBonus].number;
 			}
 		}
 		else
 		{
-			for(int k = 0; k < 3; k++)
+			for (int whichRegionOther = 0; whichRegionOther < 3; whichRegionOther++)
 			{
-				if (bonuses[i][j].isMultiplier)
+				if (bonuses[whichRegion][whichBonus].isMultiplier)
 				{
-					multipliers[k][(int)bonuses[i][j].category] += bonuses[i][j].number;
+					multipliers[whichRegionOther][(int)bonuses[whichRegion][whichBonus].category] += bonuses[whichRegion][whichBonus].number;
 				}
 				else
 				{
-					numbers[k][(int)bonuses[i][j].category] += bonuses[i][j].number;
+					numbers[whichRegionOther][(int)bonuses[whichRegion][whichBonus].category] += bonuses[whichRegion][whichBonus].number;
 				}
 			}
 		}

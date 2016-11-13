@@ -1,128 +1,148 @@
-﻿//obiekt przechowuje kombinacje budynków regionu (DONE)
-//class RegionCombination
-//{
-//	List<Building> buildings;
-//	Random random;
+﻿using System;
 
-//	public RegionCombination(RegionData data)
-//	{
-//		buildings = new List<Building>();
-//		bool useResource = Convert.ToBoolean(random.Next(1));
+// Tworzy i przechowuje utworzoną kombinację budynków.
+class ProvinceCombination
+{
+	Building[][] buildings;
+	int[][] levels;
+	
+	int food;
+	int order;
+	int[] sanitation;
+	ProvinceWealth wealth;
 
-//		if (data.coast == true)
-//			buildings.Add(Generator.generateBuilding(BuildingType.COAST));
+	Random random;
 
+	// Póki co działa OK
+	public ProvinceCombination(ProvinceData data)
+	{
+		buildings = new Building[3][];
+		levels = new int[3][];
 
-//		if (data.big == true)
-//		{
-//			buildings.Add(Generator.generateBuilding(BuildingType.CITY));
-//			buildings.Add(Generator.generateBuilding(BuildingType.CITY));
-//			buildings.Add(Generator.generateBuilding(BuildingType.CITY));
-//			buildings.Add(Generator.generateBuilding(BuildingType.CITY));
+		food = 0;
+		order = 0;
+		sanitation = new int[3];
+		wealth = new ProvinceWealth();
 
-//			if ((data.resource != Resource.NONE) && (useResource == true))
-//			{
-//				buildings.Add(Generator.generateBuilding(BuildingType.RESOURCE, data.resource));
-//			}
-//			else
-//			{
-//				buildings.Add(Generator.generateBuilding(BuildingType.CITY));
-//			}
-//		}
-//		else
-//		{
-//			buildings.Add(Generator.generateBuilding(BuildingType.TOWN));
-//			buildings.Add(Generator.generateBuilding(BuildingType.TOWN));
+		random = new Random();
 
-//			if ((data.resource != Resource.NONE) && (useResource == true))
-//			{
-//				buildings.Add(Generator.generateBuilding(BuildingType.RESOURCE, data.resource));
-//			}
-//			else
-//			{
-//				buildings.Add(Generator.generateBuilding(BuildingType.TOWN));
-//			}
-//		}
-//	}
+		for (int i = 0; i < 3; i++)
+		{
+			sanitation[i] = 0;
 
-//}
-//class ProvinceCombination
-//{
-//	List<Building>[] buildings;
-//	Random random;
+			levels[i] = new int[6];
+			for(int j = 0; j < 6; j++)
+			{
+				levels[i][j] = random.Next(0, 4);
+			}
+		}
 
-//	int food;
-//	int order;
-//	int[] sanitation;
-//	ProvinceWealth wealth;
+		// Tu był znacznik że tu coś ma się coś nowego zjawić ale nie mam pojęcia co.
 
-//	ProvinceCombination(ProvinceData data)
-//	{
-//		buildings = new List<Building>[3];
-//		sanitation = new int[3];
-//		wealth = new Wealth[3];
+		for (int i = 0; i < 3; i++)
+		{
+			bool useResource = Convert.ToBoolean(random.Next(1));
 
-//		for (int i = 0; i < 3; i++)
-//		{
-//			sanitation[i] = 0;
-//			wealth[i] = new Wealth();
-//		}
+			if (data.isBig[i] == true)
+			{
+				if (data.isCoastal[i] == true)
+					buildings[i] = new Building[6];
+				else
+					buildings[i] = new Building[5];
 
-//		//
+				buildings[i][0] = Generator.GenerateBuilding(BuildingType.CENTER_CITY, Resource.NONE);
+				buildings[i][1] = Generator.GenerateBuilding(BuildingType.CITY, Resource.NONE);
+				buildings[i][2] = Generator.GenerateBuilding(BuildingType.CITY, Resource.NONE);
+				buildings[i][3] = Generator.GenerateBuilding(BuildingType.CITY, Resource.NONE);
 
-//		for (int i = 0; i < 3; i++)
-//		{
-//			bool useResource = Convert.ToBoolean(random.Next(1));
+				if ((data.resources[i] != Resource.NONE) && (useResource == true))
+				{
+					buildings[i][4] = Generator.GenerateBuilding(BuildingType.RESOURCE, data.resources[i]);
+				}
+				else
+				{
+					buildings[i][4] = Generator.GenerateBuilding(BuildingType.CITY, Resource.NONE);
+				}
 
-//			if (data.regionsData[i].coast == true)
-//				buildings[i].Add(Generator.generateBuilding(BuildingType.COAST));
+				if (data.isCoastal[i] == true)
+					buildings[i][5] = Generator.GenerateBuilding(BuildingType.COAST, Resource.NONE);
+			}
+			else
+			{
+				if (data.isCoastal[i] == true)
+					buildings[i] = new Building[4];
+				else
+					buildings[i] = new Building[3];
 
+				buildings[i][0] = Generator.GenerateBuilding(BuildingType.CENTER_TOWN, Resource.NONE);
+				buildings[i][1] = Generator.GenerateBuilding(BuildingType.TOWN, Resource.NONE);
 
-//			if (data.regionsData[i].big == true)
-//			{
-//				buildings[i].Add(Generator.generateBuilding(BuildingType.CITY));
-//				buildings[i].Add(Generator.generateBuilding(BuildingType.CITY));
-//				buildings[i].Add(Generator.generateBuilding(BuildingType.CITY));
-//				buildings[i].Add(Generator.generateBuilding(BuildingType.CITY));
+				if ((data.resources[i] != Resource.NONE) && (useResource == true))
+				{
+					buildings[i][2] = Generator.GenerateBuilding(BuildingType.RESOURCE, data.resources[i]);
+				}
+				else
+				{
+					buildings[i][2] = Generator.GenerateBuilding(BuildingType.TOWN, Resource.NONE);
+				}
 
-//				if ((data.regionsData[i].resource != Resource.NONE) && (useResource == true))
-//				{
-//					buildings[i].Add(Generator.generateBuilding(BuildingType.RESOURCE, data.regionsData[i].resource));
-//				}
-//				else
-//				{
-//					buildings[i].Add(Generator.generateBuilding(BuildingType.CITY));
-//				}
-//			}
-//			else
-//			{
-//				buildings[i].Add(Generator.generateBuilding(BuildingType.TOWN));
-//				buildings[i].Add(Generator.generateBuilding(BuildingType.TOWN));
+				if (data.isCoastal[i] == true)
+					buildings[i][3] = Generator.GenerateBuilding(BuildingType.COAST, Resource.NONE);
+			}
+		}
+	}
 
-//				if ((data.regionsData[i].resource != Resource.NONE) && (useResource == true))
-//				{
-//					buildings[i].Add(Generator.generateBuilding(BuildingType.RESOURCE, data.regionsData[i].resource));
-//				}
-//				else
-//				{
-//					buildings[i].Add(Generator.generateBuilding(BuildingType.TOWN));
-//				}
-//			}
-//		}
-//	}
+	// Na podstawie przydzielonych już budynków wyznacza parametry prowincji. DZIAŁA ALLELUJA
+	public void Calculate()
+	{
+		// Pętla dla każdego regionu.
+		for (int whichRegion = 0; whichRegion < 3; whichRegion++)
+		{
+			// Pętla dla każdego budynku.
+			for(int whichBuilding = 0; whichBuilding < buildings[whichRegion].Length; whichBuilding++)
+			{
+				// Wciskanie bonusów z budynków do majatku prowincji
+				for(int whichBonus = 0; whichBonus < buildings[whichRegion][whichBuilding].wealthBonuses[levels[whichRegion][whichBuilding]].Count; whichBonus++)
+				{
+					wealth.AddBonus(buildings[whichRegion][whichBuilding].wealthBonuses[levels[whichRegion][whichBuilding]][whichBonus], whichRegion);
+				}
+				//
 
-//	public void makeCombination()
-//	{
+				food += buildings[whichRegion][whichBuilding].food[levels[whichRegion][whichBuilding]];
+				order += buildings[whichRegion][whichBuilding].order[levels[whichRegion][whichBuilding]];
 
-//	}
+				// Sanitacje
+				sanitation[0] += buildings[whichRegion][whichBuilding].provinceSanitation[levels[whichRegion][whichBuilding]];
+				sanitation[1] += buildings[whichRegion][whichBuilding].provinceSanitation[levels[whichRegion][whichBuilding]];
+				sanitation[2] += buildings[whichRegion][whichBuilding].provinceSanitation[levels[whichRegion][whichBuilding]];
+				sanitation[whichRegion] += buildings[whichRegion][whichBuilding].regionSanitation[levels[whichRegion][whichBuilding]];
+				//
+			}
+			//
+		}
+		//
 
-//	void calculate()
-//	{
+		wealth.ExecuteAllBonuses();
+	}
 
-//	}
+	public decimal GetWeath(int whichRegion)
+	{
+		return wealth.GetWealth(whichRegion);
+	}
 
-//	bool checkConditions()
-//	{
-
-//	}
-//}
+	public bool FitsConditions()
+	{
+		if (food < 0)
+			return false;
+		else if (order < 0)
+			return false;
+		else if (sanitation[0] < 0)
+			return false;
+		else if (sanitation[1] < 0)
+			return false;
+		else if (sanitation[2] < 0)
+			return false;
+		else
+			return true;
+	}
+}

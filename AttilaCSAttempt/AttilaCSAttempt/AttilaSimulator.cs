@@ -8,6 +8,8 @@ enum BonusCategory { AGRICULTURE, CULTURE, INDUSTRY, LIVESTOCK, LOCAL_COMMERCE, 
 class AttilaSimulator
 {
 	public const int constWealthTypesNumber = 7;
+	public const int constBuildingTypesNumber = 6;
+	public const int constResourceTypesNumber = 13;
 
 	public static void Main()
 	{
@@ -33,6 +35,12 @@ class AttilaSimulator
 		//testString[7] = "(-4.0.-140.5.";
 		//testString[8] = "SUBSISTENCE.false.false.600.";
 		//Building test = new Building(testString);
+
+		//ProvinceCombination test = Generator.GenerateProvinceCombination(new ProvinceData("Tarraconensis.Tarraco,true,NONE,.Caesaraugusta,false,NONE,.Pompaelo,false,MARBLE,."));
+		//test.Calculate();
+		//Console.WriteLine(Convert.ToString(test.GetWeath(0)));
+		//Console.WriteLine(Convert.ToString(test.GetWeath(1)));
+		//Console.WriteLine(Convert.ToString(test.GetWeath(2)));
 
 		Console.ReadKey();
 	}

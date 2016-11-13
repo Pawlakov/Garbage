@@ -30,35 +30,35 @@ class ProvinceData
 		// Wyłuskuje stringi regionów.
 		int justAfterDotPos = dataLine.IndexOf('.') + 1;
 		int nextDotPos;
-		for (int i = 0; i < 3; i++)
+		for (int whichRegion = 0; whichRegion < 3; whichRegion++)
 		{
 			nextDotPos = dataLine.IndexOf('.', justAfterDotPos);
-			lines[i] = dataLine.Substring(justAfterDotPos, nextDotPos - justAfterDotPos);
+			lines[whichRegion] = dataLine.Substring(justAfterDotPos, nextDotPos - justAfterDotPos);
 			justAfterDotPos = nextDotPos + 1;
 		}
 		//
 
 		// Przetwarza informacje dla regionów.
-		for (int i = 0; i < 3; i++)
+		for (int whichRegion = 0; whichRegion < 3; whichRegion++)
 		{
 			int justAfterCommaPos = 1;
 			int nextCommaPos;
 
 			// Wyłuskuje nazwę regionu.
-			nextCommaPos = lines[i].IndexOf(',', justAfterCommaPos);
-			regionNames[i] = lines[i].Substring(0, lines[i].IndexOf(','));
+			nextCommaPos = lines[whichRegion].IndexOf(',', justAfterCommaPos);
+			regionNames[whichRegion] = lines[whichRegion].Substring(0, lines[whichRegion].IndexOf(','));
 			justAfterCommaPos = nextCommaPos + 1;
 			//
 
 			// Wyłuskuje info czy ma port.
-			nextCommaPos = lines[i].IndexOf(',', justAfterCommaPos);
-			isCoastal[i] = Convert.ToBoolean(lines[i].Substring(justAfterCommaPos, nextCommaPos - justAfterCommaPos));
+			nextCommaPos = lines[whichRegion].IndexOf(',', justAfterCommaPos);
+			isCoastal[whichRegion] = Convert.ToBoolean(lines[whichRegion].Substring(justAfterCommaPos, nextCommaPos - justAfterCommaPos));
 			justAfterCommaPos = nextCommaPos + 1;
 			//
 
 			// Wyłuskuje typ zasobu.
-			nextCommaPos = lines[i].IndexOf(',', justAfterCommaPos);
-			Enum.TryParse(lines[i].Substring(justAfterCommaPos, nextCommaPos - justAfterCommaPos), out resources[i]);
+			nextCommaPos = lines[whichRegion].IndexOf(',', justAfterCommaPos);
+			Enum.TryParse(lines[whichRegion].Substring(justAfterCommaPos, nextCommaPos - justAfterCommaPos), out resources[whichRegion]);
 			//
 		}
 		//
