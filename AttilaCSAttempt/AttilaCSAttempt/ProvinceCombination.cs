@@ -130,6 +130,15 @@ class ProvinceCombination
 		return wealth.GetWealth(whichRegion);
 	}
 
+	public decimal GetTotalWealth()
+	{
+		decimal result = 0;
+		result += GetWeath(0);
+		result += GetWeath(1);
+		result += GetWeath(2);
+		return result;
+	}
+
 	public bool FitsConditions()
 	{
 		if (food < 0)
