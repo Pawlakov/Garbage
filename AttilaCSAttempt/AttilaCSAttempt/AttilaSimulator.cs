@@ -42,6 +42,9 @@ class AttilaSimulator
 		//Console.WriteLine(Convert.ToString(test.GetWeath(1)));
 		//Console.WriteLine(Convert.ToString(test.GetWeath(2)));
 
+		SimData data = new SimData();
+		Generator.GenerateProvinceCombination(data, 0);
+
 		Console.ReadKey();
 	}
 }

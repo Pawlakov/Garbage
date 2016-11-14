@@ -50,14 +50,11 @@
     <Compile Include="AttilaSimulator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProvinceWealth.cs" />
+    <Compile Include="SimData.cs" />
     <Compile Include="WealthBonus.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Buildings.txt" />
-    <Content Include="GreatCampaign.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

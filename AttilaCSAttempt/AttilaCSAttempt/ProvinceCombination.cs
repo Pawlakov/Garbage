@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 
 // Tworzy i przechowuje utworzoną kombinację budynków.
 class ProvinceCombination
 {
+	List<Building>[][] data;
+
 	Building[][] buildings;
 	int[][] levels;
 	
@@ -11,10 +14,11 @@ class ProvinceCombination
 	int[] sanitation;
 	ProvinceWealth wealth;
 
+	public decimal totalWealth;
 	Random random;
 
 	// Póki co działa OK
-	public ProvinceCombination(ProvinceData data)
+	public ProvinceCombination(SimData data, int whichProvince)
 	{
 		buildings = new Building[3][];
 		levels = new int[3][];
@@ -43,52 +47,54 @@ class ProvinceCombination
 		{
 			bool useResource = Convert.ToBoolean(random.Next(1));
 
-			if (data.isBig[i] == true)
+			if (data.map[whichProvince].isBig[i] == true)
 			{
-				if (data.isCoastal[i] == true)
+				if (data.map[whichProvince].isCoastal[i] == true)
 					buildings[i] = new Building[6];
 				else
 					buildings[i] = new Building[5];
 
-				buildings[i][0] = Generator.GenerateBuilding(BuildingType.CENTER_CITY, Resource.NONE);
-				buildings[i][1] = Generator.GenerateBuilding(BuildingType.CITY, Resource.NONE);
-				buildings[i][2] = Generator.GenerateBuilding(BuildingType.CITY, Resource.NONE);
-				buildings[i][3] = Generator.GenerateBuilding(BuildingType.CITY, Resource.NONE);
+				buildings[i][0] = Generator.GenerateBuilding(BuildingType.CENTER_CITY, Resource.NONE, data);
+				buildings[i][1] = Generator.GenerateBuilding(BuildingType.CITY, Resource.NONE, data);
+				buildings[i][2] = Generator.GenerateBuilding(BuildingType.CITY, Resource.NONE, data);
+				buildings[i][3] = Generator.GenerateBuilding(BuildingType.CITY, Resource.NONE, data);
 
-				if ((data.resources[i] != Resource.NONE) && (useResource == true))
+				if ((data.map[whichProvince].resources[i] != Resource.NONE) && (useResource == true))
 				{
-					buildings[i][4] = Generator.GenerateBuilding(BuildingType.RESOURCE, data.resources[i]);
+					buildings[i][4] = Generator.GenerateBuilding(BuildingType.RESOURCE, data.map[whichProvince].resources[i], data);
 				}
 				else
 				{
-					buildings[i][4] = Generator.GenerateBuilding(BuildingType.CITY, Resource.NONE);
+					buildings[i][4] = Generator.GenerateBuilding(BuildingType.CITY, Resource.NONE, data);
 				}
 
-				if (data.isCoastal[i] == true)
-					buildings[i][5] = Generator.GenerateBuilding(BuildingType.COAST, Resource.NONE);
+				if (data.map[whichProvince].isCoastal[i] == true)
+					buildings[i][5] = Generator.GenerateBuilding(BuildingType.COAST, Resource.NONE, data);
 			}
 			else
 			{
-				if (data.isCoastal[i] == true)
+				if (data.map[whichProvince].isCoastal[i] == true)
 					buildings[i] = new Building[4];
 				else
 					buildings[i] = new Building[3];
 
-				buildings[i][0] = Generator.GenerateBuilding(BuildingType.CENTER_TOWN, Resource.NONE);
-				buildings[i][1] = Generator.GenerateBuilding(BuildingType.TOWN, Resource.NONE);
+				buildings[i][0] = Generator.GenerateBuilding(BuildingType.CENTER_TOWN, Resource.NONE, data);
+				buildings[i][1] = Generator.GenerateBuilding(BuildingType.TOWN, Resource.NONE, data);
 
-				if ((data.resources[i] != Resource.NONE) && (useResource == true))
+				if ((data.map[whichProvince].resources[i] != Resource.NONE) && (useResource == true))
 				{
-					buildings[i][2] = Generator.GenerateBuilding(BuildingType.RESOURCE, data.resources[i]);
+					buildings[i][2] = Generator.GenerateBuilding(BuildingType.RESOURCE, data.map[whichProvince].resources[i], data);
 				}
 				else
 				{
-					buildings[i][2] = Generator.GenerateBuilding(BuildingType.TOWN, Resource.NONE);
+					buildings[i][2] = Generator.GenerateBuilding(BuildingType.TOWN, Resource.NONE, data);
 				}
 
-				if (data.isCoastal[i] == true)
-					buildings[i][3] = Generator.GenerateBuilding(BuildingType.COAST, Resource.NONE);
+				if (data.map[whichProvince].isCoastal[i] == true)
+					buildings[i][3] = Generator.GenerateBuilding(BuildingType.COAST, Resource.NONE, data);
 			}
+
+			data.RefreshBuildings();
 		}
 	}
 
@@ -123,6 +129,7 @@ class ProvinceCombination
 		//
 
 		wealth.ExecuteAllBonuses();
+		totalWealth = GetTotalWealth();
 	}
 
 	public decimal GetWeath(int whichRegion)
