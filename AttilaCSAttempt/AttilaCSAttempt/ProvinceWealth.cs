@@ -111,4 +111,12 @@ class ProvinceWealth
 			}
 		}
 	}
+
+	public void ClearBonuses()
+	{
+		for(int whichRegion = 0; whichRegion < 3; whichRegion++)
+		{
+			bonuses[whichRegion].Clear();
+		}
+	}
 }

@@ -8,51 +8,45 @@ class Generator
 	// Zwraca najlepszy budynek. ZROBIONE!
 	public static ProvinceCombination GenerateProvinceCombination(SimData data, int whichProvince)
 	{
-		// Tylko kombinacje spełniające podstawowe warunki i nadające się do porównania.
-		ProvinceCombination[] combinations = new ProvinceCombination[8];
-		//
+		ProvinceCombination currentBest = null;
 
-		// Zapełnianie tablicy kandydatów.
 		int whichCombination = 0;
 		long whichLoop = 0;
-		while(combinations[7] == null)
+		while (true)
 		{
 			Console.Clear();
-			Console.WriteLine("Znaleziono: " + whichCombination);
-			Console.WriteLine("Przebieg: " + whichLoop);
+			Console.WriteLine("Found: " + whichCombination);
+			Console.WriteLine("Loop: " + whichLoop);
+			if(whichCombination != 0)
+				Console.WriteLine("Loop/Found: " + whichLoop / whichCombination);
+			if (currentBest != null)
+				currentBest.PrintListing();
 			ProvinceCombination subject = new ProvinceCombination(data, whichProvince);
-			subject.Calculate();
-			if(subject.FitsConditions())
+			if (subject.FitsConditions())
 			{
-				combinations[whichCombination] = subject;
+				if (currentBest == null)
+					currentBest = subject;
+				else
+				{
+					if (subject.totalWealth > currentBest.totalWealth)
+						currentBest = subject;
+				}
 				whichCombination++;
 			}
 			whichLoop++;
 		}
-		//
-
-		// Zwróć najlepszego.
-		ProvinceCombination bestOne = combinations[0];
-		for(whichCombination = 1; whichCombination < combinations.Length; whichCombination++)
-		{
-			if (combinations[whichCombination].totalWealth > bestOne.totalWealth)
-				bestOne = combinations[whichCombination];
-		}
-		return bestOne;
-		//
 	}
 
 	// Zwraca wylosowany budynek na podstawie przekazanych poleceń. ZROBIONE!
 	public static Building GenerateBuilding(BuildingType type, Resource resource, SimData data)
 	{
 		Random random = new Random();
-		List<Building> poll = data.buildings[(int)type][(int)resource];
-		if (poll.Count >= 1)
+		if (data.buildings[(int)type][(int)resource].Count >= 1)
 		{
-			int position = random.Next(poll.Count);
-			Building result =  poll[position];
-			poll.RemoveAt(position);
-			return result; // Miesza się prawdopodobnie dlatego że odświeżając budynki gmatwają się referencje.
+			int pick = random.Next(data.buildings[(int)type][(int)resource].Count);
+			Building result = data.buildings[(int)type][(int)resource][pick];
+			data.buildings[(int)type][(int)resource].RemoveAt(pick);
+			return result; // Tu coś się wali bo wywala budynki jeden po drugim jak w liście siedzą.
 		}
 		else
 			return null;

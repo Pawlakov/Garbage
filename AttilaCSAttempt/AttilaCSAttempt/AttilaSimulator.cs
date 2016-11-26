@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 enum Resource { NONE, MARBLE, OLIVE, GOLD, IRON, WINE, WOOD, GEMSTONE, DYE, SALT, SILK, FUR, LEAD, SPICE };
 enum BuildingType { TOWN, CENTER_TOWN, CITY, CENTER_CITY, COAST, RESOURCE };
-enum BonusCategory { AGRICULTURE, CULTURE, INDUSTRY, LIVESTOCK, LOCAL_COMMERCE, MARITIME_COMMERCE, SUBSISTENCE };
+enum BonusCategory { AGRICULTURE, CULTURE, INDUSTRY, LIVESTOCK, LOCAL_COMMERCE, MARITIME_COMMERCE, SUBSISTENCE, MAINTENANCE };
 
 class AttilaSimulator
 {
-	public const int constWealthTypesNumber = 7;
+	public const int constWealthTypesNumber = 8;
 	public const int constBuildingTypesNumber = 6;
 	public const int constResourceTypesNumber = 14;
 
@@ -42,8 +42,10 @@ class AttilaSimulator
 		//Console.WriteLine(Convert.ToString(test.GetWeath(1)));
 		//Console.WriteLine(Convert.ToString(test.GetWeath(2)));
 
+		int whichProvince = Convert.ToInt32(Console.ReadLine());
+
 		SimData data = new SimData();
-		Generator.GenerateProvinceCombination(data, 0);
+		Generator.GenerateProvinceCombination(data, whichProvince);
 
 		Console.ReadKey();
 	}

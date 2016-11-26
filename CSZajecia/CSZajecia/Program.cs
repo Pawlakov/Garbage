@@ -1,138 +1,68 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-namespace omg
+
+//wyrazenia lambda
+class Lam
 {
-	abstract class Ssak : ISsak
+	Predicate<int> p1 = value => value > 0;
+	Predicate<int> p2 = (value) => value > 0;
+	Predicate<int> p3 = (int value) => value > 0;
+	Predicate<int> p4 = value => { return value > 0; };
+	Predicate<int> p5 = value => value > 0;
+	Predicate<int> p6 = value => value > 0;
+}
+
+class Lambda
+{
+	public event Action<string> Announcement;
+	Lambda()
 	{
-		public int age;
+		Announcement += Shout;
+		Announcement -= Shout;
+		//usunie sie
 
-		public abstract string LastNam { get; set; }
+		Announcement += (x) => { Console.WriteLine($"Hellooo: {x}!"); };
+		Announcement -= (x) => { Console.WriteLine($"Hellooo: {x}!"); };
+		//!!!!!!!! Nie usunie sie bo jest anonimowa
+		Announcement -= (x) => { Console.WriteLine($"See ya: {x}!"); };
 
-		protected string FirstName;
-		private string LastName;
-		public abstract void Name();
 
-		public Ssak(string FirstName)
-		{
-			this.FirstName = FirstName;
-		}
-
-		public Ssak(string FirstName, string LastName)
-		{
-			this.FirstName = FirstName;
-			this.LastName = LastName;
-		}
-
-		public override string ToString()
-		{
-			return this.FirstName + " " + this.LastName;
-		}
+	}
+	
+	public void Write(string name)
+	{
+		Announcement.Invoke(name);
 	}
 
-	class Kot : Ssak
+	public void Shout(string s)
 	{
-		public Kot(string FirstName, string LastName) : base(FirstName, LastName)
-		{
-
-		}
-
-		public override string LastNam
-		{
-			get
-			{
-				return FirstName;
-			}
-
-			set
-			{
-				throw new NotImplementedException();
-			}
-		}
-
-		public void WypiszImie()
-		{
-			Console.WriteLine(this.FirstName);
-		}
-		//public this test()
-		//{
-		//	return this;
-		//}
-		public override void Name()
-		{
-			Console.WriteLine(this.FirstName);
-		}
-		
+		Console.WriteLine(s + "!!!");
 	}
-	public static class Extension
+}
+
+namespace Net.Wyklad.Examples
+{
+	class Arrays
 	{
-		public static void MyExtenstion(this string word, int number)
+		Arrays()
 		{
-			Console.WriteLine(word + " " + number);
+			Func<int, bool> findFirst = IsLessThan10;
+			Predicate<int> findFirst2 = delegate (int x) { return x > 10; };
+
+			
+		}
+		public bool IsLessThan10(int x)
+		{
+			return x < 10;
 		}
 	}
-	class Dog : Ssak
-	{
-		public Dog(string one, string two) : base(one, two)
-		{
+}
 
-		}
+class Program
+{
+	//public static void Main()
+	//{
 
-		public override string LastNam
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-
-			set
-			{
-				throw new NotImplementedException();
-			}
-		}
-		public override void Name()
-		{
-			Console.WriteLine("I'm tha Doge" + FirstName);
-		}
-	}
-	//OVER 9000 MISTAKES MADE DYRING WRITING THIS CODE
-	interface ISsak
-	{
-		string LastNam { get; set; }
-
-		void Name();
-	}
-
-	class Program
-	{
-		public static void Main()
-		{
-			//Ssak[] ssaki = new Ssak[10];
-			//nie mozna tworzyc pojedynczych obiektow typu interfejsu/klasy abstrakcyjnej
-			ISsak[] SsakArray = new Ssak[2];
-
-			Kot kotek = new Kot("Andrzej", "Trump");
-			kotek.WypiszImie();
-
-			Ssak ssak = new Kot("Andrzej", "Lepper");
-
-			Dog dog = new Dog("Pies Maciej", "Piotrek Pietrek");
-
-			ssak.Name();
-			dog.Name();
-			Console.WriteLine(ssak.ToString());
-
-			Console.WriteLine("Ghandi NOOOOO");
-
-			string first = "it's";
-			string second = "";
-
-			first.MyExtenstion(11);
-			second.MyExtenstion(15);
-
-			Console.ReadKey();
-		}
-	}
+	//	Console.ReadKey();
+	//}
 }

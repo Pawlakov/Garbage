@@ -27,7 +27,7 @@ class SimData
 		LoadBuildings();
 	}
 
-	private void LoadMap() // To jest niegotowe. Nic nowego.
+	private void LoadMap() //Wydaje się gotowe (To coś nowego).
 	{
 		List<string> lines = new List<string>();
 
@@ -47,7 +47,7 @@ class SimData
 		}
 	}
 
-	private void LoadBuildings() // DO SPRAWDZENIA NA DZIAŁANIE (Oczywiśie kiedy będzie gotowo no bo TERAZ JESZCZE NIE JEST).
+	private void LoadBuildings()
 	{
 		List<string> lines = new List<string>();
 
