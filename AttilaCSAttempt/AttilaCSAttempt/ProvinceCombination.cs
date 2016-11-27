@@ -19,6 +19,8 @@ class ProvinceCombination
 	{
 		listing = new List<string>();
 
+		random = new Random();
+
 		food = 0;
 		order = 0;
 		sanitation = new int[3];
@@ -42,14 +44,14 @@ class ProvinceCombination
 				ApplyBuilding(Generator.GenerateBuilding(BuildingType.CITY, Resource.NONE, data), i);
 				ApplyBuilding(Generator.GenerateBuilding(BuildingType.CITY, Resource.NONE, data), i);
 
-				if (data.map[whichProvince].resources[i] != Resource.NONE)
-				{
-					ApplyBuilding(Generator.GenerateBuilding(BuildingType.RESOURCE, data.map[whichProvince].resources[i], data), i);
-				}
-				else
-				{
+				//if (data.map[whichProvince].resources[i] != Resource.NONE)
+				//{
+				//	ApplyBuilding(Generator.GenerateBuilding(BuildingType.RESOURCE, data.map[whichProvince].resources[i], data), i);
+				//}
+				//else
+				//{
 					ApplyBuilding(Generator.GenerateBuilding(BuildingType.CITY, Resource.NONE, data), i);
-				}
+				//}
 
 				if (data.map[whichProvince].isCoastal[i] == true)
 					ApplyBuilding(Generator.GenerateBuilding(BuildingType.COAST, Resource.NONE, data), i);
@@ -59,14 +61,14 @@ class ProvinceCombination
 				ApplyBuilding(Generator.GenerateBuilding(BuildingType.CENTER_TOWN, Resource.NONE, data), i);
 				ApplyBuilding(Generator.GenerateBuilding(BuildingType.TOWN, Resource.NONE, data), i);
 
-				if (data.map[whichProvince].resources[i] != Resource.NONE)
-				{
-					ApplyBuilding(Generator.GenerateBuilding(BuildingType.RESOURCE, data.map[whichProvince].resources[i], data), i);
-				}
-				else
-				{
+				//if (data.map[whichProvince].resources[i] != Resource.NONE)
+				//{
+				//	ApplyBuilding(Generator.GenerateBuilding(BuildingType.RESOURCE, data.map[whichProvince].resources[i], data), i);
+				//}
+				//else
+				//{
 					ApplyBuilding(Generator.GenerateBuilding(BuildingType.TOWN, Resource.NONE, data), i);
-				}
+				//}
 
 				if (data.map[whichProvince].isCoastal[i] == true)
 					ApplyBuilding(Generator.GenerateBuilding(BuildingType.COAST, Resource.NONE, data), i);
@@ -119,7 +121,7 @@ class ProvinceCombination
 	{
 		if (food < 0)
 			return false;
-		else if (order < 6)
+		else if (order < 3)
 			return false;
 		else if (sanitation[0] < 0)
 			return false;

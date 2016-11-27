@@ -5,6 +5,7 @@ using System.IO;
 class SimData
 {
 	public List<ProvinceData> map;
+	List<string> buildingLines;
 	public List<Building>[][] buildings; // I po co ja tworzę takie molochy? No po co?
 
 	// ZROBIONE!
@@ -49,23 +50,25 @@ class SimData
 
 	private void LoadBuildings()
 	{
-		List<string> lines = new List<string>();
+		buildingLines = new List<string>();
 
 		StreamReader reader = new StreamReader("Buildings.txt");
 		string line = reader.ReadLine();
 
 		while (line != null)
 		{
-			lines.Add(line);
+			buildingLines.Add(line);
 			line = reader.ReadLine();
 		}
 		reader.Close();
 
+		// SEPARATOR
+
 		int beginLine = 0;
 		int endLine = 0;
-		for (int whichLine = 0; whichLine < lines.Count; whichLine++)
+		for (int whichLine = 0; whichLine < buildingLines.Count; whichLine++)
 		{
-			if (lines[whichLine] == "X")
+			if (buildingLines[whichLine] == "X")
 			{
 				endLine = whichLine - 1;
 
@@ -73,14 +76,12 @@ class SimData
 				tempLines = new string[endLine - beginLine + 1];
 				for (int whichTempLine = 0; whichTempLine < tempLines.Length; whichTempLine++)
 				{
-					tempLines[whichTempLine] = lines[beginLine + whichTempLine];
+					tempLines[whichTempLine] = buildingLines[beginLine + whichTempLine];
 				}
 				Building tempBuilding = new Building(tempLines);
 				buildings[(int)tempBuilding.typeTag][(int)tempBuilding.resourceTag].Add(tempBuilding);
 
 				beginLine = whichLine + 1;
-				// Jak to będzie działać to ja jestem miszcz.
-				// EDIT: Not to jestem miscz.
 			}
 		}
 	}
@@ -95,7 +96,26 @@ class SimData
 			}
 		}
 
-		LoadBuildings();
+		int beginLine = 0;
+		int endLine = 0;
+		for (int whichLine = 0; whichLine < buildingLines.Count; whichLine++)
+		{
+			if (buildingLines[whichLine] == "X")
+			{
+				endLine = whichLine - 1;
+
+				string[] tempLines;
+				tempLines = new string[endLine - beginLine + 1];
+				for (int whichTempLine = 0; whichTempLine < tempLines.Length; whichTempLine++)
+				{
+					tempLines[whichTempLine] = buildingLines[beginLine + whichTempLine];
+				}
+				Building tempBuilding = new Building(tempLines);
+				buildings[(int)tempBuilding.typeTag][(int)tempBuilding.resourceTag].Add(tempBuilding);
+
+				beginLine = whichLine + 1;
+			}
+		}
 	}
 }
 
