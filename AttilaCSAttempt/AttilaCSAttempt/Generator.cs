@@ -20,8 +20,14 @@ class Generator
 			if(whichCombination != 0)
 				Console.WriteLine("Loop/Found: " + whichLoop / whichCombination);
 			if (currentBest != null)
+			{
+				Console.WriteLine("Best: ");
 				currentBest.PrintListing();
+			}
+
 			ProvinceCombination subject = new ProvinceCombination(data, whichProvince);
+			Console.WriteLine("Contestant: ");
+			subject.PrintListing();
 			if (subject.FitsConditions())
 			{
 				if (currentBest == null)

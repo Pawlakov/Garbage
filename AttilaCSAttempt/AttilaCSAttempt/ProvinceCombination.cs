@@ -44,14 +44,14 @@ class ProvinceCombination
 				ApplyBuilding(Generator.GenerateBuilding(BuildingType.CITY, Resource.NONE, data), i);
 				ApplyBuilding(Generator.GenerateBuilding(BuildingType.CITY, Resource.NONE, data), i);
 
-				//if (data.map[whichProvince].resources[i] != Resource.NONE)
-				//{
-				//	ApplyBuilding(Generator.GenerateBuilding(BuildingType.RESOURCE, data.map[whichProvince].resources[i], data), i);
-				//}
-				//else
-				//{
+				if (data.map[whichProvince].resources[i] != Resource.NONE)
+				{
+					ApplyBuilding(Generator.GenerateBuilding(BuildingType.RESOURCE, data.map[whichProvince].resources[i], data), i);
+				}
+				else
+				{
 					ApplyBuilding(Generator.GenerateBuilding(BuildingType.CITY, Resource.NONE, data), i);
-				//}
+				}
 
 				if (data.map[whichProvince].isCoastal[i] == true)
 					ApplyBuilding(Generator.GenerateBuilding(BuildingType.COAST, Resource.NONE, data), i);
@@ -61,14 +61,14 @@ class ProvinceCombination
 				ApplyBuilding(Generator.GenerateBuilding(BuildingType.CENTER_TOWN, Resource.NONE, data), i);
 				ApplyBuilding(Generator.GenerateBuilding(BuildingType.TOWN, Resource.NONE, data), i);
 
-				//if (data.map[whichProvince].resources[i] != Resource.NONE)
-				//{
-				//	ApplyBuilding(Generator.GenerateBuilding(BuildingType.RESOURCE, data.map[whichProvince].resources[i], data), i);
-				//}
-				//else
-				//{
+				if (data.map[whichProvince].resources[i] != Resource.NONE)
+				{
+					ApplyBuilding(Generator.GenerateBuilding(BuildingType.RESOURCE, data.map[whichProvince].resources[i], data), i);
+				}
+				else
+				{
 					ApplyBuilding(Generator.GenerateBuilding(BuildingType.TOWN, Resource.NONE, data), i);
-				//}
+				}
 
 				if (data.map[whichProvince].isCoastal[i] == true)
 					ApplyBuilding(Generator.GenerateBuilding(BuildingType.COAST, Resource.NONE, data), i);
@@ -84,8 +84,9 @@ class ProvinceCombination
 	public void ApplyBuilding(Building building, int whichRegion)
 	{
 		int level;
-		if ((building.typeTag == BuildingType.CENTER_TOWN)||(building.typeTag == BuildingType.CENTER_CITY))
-			level = 3;
+		if ((building.typeTag == BuildingType.CENTER_TOWN) || (building.typeTag == BuildingType.CENTER_CITY))
+			level = random.Next(2, 4);
+			//level = 3;
 		else
 			level = random.Next(0, 4);
 
