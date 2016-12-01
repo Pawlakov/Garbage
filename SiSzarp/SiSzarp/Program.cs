@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Timers;
 
 class Elevator
 {
@@ -389,10 +390,78 @@ class CarGame
 
 	public void PrintCars()
 	{
-		for (int i = 0; i < 5; i +)
+		for (int i = 0; i < 5; i++)
 		{
 			Console.WriteLine("Samochód nr " + i + ": " + cars[i].GetPosition());
 		}
+	}
+}
+
+class WeatherForecaster
+{
+	public static double CalculateRainFallDay10RegionA()
+	{
+		//Wymaga 5000ms
+		System.Threading.Thread.Sleep(5000);
+		Random randomizer = new Random();
+		return (double)randomizer.Next(40, 100);
+	}
+}
+
+class CropForecast
+{
+	private double rainFallDay10RegionA;
+	private bool rainFallDay10RegionANeedUpdate = true;
+
+	public CropForecast()
+	{
+		Timer aTimer = new Timer();
+		aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+		aTimer.Interval = 20000;
+		aTimer.Enabled = true;
+	}
+
+	public double RainFallDay10RegionA
+	{
+		get
+		{
+			if(rainFallDay10RegionANeedUpdate)
+			{
+				rainFallDay10RegionA = WeatherForecaster.CalculateRainFallDay10RegionA();
+				rainFallDay10RegionANeedUpdate = false;
+				return rainFallDay10RegionA;
+			}
+			else
+			{
+				return rainFallDay10RegionA;
+			}
+		}
+	} 
+
+	private double ComplexResultA()
+	{
+		// Tu jakieś super obliczenia
+		return ((RainFallDay10RegionA / 2) + (rainFallDay10RegionA / 3) + (rainFallDay10RegionA / 4));
+	}
+
+	private double ComplexResultB()
+	{
+		// Tu jakieś super obliczenia
+		return (RainFallDay10RegionA / 10 - 100) + (rainFallDay10RegionA / 100);
+	}
+
+	public double WheatCropSizeInTonsInRegionA()
+	{
+		// Hue hue i nic więcej
+		Console.WriteLine("Czekajże bo liczę, no...");
+		return (ComplexResultA() / 2 + ComplexResultB() / 4 + ComplexResultA()) * 100000;
+	}
+
+	public void OnTimedEvent(object source, ElapsedEventArgs e)
+	{
+		//Co 20 sekund (chyba)
+		Console.WriteLine("\n\nPotrzebna nowa aktualizaja\nWyznaczyć inną prognozę?");
+		rainFallDay10RegionANeedUpdate = true;
 	}
 }
 
@@ -405,6 +474,7 @@ class Program
 		//MetadataAccesor();
 		//BliposTax();
 		//BankSimulation();
+		ForecastTester();
 		Console.ReadKey();
 	}
 
@@ -606,5 +676,20 @@ class Program
 		Console.WriteLine("Stopy O)procentowania dla wszystkich kont");
 		Console.WriteLine("K)oniec sesji");
 		Console.WriteLine("Uwaga: Pierwsze konto ma numer jeden");
+	}
+
+	static void ForecastTester()
+	{
+		string answer;
+		CropForecast MyForecaster = new CropForecast();
+
+		Console.Write("Czy chcesz wyznaczyć prognozę zbiorów? T/N");
+		answer = Console.ReadLine().ToUpper();
+		while(!(answer == "N"))
+		{
+			Console.WriteLine("Wielkość zbiorów w tonach: {0:N2}", MyForecaster.WheatCropSizeInTonsInRegionA());
+			Console.Write("Czy jeszcze raz? T/N");
+			answer = Console.ReadLine().ToUpper();
+		}
 	}
 }

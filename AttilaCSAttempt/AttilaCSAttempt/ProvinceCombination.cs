@@ -85,7 +85,7 @@ class ProvinceCombination
 	{
 		int level;
 		if ((building.typeTag == BuildingType.CENTER_TOWN) || (building.typeTag == BuildingType.CENTER_CITY))
-			level = random.Next(2, 4);
+			level = random.Next(1, 4);
 			//level = 3;
 		else
 			level = random.Next(0, 4);
