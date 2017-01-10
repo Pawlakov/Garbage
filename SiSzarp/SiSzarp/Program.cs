@@ -425,7 +425,7 @@ class CropForecast
 	{
 		get
 		{
-			if(rainFallDay10RegionANeedUpdate)
+			if (rainFallDay10RegionANeedUpdate)
 			{
 				rainFallDay10RegionA = WeatherForecaster.CalculateRainFallDay10RegionA();
 				rainFallDay10RegionANeedUpdate = false;
@@ -436,7 +436,7 @@ class CropForecast
 				return rainFallDay10RegionA;
 			}
 		}
-	} 
+	}
 
 	private double ComplexResultA()
 	{
@@ -465,6 +465,23 @@ class CropForecast
 	}
 }
 
+class BirthList
+{
+	private uint[] births = new uint[4];
+
+	public uint this[uint index]
+	{
+		get
+		{
+			return births[index];
+		}
+		set
+		{
+			births[index] = value;
+		}
+	}
+}
+
 class Program
 {
 	public static void Main()
@@ -474,7 +491,8 @@ class Program
 		//MetadataAccesor();
 		//BliposTax();
 		//BankSimulation();
-		ForecastTester();
+		//ForecastTester();
+		BirthListTester();
 		Console.ReadKey();
 	}
 
@@ -685,11 +703,26 @@ class Program
 
 		Console.Write("Czy chcesz wyznaczyć prognozę zbiorów? T/N");
 		answer = Console.ReadLine().ToUpper();
-		while(!(answer == "N"))
+		while (!(answer == "N"))
 		{
 			Console.WriteLine("Wielkość zbiorów w tonach: {0:N2}", MyForecaster.WheatCropSizeInTonsInRegionA());
 			Console.Write("Czy jeszcze raz? T/N");
 			answer = Console.ReadLine().ToUpper();
 		}
+	}
+
+	static void BirthListTester()
+	{
+		BirthList blDenmark = new BirthList();
+		uint sum;
+
+		blDenmark[0] = 10200;
+		blDenmark[1] = 20398;
+		blDenmark[2] = 40938;
+		blDenmark[3] = 6894;
+
+		sum = blDenmark[0] + blDenmark[1] + blDenmark[2] + blDenmark[3];
+
+		Console.WriteLine("Suma z 4 regionów: {0}", sum);
 	}
 }
