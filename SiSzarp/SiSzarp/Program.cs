@@ -482,6 +482,83 @@ class BirthList
 	}
 }
 
+class TimeSpan
+{
+	private uint totalSeconds;
+	private const uint SecondsInHour = 3600;
+	private const uint SecondsInMinute = 60;
+
+	public TimeSpan()
+	{
+		totalSeconds = 0;
+	}
+
+	public TimeSpan(uint initialHours, uint initialMinutes, uint initialSeconds)
+	{
+		totalSeconds = initialHours * SecondsInHour + initialMinutes * SecondsInMinute + initialSeconds;
+	}
+
+	public uint Seconds
+	{
+		get
+		{
+			return totalSeconds;
+		}
+		set
+		{
+			totalSeconds = value;
+		}
+	}
+
+	public void PrintHourMinSec()
+	{
+		uint hours;
+		uint minutes;
+		uint seconds;
+
+		hours = totalSeconds / SecondsInHour;
+		minutes = (totalSeconds % SecondsInHour) / SecondsInMinute;
+		seconds = (totalSeconds % SecondsInHour) % SecondsInMinute;
+		Console.WriteLine("{0} godz. {1} min. {2} sek.", hours, minutes, seconds);
+	}
+
+	public static TimeSpan operator +(TimeSpan timeSpan1, TimeSpan timeSpan2)
+	{
+		TimeSpan sumTimeSpan = new TimeSpan();
+
+		sumTimeSpan.Seconds = timeSpan1.Seconds + timeSpan2.Seconds;
+		return sumTimeSpan;
+	}
+
+	public static TimeSpan operator ++(TimeSpan timeSpan1)
+	{
+		TimeSpan timeSpanIncremented = new TimeSpan();
+
+		timeSpanIncremented.Seconds = timeSpan1.Seconds + 1;
+		return timeSpanIncremented;
+	}
+
+	public static bool operator >(TimeSpan timeSpan1, TimeSpan timeSpan2)
+	{
+		return (timeSpan1.Seconds > timeSpan2.Seconds);
+	}
+
+	public static bool operator <(TimeSpan timeSpan1, TimeSpan timeSpan2)
+	{
+		return (timeSpan1.Seconds < timeSpan2.Seconds);
+	}
+
+	public static bool operator ==(TimeSpan timeSpan1, TimeSpan timeSpan2)
+	{
+		return (timeSpan1.Seconds == timeSpan2.Seconds);
+	}
+
+	public static bool operator !=(TimeSpan timeSpan1, TimeSpan timeSpan2)
+	{
+		return (timeSpan1.Seconds != timeSpan2.Seconds);
+	}
+}
+
 class Program
 {
 	public static void Main()
@@ -492,7 +569,8 @@ class Program
 		//BliposTax();
 		//BankSimulation();
 		//ForecastTester();
-		BirthListTester();
+		//BirthListTester();
+		TimeSpanTest();
 		Console.ReadKey();
 	}
 
@@ -724,5 +802,40 @@ class Program
 		sum = blDenmark[0] + blDenmark[1] + blDenmark[2] + blDenmark[3];
 
 		Console.WriteLine("Suma z 4 regionów: {0}", sum);
+	}
+
+	static void TimeSpanTest()
+	{
+		TimeSpan someTime;
+		TimeSpan totalTime = new TimeSpan();
+		TimeSpan myTime = new TimeSpan(2, 40, 45);
+		TimeSpan yourTime = new TimeSpan(1, 20, 30);
+
+		totalTime += yourTime;
+		totalTime += myTime;
+
+		Console.Write("Twój czas:				");
+		yourTime.PrintHourMinSec();
+		Console.Write("Mój czas:				");
+		myTime.PrintHourMinSec();
+		Console.Write("Całkowity czas wyścigu:	");
+		totalTime.PrintHourMinSec();
+
+		if (myTime > yourTime)
+			Console.WriteLine("\nSpędziłem więcej czasu niż ty");
+		else
+			Console.WriteLine("\nSpędziłeś więcej czasu niż ja");
+
+		myTime++;
+		++myTime;
+
+		Console.Write("\nMój czas po dwóch przyrostach:	");
+		myTime.PrintHourMinSec();
+
+		someTime = new TimeSpan(1, 20, 30);
+		if (yourTime == someTime)
+			Console.WriteLine("\nInterwał someTime jest równy interwałowi yourTime");
+		else
+			Console.WriteLine("\nInterwał someTime NIE jest równy interwałowi yourTime");
 	}
 }
