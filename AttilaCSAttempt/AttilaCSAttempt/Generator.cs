@@ -42,19 +42,4 @@ class Generator
 			whichLoop++;
 		}
 	}
-
-	// Zwraca wylosowany budynek na podstawie przekazanych poleceń. ZROBIONE!
-	public static Building GenerateBuilding(BuildingType type, Resource resource, SimData data)
-	{
-		Random random = new Random();
-		if (data.buildings[(int)type][(int)resource].Count >= 1)
-		{
-			int pick = random.Next(data.buildings[(int)type][(int)resource].Count);
-			Building result = data.buildings[(int)type][(int)resource][pick];
-			data.buildings[(int)type][(int)resource].RemoveAt(pick);
-			return result; // Tu coś się wali bo wywala budynki jeden po drugim jak w liście siedzą.
-		}
-		else
-			return null;
-	}
 }

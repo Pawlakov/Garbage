@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 
 class SimData
 {
-	public List<ProvinceData> map;
+	private Map map;
+	private FactionsList factions;
+	private BuildingsList buildings;
 	List<string> buildingLines;
-	public List<Building>[][] buildings; // I po co ja tworzę takie molochy? No po co?
 
-	// ZROBIONE!
 	public SimData()
 	{
-		map = new List<ProvinceData>();
-		// Czy ty to widzisz?
+		map = new Map();
+
 		buildings = new List<Building>[AttilaSimulator.constBuildingTypesNumber][];
 		for (int whichBuildingType = 0; whichBuildingType < AttilaSimulator.constBuildingTypesNumber; whichBuildingType++)
 		{
@@ -22,30 +21,8 @@ class SimData
 				buildings[whichBuildingType][whichResourceType] = new List<Building>();
 			}
 		}
-		// Koszmarne, czyż nie?
 
-		LoadMap();
 		LoadBuildings();
-	}
-
-	private void LoadMap() //Wydaje się gotowe (To coś nowego).
-	{
-		List<string> lines = new List<string>();
-
-		StreamReader reader = new StreamReader("Map.txt");
-		string line = reader.ReadLine();
-
-		while (line != null)
-		{
-			lines.Add(line);
-			line = reader.ReadLine();
-		}
-		reader.Close();
-
-		for (int whichLine = 0; whichLine < lines.Count; whichLine++)
-		{
-			map.Add(new ProvinceData(lines[whichLine]));
-		}
 	}
 
 	private void LoadBuildings()
