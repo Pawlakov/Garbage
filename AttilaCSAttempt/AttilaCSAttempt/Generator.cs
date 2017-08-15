@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-
-// zawiera generatory różnych rzeczy
-class Generator
+static class Generator
 {
-	// Zwraca najlepszy budynek. ZROBIONE!
 	public static ProvinceCombination GenerateProvinceCombination(SimData data, int whichProvince)
 	{
 		ProvinceCombination currentBest = null;
@@ -40,6 +35,17 @@ class Generator
 				whichCombination++;
 			}
 			whichLoop++;
+		}
+	}
+	public static Building GenerateBuilding(BuildingSlotMask mask)
+	{
+		if (mask.ForcedLevel.HasValue)
+		{
+
+		}
+		else
+		{
+			Random random = new Random();
 		}
 	}
 }

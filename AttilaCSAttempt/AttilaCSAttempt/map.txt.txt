@@ -1,0 +1,3 @@
+4.Italia.Roma.true.NONE.X.true.NONE.X.true.NONE.X.true.NONE
+4.MagnaGraecia.X.true.NONE.X.true.NONE.X.true.NONE.X.true.NONE
+2.CorsicaEtSardinia.X.true.NONE.X.true.NONE

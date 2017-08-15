@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-
+using System.Xml;
 class BuildingsList
 {
-	private List<Building>[][] trueBuildings;
-	private List<Building>[][] fakeBuildings;
-	private string factionName;
-
+	private List<BuildingBranch>[][] trueBuildings;
+	private List<BuildingBranch>[][] fakeBuildings;
+	//
 	public string FactionName
 	{
 		get
@@ -15,30 +13,11 @@ class BuildingsList
 			return factionName;
 		}
 	}
-
-	public Building this[BuildingType type, Resource resource]
-	{
-		get
-		{
-			Random random = new Random();
-			if (fakeBuildings[(int)type][(int)resource].Count >= 1)
-			{
-				int pick = random.Next(fakeBuildings[(int)type][(int)resource].Count);
-				Building result = fakeBuildings[(int)type][(int)resource][pick];
-				fakeBuildings[(int)type][(int)resource].RemoveAt(pick);
-				return result;
-			}
-			else
-				return null;
-		}
-	}
-
 	public BuildingsList(string factionName)
 	{
 		this.factionName = factionName;
 		Reload();
 	}
-
 	public void Renew()
 	{
 		// Wyczyść listy
@@ -64,7 +43,6 @@ class BuildingsList
 		}
 		//
 	}
-
 	public void Reload()
 	{
 		// Wyczyść listy
@@ -113,9 +91,20 @@ class BuildingsList
 		//
 		Renew();
 	}
-
 	public void Remove()
 	{
 
+	}
+}
+struct BuildingLibrary
+{
+	private BuildingBranch[][] buildings;
+	//
+	public BuildingLibrary(string filename)
+	{
+		XmlDocument sourceFile = new XmlDocument();
+		sourceFile.Load(filename);
+		buildings = new BuildingBranch[AttilaSimulator.constBuildingTypesNumber][];
+		// Something goes here.
 	}
 }

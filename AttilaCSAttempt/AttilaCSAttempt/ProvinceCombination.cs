@@ -1,20 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 
-// Tworzy i przechowuje utworzoną kombinację budynków.
 class ProvinceCombination
 {
-	List<string> listing;
-
-	int food;
-	int order;
-	int[] sanitation;
-	ProvinceWealth wealth;
-
-	Random random;
-
-	public decimal totalWealth;
-
+	private List<string> listing;
+	private int food;
+	private int order;
+	private int[] sanitation;
+	private ProvinceWealth wealth;
+	private Random random;
+	private double totalWealth;
+	//
 	public ProvinceCombination(SimData data, int whichProvince)
 	{
 		listing = new List<string>();
@@ -80,7 +76,6 @@ class ProvinceCombination
 		totalWealth = GetWeath(0) + GetWeath(1) + GetWeath(2);
 		listing.Add("Wealth: " + totalWealth + ", Public order: " + order + ", Food: " + food + ", Regional sanitations: " + sanitation[0] + " " + sanitation[1] + " " + sanitation[2]);
 	}
-
 	public void ApplyBuilding(Building building, int whichRegion)
 	{
 		int level;
@@ -112,12 +107,10 @@ class ProvinceCombination
 		wealth.ExecuteAllBonuses();
 		wealth.ClearBonuses();
 	}
-
 	public decimal GetWeath(int whichRegion)
 	{
 		return wealth.GetWealth(whichRegion);
 	}
-
 	public bool FitsConditions()
 	{
 		if (food < 0)
@@ -133,12 +126,29 @@ class ProvinceCombination
 		else
 			return true;
 	}
-
 	public void PrintListing()
 	{
 		for(int whichLine = 0; whichLine < listing.Count; whichLine++)
 		{
 			Console.WriteLine(listing[whichLine]);
 		}
+	}
+}
+
+struct BuildingSlotMask
+{
+	private Building forcedBuilding;
+	private byte? forcedLevel;
+	public BuildingSlotMask()
+	{
+		//
+	}
+	public Building ForcedBuilding
+	{
+		get { return forcedBuilding; }
+	}
+	public byte? ForcedLevel
+	{
+		get { return forcedLevel; }
 	}
 }
