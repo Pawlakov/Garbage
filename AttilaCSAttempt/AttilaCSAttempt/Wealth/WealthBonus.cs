@@ -41,9 +41,24 @@ struct WealthBonus
 	/// </summary>
 	public void Execute(ref double[] values, ref double[] multipliers)
 	{
-		if (isMultiplier)
-			multipliers[(int)category] += value;
-		else
-			values[(int)category] += value;
+        if (isMultiplier)
+        {
+            if(category != BonusCategory.ALL)
+                multipliers[(int)category] += value;
+            else
+            {
+                for(byte whichCategory = 0; whichCategory < Rome2Simulator.constBonusCategoriesNumber; whichCategory++)
+                {
+                    multipliers[whichCategory] += value;
+                }
+            }
+        }
+        else
+        {
+            if (category != BonusCategory.ALL)
+                values[(int)category] += value;
+            else
+                throw new Exception("You cannot have value bonus in ALL category.");
+        }
 	}
 }

@@ -24,7 +24,7 @@ static class Difficulty
 	/// <summary>
 	/// Public order bonus provided by currently chosen difficulty level.
 	/// </summary>
-	public static byte PublicOrderBonus
+	public static short PublicOrderBonus
 	{
 		get
 		{

@@ -1,4 +1,7 @@
 ﻿using System.Xml;
+/// <summary>
+/// Container for province data.
+/// </summary>
 struct ProvinceData
 {
 	private string name;

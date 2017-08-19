@@ -7,7 +7,7 @@ class ProvinceWealth
 	//
 	private void ResetArrays()
 	{
-		for (byte whichCategory = 0; whichCategory < AttilaSimulator.constBonusCategoriesNumber; whichCategory++)
+		for (byte whichCategory = 0; whichCategory < Rome2Simulator.constBonusCategoriesNumber; whichCategory++)
 		{
 			multipliers[whichCategory] = 1;
 			values[whichCategory] = 0;
@@ -26,8 +26,8 @@ class ProvinceWealth
 	/// </summary>
 	public ProvinceWealth()
 	{
-		multipliers = new double[AttilaSimulator.constBonusCategoriesNumber];
-		values = new double[AttilaSimulator.constBonusCategoriesNumber];
+		multipliers = new double[Rome2Simulator.constBonusCategoriesNumber];
+		values = new double[Rome2Simulator.constBonusCategoriesNumber];
 		bonuses = new List<WealthBonus>();
 	}
 	/// <summary>
@@ -40,7 +40,7 @@ class ProvinceWealth
 			double result = 0;
 			ResetArrays();
 			ExecuteBonuses();
-			for (byte whichCategory = 0; whichCategory < AttilaSimulator.constBonusCategoriesNumber; whichCategory++)
+			for (byte whichCategory = 0; whichCategory < Rome2Simulator.constBonusCategoriesNumber; whichCategory++)
 			{
 				result += (multipliers[whichCategory] * values[whichCategory]);
 			}

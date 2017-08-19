@@ -45,29 +45,23 @@
   <ItemGroup>
     <Compile Include="FactionsBuildings\BuildingLevel.cs" />
     <Compile Include="FactionsBuildings\BuildingBranch.cs" />
-    <Compile Include="FactionsBuildings\BuildingsList.cs" />
+    <Compile Include="FactionsBuildings\BuildingsLibrary.cs" />
     <Compile Include="Difficulty.cs" />
+    <Compile Include="FactionsBuildings\BuildingSlot.cs" />
     <Compile Include="FactionsBuildings\Faction.cs" />
     <Compile Include="FactionsBuildings\FactionsList.cs" />
     <Compile Include="Generator.cs" />
     <Compile Include="MapProvincesRegionsData\Map.cs" />
     <Compile Include="MapProvincesRegionsData\RegionData.cs" />
-    <Compile Include="ProvinceCombination.cs" />
+    <Compile Include="FactionsBuildings\ProvinceCombination.cs" />
     <Compile Include="MapProvincesRegionsData\ProvinceData.cs" />
-    <Compile Include="AttilaSimulator.cs" />
+    <Compile Include="Rome2Simulator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Wealth\ProvinceWealth.cs" />
-    <Compile Include="SimData.cs" />
     <Compile Include="Wealth\WealthBonus.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="FactionsBuildings\buildings_rome.xml">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="MapProvincesRegionsData\map.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
