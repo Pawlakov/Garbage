@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<map>
+  <province name ="Italia">
+    <region name="Roma" is_coastal ="false" resource ="NONE"/>
+    <region name="Neapolis" is_coastal ="true" resource ="OLIVE"/>
+    <region name="Velathri" is_coastal ="false" resource ="WINE"/>
+    <region name="Ariminum" is_coastal ="true" resource ="NONE"/>
+  </province>
+  <province name ="Magna_Graecia">
+    <region name="Brundisium" is_coastal ="true" resource ="NONE"/>
+    <region name="Lilybaeum" is_coastal ="true" resource ="NONE"/>
+    <region name="Cosentia" is_coastal ="false" resource ="NONE"/>
+    <region name="Syracusae" is_coastal ="true" resource ="GRAIN"/>
+  </province>
+  <province name ="Corsica_et_Sardinia">
+    <region name="Karalis" is_coastal ="true" resource ="NONE"/>
+    <region name="Alalia" is_coastal ="true" resource ="NONE"/>
+  </province>
+</map>
