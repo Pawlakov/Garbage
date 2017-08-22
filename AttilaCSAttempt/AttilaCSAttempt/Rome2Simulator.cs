@@ -1,4 +1,5 @@
-﻿using System;
+﻿// Casual test of changes.
+using System;
 
 enum Resource { AMBER, PURPLE_DYE, GLASS, GOLD, GRAIN, HORSE, IRON, LEAD, LEATHER, LUMBER, MARBLE, OLIVE, SILK, WINE, NONE };
 enum BuildingType { TOWN, CENTER_TOWN, CITY, CENTER_CITY, COAST, RESOURCE };
