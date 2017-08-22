@@ -1,13 +1,23 @@
 ﻿using System;
+using System.Diagnostics;
 static class Generator
 {
 	public static void GenerateCombinationInTermsOfWealth(BuildingSlot[][] slots, ProvinceData province, Faction faction, short minimalOrder)
 	{
 		ProvinceCombination currentBest = null;
-		int whichCombination = 0;
-		long whichLoop = 0;
+		long whichCombination = 0;
+		long whichLoop = 1;
+		long time = 0;
+		Stopwatch stopwatch = Stopwatch.StartNew();
 		while (true)
 		{
+			if(whichLoop%16384 == 0)
+			{
+				stopwatch.Stop();
+				time = stopwatch.ElapsedMilliseconds;
+				stopwatch = Stopwatch.StartNew();
+				faction.CurbUselessBuildings();
+			}
 			ProvinceCombination subject = new ProvinceCombination(slots, province, faction);
 			if (subject.Order > minimalOrder)
 			{
@@ -18,10 +28,11 @@ static class Generator
 					Console.WriteLine("Best: ");
 					currentBest.ShowContent();
 				}
+				subject.RewardUsefulBuildings();
 				whichCombination++;
 			}
 			whichLoop++;
-			Console.WriteLine("Loop: {1} Found: {0}", whichCombination, whichLoop);
+			Console.WriteLine("Loop: {1} Found: {0} Time (16.484 loops): {2}", whichCombination, whichLoop, time);
 			Console.CursorTop -= 1;
 		}
 	}
@@ -29,9 +40,19 @@ static class Generator
 	{
 		ProvinceCombination currentBest = null;
 		int whichCombination = 0;
-		long whichLoop = 0;
+		long whichLoop = 1;
+		long time = 0;
+		Stopwatch stopwatch = Stopwatch.StartNew();
 		while (true)
 		{
+			if (whichLoop % 16384 == 0)
+			{
+				stopwatch.Stop();
+				time = stopwatch.ElapsedMilliseconds;
+				stopwatch = Stopwatch.StartNew();
+				faction.CurbUselessBuildings();
+
+			}
 			ProvinceCombination subject = new ProvinceCombination(slots, province, faction);
 			if (subject.Order > minimalOrder)
 			{
@@ -42,10 +63,11 @@ static class Generator
 					Console.WriteLine("Best: ");
 					currentBest.ShowContent();
 				}
+				subject.RewardUsefulBuildings();
 				whichCombination++;
 			}
 			whichLoop++;
-			Console.WriteLine("Loop: {1} Found: {0}", whichCombination, whichLoop);
+			Console.WriteLine("Loop: {1} Found: {0} Time (16.384 loops): {2}", whichCombination, whichLoop, time);
 			Console.CursorTop -= 1;
 		}
 	}

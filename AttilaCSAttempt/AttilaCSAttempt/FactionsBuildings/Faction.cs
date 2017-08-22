@@ -41,4 +41,19 @@ struct Faction
     {
         get { return wealthBonuses; }
     }
+	public void CurbUselessBuildings()
+	{
+		for(byte whichType = 0; whichType < Rome2Simulator.constBuildingTypesNumber; whichType++)
+		{
+			for(byte whichBuilding = 0; whichBuilding < buildings[(BuildingType)whichType].Count; whichBuilding++)
+			{
+				if(buildings[(BuildingType)whichType, whichBuilding].Usefuliness == 0)
+				{
+					buildings[(BuildingType)whichType].RemoveAt(whichBuilding);
+					whichBuilding--;
+				}
+			}
+		}
+		buildings.ResetUsefuliness();
+	}
 }

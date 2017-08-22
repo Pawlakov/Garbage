@@ -6,6 +6,7 @@ using System.Xml;
 partial struct BuildingBranch
 {
 	private string name;
+	private ushort usefuliness;
 	private BuildingType type;
 	private Resource resource;
 	private BuildingLevel[] levels;
@@ -18,6 +19,7 @@ partial struct BuildingBranch
     /// </param>
 	public BuildingBranch(XmlNode branchNode)
 	{
+		usefuliness = 0;
 		XmlNodeList levelNodeList = branchNode.ChildNodes;
 		name = branchNode.Attributes.GetNamedItem("name").InnerText;
 		Enum.TryParse(branchNode.Attributes.GetNamedItem("type").InnerText, out type);
@@ -78,4 +80,9 @@ partial struct BuildingBranch
     {
         get { return levels.Length; }
     }
+	public ushort Usefuliness
+	{
+		get { return usefuliness; }
+		set { usefuliness = value; }
+	}
 }

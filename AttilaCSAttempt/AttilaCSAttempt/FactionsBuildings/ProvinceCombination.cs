@@ -105,4 +105,14 @@ class ProvinceCombination
             return totalWealth;
         }
     }
+	public void RewardUsefulBuildings()
+	{
+		for(byte whichRegion = 0; whichRegion < slots.Length; whichRegion++)
+		{
+			for(byte whichSlot = 0; whichSlot < slots[whichRegion].Length; whichSlot++)
+			{
+				slots[whichRegion][whichSlot].BuildingBranch.Value.Usefuliness += 1;
+			}
+		}
+	}
 }
