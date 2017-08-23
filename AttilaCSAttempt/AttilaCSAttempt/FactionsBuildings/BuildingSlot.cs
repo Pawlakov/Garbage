@@ -5,7 +5,7 @@
 class BuildingSlot
 {
     private BuildingType type;
-    private BuildingBranch? building;
+    private BuildingBranch building;
     private byte? level;
     //
     /// <summary>
@@ -69,7 +69,7 @@ class BuildingSlot
     /// <summary>
     /// Building placed in this slot.
     /// </summary>
-    public BuildingBranch? BuildingBranch
+    public BuildingBranch BuildingBranch
     {
         get { return building; }
         set { building = value; }
@@ -88,11 +88,11 @@ class BuildingSlot
     public void ShowContent()
     {
         if (building != null && level != null)
-            Console.WriteLine("Type: {0} Building: {1} Level: {2}",type , building.Value.Name, level.Value);
+            Console.WriteLine("Type: {0} Building: {1} Level: {2}",type , building.Name, level.Value);
         else if (building == null && level != null)
             Console.WriteLine("Type: {0} Building: ??? Level: {1}", type, level.Value);
         else if (building != null && level == null)
-            Console.WriteLine("Type: {0} Building: {1} Level: ???", type, building.Value.Name);
+            Console.WriteLine("Type: {0} Building: {1} Level: ???", type, building.Name);
         else if (building == null && level == null)
             Console.WriteLine("Type: {0} Building: ??? Level: ???", type);
     }

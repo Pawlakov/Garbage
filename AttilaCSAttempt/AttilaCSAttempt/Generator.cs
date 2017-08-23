@@ -11,7 +11,7 @@ static class Generator
 		Stopwatch stopwatch = Stopwatch.StartNew();
 		while (true)
 		{
-			if(whichLoop%16384 == 0)
+			if(whichLoop%65536 == 0)
 			{
 				stopwatch.Stop();
 				time = stopwatch.ElapsedMilliseconds;
@@ -45,7 +45,7 @@ static class Generator
 		Stopwatch stopwatch = Stopwatch.StartNew();
 		while (true)
 		{
-			if (whichLoop % 16384 == 0)
+			if (whichLoop % 65536 == 0)
 			{
 				stopwatch.Stop();
 				time = stopwatch.ElapsedMilliseconds;

@@ -23,10 +23,10 @@ class ProvinceCombination
         {
             for (byte whichSlot = 0; whichSlot < slots[whichRegion].Length; whichSlot++)
             {
-                food += slots[whichRegion][whichSlot].BuildingBranch.Value.GetFood(slots[whichRegion][whichSlot].Level.Value);
-                order += slots[whichRegion][whichSlot].BuildingBranch.Value.GetOrder(slots[whichRegion][whichSlot].Level.Value);
-                for (byte whichBonus = 0; whichBonus < slots[whichRegion][whichSlot].BuildingBranch.Value.GetWealthBonuses(slots[whichRegion][whichSlot].Level.Value).Length; whichBonus++)
-                    wealth.AddBonus(slots[whichRegion][whichSlot].BuildingBranch.Value.GetWealthBonuses(slots[whichRegion][whichSlot].Level.Value)[whichBonus]);
+                food += slots[whichRegion][whichSlot].BuildingBranch.GetFood(slots[whichRegion][whichSlot].Level.Value);
+                order += slots[whichRegion][whichSlot].BuildingBranch.GetOrder(slots[whichRegion][whichSlot].Level.Value);
+                for (byte whichBonus = 0; whichBonus < slots[whichRegion][whichSlot].BuildingBranch.GetWealthBonuses(slots[whichRegion][whichSlot].Level.Value).Length; whichBonus++)
+                    wealth.AddBonus(slots[whichRegion][whichSlot].BuildingBranch.GetWealthBonuses(slots[whichRegion][whichSlot].Level.Value)[whichBonus]);
             }
         }
         totalWealth = wealth.Wealth;
@@ -45,7 +45,7 @@ class ProvinceCombination
             {
                 if (slots[whichRegion][whichSlot].BuildingBranch != null)
                 {
-                    buildings[slots[whichRegion][whichSlot].Type].Remove(slots[whichRegion][whichSlot].BuildingBranch.Value);
+                    buildings[slots[whichRegion][whichSlot].Type].Remove(slots[whichRegion][whichSlot].BuildingBranch);
                 }
             }
             for (byte whichBuilding = 0; whichBuilding < slots[whichRegion].Length; whichBuilding++)
@@ -62,7 +62,7 @@ class ProvinceCombination
                     }
                 }
                 if (slots[whichRegion][whichBuilding].Level == null)
-                    slots[whichRegion][whichBuilding].Level = (byte)random.Next(0, slots[whichRegion][whichBuilding].BuildingBranch.Value.NumberOfLevels);
+                    slots[whichRegion][whichBuilding].Level = (byte)random.Next(0, slots[whichRegion][whichBuilding].BuildingBranch.NumberOfLevels);
             }
         }
     }
@@ -111,7 +111,7 @@ class ProvinceCombination
 		{
 			for(byte whichSlot = 0; whichSlot < slots[whichRegion].Length; whichSlot++)
 			{
-				slots[whichRegion][whichSlot].BuildingBranch.Value.Usefuliness += 1;
+				slots[whichRegion][whichSlot].BuildingBranch.Usefuliness += 1;
 			}
 		}
 	}

@@ -3,7 +3,7 @@ using System.Xml;
 /// <summary>
 /// Struct respresenting a single branch of buildings with multiple levels.
 /// </summary>
-partial struct BuildingBranch
+partial class BuildingBranch
 {
 	private string name;
 	private ushort usefuliness;

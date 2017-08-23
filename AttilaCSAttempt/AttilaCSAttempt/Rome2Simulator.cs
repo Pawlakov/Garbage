@@ -1,4 +1,5 @@
-﻿using System;
+﻿// Po usunięciu bezużytecznych budynków knoci się przydzielanie budynku zasobowego. NAPRAW.
+using System;
 
 enum Resource { AMBER, PURPLE_DYE, GLASS, GOLD, GRAIN, HORSE, IRON, LEAD, LEATHER, LUMBER, MARBLE, OLIVE, SILK, WINE, NONE };
 enum BuildingType { TOWN, CENTER_TOWN, CITY, CENTER_CITY, COAST, RESOURCE };

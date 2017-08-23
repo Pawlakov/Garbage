@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml;
 
-partial struct BuildingBranch
+partial class BuildingBranch
 {
     /// <summary>
     /// Struct containing information about bonuses from single building level.
