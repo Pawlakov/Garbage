@@ -43,7 +43,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FactionsBuildings\BuildingLevel.cs" />
     <Compile Include="FactionsBuildings\BuildingBranch.cs" />
     <Compile Include="FactionsBuildings\BuildingsLibrary.cs" />
     <Compile Include="Difficulty.cs" />

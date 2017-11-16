@@ -1,7 +1,4 @@
 ﻿using System;
-/// <summary>
-/// Static class containing informations about difficulty level and their bonuses.
-/// </summary>
 static class Difficulty
 {
 	private static DifficultyLevel level;
@@ -10,20 +7,16 @@ static class Difficulty
 	{
 		level = DifficultyLevel.NORMAL;
 	}
-	/// <summary>
-	/// Shows list of possible difficulty levels with their numeric codes.
-	/// </summary>
+	//
 	public static void ShowLevels()
 	{
-		Console.WriteLine("1. Easy");
-		Console.WriteLine("2. Normal");
-		Console.WriteLine("3. Hard");
-		Console.WriteLine("4. Very hard");
-		Console.WriteLine("5. Legendary");
+		Console.WriteLine("0. Easy");
+		Console.WriteLine("1. Normal");
+		Console.WriteLine("2. Hard");
+		Console.WriteLine("3. Very hard");
+		Console.WriteLine("4. Legendary");
 	}
-	/// <summary>
-	/// Public order bonus provided by currently chosen difficulty level.
-	/// </summary>
+	//
 	public static short PublicOrderBonus
 	{
 		get
@@ -45,9 +38,6 @@ static class Difficulty
 			}
 		}
 	}
-	/// <summary>
-	/// Gets or sets currently chosen level of difficulty.
-	/// </summary>
 	public static DifficultyLevel Level
 	{
 		get

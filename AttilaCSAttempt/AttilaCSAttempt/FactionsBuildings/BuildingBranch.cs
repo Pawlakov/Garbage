@@ -1,22 +1,13 @@
 ﻿using System;
 using System.Xml;
-/// <summary>
-/// Struct respresenting a single branch of buildings with multiple levels.
-/// </summary>
-partial class BuildingBranch
+class BuildingBranch
 {
 	private string name;
-	private ushort usefuliness;
+	private uint usefuliness;
 	private BuildingType type;
 	private Resource resource;
 	private BuildingLevel[] levels;
 	//
-    /// <summary>
-    /// Creates new instance of BuildingBranch struct.
-    /// </summary>
-    /// <param name="branchNode">
-    /// XMLNode required to create new instance.
-    /// </param>
 	public BuildingBranch(XmlNode branchNode)
 	{
 		usefuliness = 0;
@@ -30,48 +21,24 @@ partial class BuildingBranch
 			levels[whichLevel] = new BuildingLevel(levelNodeList.Item(whichLevel));
 		}
 	}
-    /// <summary>
-    /// Gets level's public order bonus (or penalty).
-    /// </summary>
-    /// <param name="index">
-    /// Zero-based index of building level.
-    /// </param>
-    /// <returns>
-    /// Level's public order bonus (or penalty).
-    /// </returns>
-    public short GetFood(byte index)
+	//
+	public Resource Resource
+	{
+		get { return resource; }
+	}
+    public short GetFood(byte level)
     {
-        return levels[index].Food;
+        return levels[level].Food;
     }
-    /// <summary>
-    /// Gets level's food bonus (or penalty).
-    /// </summary>
-    /// <param name="index">
-    /// Zero-based index of building level.
-    /// </param>
-    /// <returns>
-    /// Level's food bonus (or penalty).
-    /// </returns>
-    public short GetOrder(byte index)
+    public short GetOrder(byte level)
     {
-        return levels[index].Order;
+        return levels[level].Order;
     }
-    /// <summary>
-    /// Gets level's wealth bonuses.
-    /// </summary>
-    /// <param name="index">
-    /// Zero-based index of building level.
-    /// </param>
-    /// <returns>
-    /// Array of level's wealth bonuses.
-    /// </returns>
-    public WealthBonus[] GetWealthBonuses(byte index)
+    public WealthBonus[] GetWealthBonuses(byte level)
     {
-        return levels[index].WealthBonuses;
+        return levels[level].WealthBonuses;
     }
-    /// <summary>
-    /// Name of the branch.
-    /// </summary>
+	//
     public string Name
     {
         get { return name; }
@@ -80,9 +47,41 @@ partial class BuildingBranch
     {
         get { return levels.Length; }
     }
-	public ushort Usefuliness
+	public uint Usefuliness
 	{
 		get { return usefuliness; }
 		set { usefuliness = value; }
+	}
+	//
+	struct BuildingLevel
+	{
+		private short food;
+		private short order;
+		private WealthBonus[] wealthBonuses;
+		//
+		public BuildingLevel(XmlNode levelNode)
+		{
+			XmlNodeList bonusNodeList = levelNode.ChildNodes;
+			food = Convert.ToInt16(levelNode.Attributes.GetNamedItem("food").InnerText);
+			order = Convert.ToInt16(levelNode.Attributes.GetNamedItem("order").InnerText);
+			wealthBonuses = new WealthBonus[bonusNodeList.Count];
+			for (byte whichBonus = 0; whichBonus < wealthBonuses.Length; whichBonus++)
+			{
+				wealthBonuses[whichBonus] = new WealthBonus(bonusNodeList.Item(whichBonus));
+			}
+		}
+		//
+		public short Food
+		{
+			get { return food; }
+		}
+		public short Order
+		{
+			get { return order; }
+		}
+		public WealthBonus[] WealthBonuses
+		{
+			get { return wealthBonuses; }
+		}
 	}
 }

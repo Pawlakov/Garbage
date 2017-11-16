@@ -1,99 +1,62 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Collections.Generic;
 static class Generator
 {
-	public static void GenerateCombinationInTermsOfWealth(BuildingSlot[][] slots, ProvinceData province, Faction faction, short minimalOrder)
+	public static void Generate(ProvinceCombination template, short minimalOrder, Comparison<ProvinceCombination> condition, sbyte powerMax, sbyte powerMin)
 	{
-		ProvinceCombination currentBest = null;
-		long whichCombination = 0;
-		long whichLoop = 1;
-		long time = 0;
-		Stopwatch stopwatch = Stopwatch.StartNew();
+		int roundSize = (int)Math.Pow(2, powerMax);
+		int lastListSize = (int)Math.Pow(2, powerMin);
+		List<ProvinceCombination> valid = new List<ProvinceCombination>(roundSize);
+		ProvinceCombination bestValid = null;
+		int currentCapacity = roundSize;
+		uint doneRounds = 0;
+		uint doneCombinations = 0;
+		uint doneValid = 0;
+		bool test = true;
+		Console.Clear();
 		while (true)
 		{
-			if(whichLoop%65536 == 0)
+			while (doneValid % roundSize != 0 || test == true)
 			{
-				stopwatch.Stop();
-				time = stopwatch.ElapsedMilliseconds;
-				stopwatch = Stopwatch.StartNew();
-				faction.CurbUselessBuildings();
-			}
-			ProvinceCombination subject = new ProvinceCombination(slots, province, faction);
-			if (subject.Order > minimalOrder)
-			{
-				if (currentBest == null || subject.Wealth > currentBest.Wealth)
+				ProvinceCombination subject = new ProvinceCombination(template);
+				subject.Fill();
+				if (subject.Order >= minimalOrder)
 				{
-					currentBest = subject;
-					Console.Clear();
-					Console.WriteLine("Best: ");
-					currentBest.ShowContent();
+					valid.Add(subject);
+					valid.Sort(condition);
+					{
+						if (valid.Count > currentCapacity)
+							valid.RemoveAt(0);
+					}
+					doneValid++;
+					test = false;
 				}
-				subject.RewardUsefulBuildings();
-				whichCombination++;
+				doneCombinations++;
+				Console.WriteLine("Rounds: {0} | Combinations: {1} | Valid C.: {2}/{3} | Best List: {4}/{5}", doneRounds, doneCombinations, doneValid, roundSize, valid.Count, currentCapacity);
+				Console.CursorTop -= 1;
 			}
-			whichLoop++;
-			Console.WriteLine("Loop: {1} Found: {0} Time (16.484 loops): {2}", whichCombination, whichLoop, time);
-			Console.CursorTop -= 1;
-		}
-	}
-	public static void GenerateCombinationInTermsOfFood(BuildingSlot[][] slots, ProvinceData province, Faction faction, short minimalOrder)
-	{
-		ProvinceCombination currentBest = null;
-		int whichCombination = 0;
-		long whichLoop = 1;
-		long time = 0;
-		Stopwatch stopwatch = Stopwatch.StartNew();
-		while (true)
-		{
-			if (whichLoop % 65536 == 0)
+			bestValid = valid[currentCapacity - 1];
+			for (int whichCombination = 0; whichCombination < currentCapacity; whichCombination++)
 			{
-				stopwatch.Stop();
-				time = stopwatch.ElapsedMilliseconds;
-				stopwatch = Stopwatch.StartNew();
-				faction.CurbUselessBuildings();
-
+				valid[whichCombination].RewardUsefulBuildings();
 			}
-			ProvinceCombination subject = new ProvinceCombination(slots, province, faction);
-			if (subject.Order > minimalOrder)
+			bestValid.CurbUselessBuildings();
+			Console.Clear();
+			Console.WriteLine("Best after last round: ");
+			bestValid.ShowContent();
+			if (currentCapacity > lastListSize)
 			{
-				if (currentBest == null || subject.Food > currentBest.Food)
+				currentCapacity /= 2;
+				for (int whichCombination = 0; whichCombination < currentCapacity; whichCombination++)
 				{
-					currentBest = subject;
-					Console.Clear();
-					Console.WriteLine("Best: ");
-					currentBest.ShowContent();
+					valid.RemoveAt(0);
 				}
-				subject.RewardUsefulBuildings();
-				whichCombination++;
+				valid.Capacity = currentCapacity;
 			}
-			whichLoop++;
-			Console.WriteLine("Loop: {1} Found: {0} Time (16.384 loops): {2}", whichCombination, whichLoop, time);
-			Console.CursorTop -= 1;
+			doneCombinations = 0;
+			doneValid = 0;
+			doneRounds++;
+			test = true;
 		}
-	}
-	public static BuildingSlot[][] GenerateSlotsArray(ProvinceData province)
-	{
-		BuildingSlot[][] slots;
-		slots = new BuildingSlot[province.NumberOfRegions][];
-		for (byte whichRegion = 0; whichRegion < slots.Length; whichRegion++)
-		{
-			slots[whichRegion] = new BuildingSlot[province[whichRegion].NumberOfSlots];
-			for (byte whichSlot = 0; whichSlot < slots[whichRegion].Length; whichSlot++)
-			{
-				slots[whichRegion][whichSlot] = new BuildingSlot(province[whichRegion], whichSlot);
-			}
-		}
-		return slots;
-	}
-	public static BuildingSlot[][] GenerateSlotsCopy(BuildingSlot[][] slots)
-	{
-		BuildingSlot[][] result = new BuildingSlot[slots.Length][];
-		for (byte whichRegion = 0; whichRegion < slots.Length; whichRegion++)
-		{
-			result[whichRegion] = new BuildingSlot[slots[whichRegion].Length];
-			for (byte whichSlot = 0; whichSlot < slots[whichRegion].Length; whichSlot++)
-				result[whichRegion][whichSlot] = new BuildingSlot(slots[whichRegion][whichSlot]);
-		}
-		return result;
 	}
 }

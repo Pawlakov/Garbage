@@ -1,10 +1,11 @@
-﻿// Po usunięciu bezużytecznych budynków knoci się przydzielanie budynku zasobowego. NAPRAW.
+﻿// Zepchnij czynności na jak najniższy poziom.
+// Budynki surowcowe mają być traktowane specjalnie i wymuszane w szablonie od początku.
 using System;
 
 enum Resource { AMBER, PURPLE_DYE, GLASS, GOLD, GRAIN, HORSE, IRON, LEAD, LEATHER, LUMBER, MARBLE, OLIVE, SILK, WINE, NONE };
 enum BuildingType { TOWN, CENTER_TOWN, CITY, CENTER_CITY, COAST, RESOURCE };
 enum BonusCategory { ALL, AGRICULTURE, CULTURE, INDUSTRY, LOCAL_COMMERCE, MARITIME_COMMERCE, SUBSISTENCE };
-enum DifficultyLevel { EASY = 1, NORMAL, HARD, VERY_HARD, LEGENDARY };
+enum DifficultyLevel { EASY, NORMAL, HARD, VERY_HARD, LEGENDARY };
 
 class Rome2Simulator
 {
@@ -17,8 +18,10 @@ class Rome2Simulator
 		ProvinceData province;
 		FactionsList factions;
 		Faction faction;
-		BuildingSlot[][] slots;
-		short minimalOrder;
+		ProvinceCombination template;
+		sbyte minimalOrder;
+		sbyte powerMax;
+		sbyte powerMin;
 		Console.WriteLine("Let's begin.");
 		//
 		Console.WriteLine("Loading map.");
@@ -43,78 +46,59 @@ class Rome2Simulator
 		faction = factions[Convert.ToByte(Console.ReadLine())];
 		Console.WriteLine("You picked: {0}", faction.Name);
 		//
-		slots = Generator.GenerateSlotsArray(province);
+		template = new ProvinceCombination(province, faction);
 		Console.WriteLine("Generated template of slots.");
-		ForceBuildings(slots, province, faction);
+		ForceBuildings(template);
 		Console.WriteLine("Constraints set.");
 		//
 		Console.WriteLine("Choose minimal public order.");
-		minimalOrder = Convert.ToInt16(Console.ReadLine());
+		minimalOrder = Convert.ToSByte(Console.ReadLine());
+		//
+		Console.WriteLine("Choose x in size of a round, which is 2^x.");
+		powerMax = Convert.ToSByte(Console.ReadLine());
+		//
+		Console.WriteLine("Choose x in size of a smallest list, which is 2^x.");
+		powerMin = Convert.ToSByte(Console.ReadLine());
 		//
 		Console.WriteLine("Which parameter do you want to maximize?");
 		Console.WriteLine("0. Wealth");
 		Console.WriteLine("1. Food");
 		if (Convert.ToByte(Console.ReadLine()) == 0)
 		{
-			Generator.GenerateCombinationInTermsOfWealth(slots, province, faction, minimalOrder);
+			Generator.Generate(template, minimalOrder, BetterInWealth, powerMax, powerMin);
 		}
 		else
 		{
-			Generator.GenerateCombinationInTermsOfFood(slots, province, faction, minimalOrder);
+			Generator.Generate(template, minimalOrder, BetterInFood, powerMax, powerMin);
 		}
 	}
-	public static void ShowSlots(BuildingSlot[][] slots, ProvinceData province)
+	public static int BetterInWealth(ProvinceCombination left, ProvinceCombination right)
 	{
-		Console.WriteLine("Province: {0}", province.Name);
-		for (byte whichRegion = 0; whichRegion < slots.Length; whichRegion++)
+		return (int)(left.Wealth - right.Wealth);
+	}
+	public static int BetterInFood(ProvinceCombination left, ProvinceCombination right)
+	{
+		if (left.Food == right.Food)
 		{
-			Console.WriteLine("{0}. Region: {1}", whichRegion, province[whichRegion].Name);
-			for (byte whichSlot = 0; whichSlot < slots[whichRegion].Length; whichSlot++)
-			{
-				Console.Write("{0}. ", whichSlot);
-				slots[whichRegion][whichSlot].ShowContent();
-			}
+			return (int)(left.Wealth - right.Wealth);
 		}
+		else
+			return (int)(left.Food - right.Food);
 	}
-	public static void ForceBuildings(BuildingSlot[][] slots, ProvinceData province, Faction faction)
+	public static void ForceBuildings(ProvinceCombination template)
 	{
-		byte choice;
-		byte whichRegion;
-		byte whichSlot;
-		//byte whichType;
 		Console.WriteLine("Now you can place some building constraints by yourself.");
 		while (true)
 		{
-			ShowSlots(slots, province);
+			template.ShowContent();
 			Console.WriteLine("What would you like to do now?");
 			Console.WriteLine("0. Finish placing constraints.");
 			Console.WriteLine("1. Create new constraint.");
-			choice = Convert.ToByte(Console.ReadLine());
-			if (choice == 0)
+			if (Convert.ToByte(Console.ReadLine()) == 0)
 				break;
 			else
 			{
-				Console.WriteLine("Which region?");
-				whichRegion = Convert.ToByte(Console.ReadLine());
-				Console.WriteLine("Which slot?");
-				whichSlot = Convert.ToByte(Console.ReadLine());
-				Console.WriteLine("which coinstraint type?");
-				Console.WriteLine("0. Level.");
-				Console.WriteLine("1. Building.");
-				choice = Convert.ToByte(Console.ReadLine());
-				if (choice == 0)
-				{
-					Console.WriteLine("Which level?");
-					choice = Convert.ToByte(Console.ReadLine());
-					slots[whichRegion][whichSlot].Level = choice;
-				}
-				else
-				{
-					faction.Buildings.ShowListOneType(slots[whichRegion][whichSlot].Type);
-					Console.WriteLine("Which building?");
-					choice = Convert.ToByte(Console.ReadLine());
-					slots[whichRegion][whichSlot].BuildingBranch = faction.Buildings[slots[whichRegion][whichSlot].Type, choice];
-				}
+				template.ForceConstraint();
 			}
 		}
 		//Console.WriteLine("Now you can remove some building from being randomly placed.");

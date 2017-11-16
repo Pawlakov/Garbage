@@ -1,34 +1,16 @@
 ﻿using System;
-/// <summary>
-/// Class respresenting a single building slot: its type an content.
-/// </summary>
 class BuildingSlot
 {
     private BuildingType type;
     private BuildingBranch building;
     private byte? level;
-    //
-    /// <summary>
-    /// Creates a copy of existing instance of BuildingSlot class.
-    /// </summary>
-    /// <param name="templateSlot">
-    /// Object to copy.
-    /// </param>
-    public BuildingSlot(BuildingSlot templateSlot)
+	//
+    public BuildingSlot(BuildingSlot source)
     {
-        type = templateSlot.type;
-        building = templateSlot.building;
-        level = templateSlot.level;
+        type = source.type;
+        building = source.building;
+        level = source.level;
     }
-    /// <summary>
-    /// Creates new instance of BuildingSlot class.
-    /// </summary>
-    /// <param name="region">
-    /// Informations about region.
-    /// </param>
-    /// <param name="index">
-    /// Index of this building slot in its region.
-    /// </param>
     public BuildingSlot(RegionData region, byte index)
     {
         level = null;
@@ -36,6 +18,7 @@ class BuildingSlot
         switch (index)
         {
             case 0:
+				level = 3;
                 if (region.Resource != Resource.NONE)
                     type = BuildingType.RESOURCE;
                 else if (region.IsBig)
@@ -59,41 +42,113 @@ class BuildingSlot
                 break;
         }
     }
-    /// <summary>
-    /// Type of the possible building.
-    /// </summary>
+	//
     public BuildingType Type
     {
         get { return type; }
     }
-    /// <summary>
-    /// Building placed in this slot.
-    /// </summary>
     public BuildingBranch BuildingBranch
     {
         get { return building; }
         set { building = value; }
     }
-    /// <summary>
-    /// Level of building in this slot.
-    /// </summary>
     public byte? Level
     {
         get { return level; }
         set { level = value; }
     }
-    /// <summary>
-    /// Shows content of this slot in console.
-    /// </summary>
+	public short Food
+	{
+		get
+		{
+			if (level.HasValue && building != null)
+			{
+				return building.GetFood(level.Value);
+			}
+			else
+				return 0;
+		}
+	}
+	public short Order
+	{
+		get
+		{
+			if (level.HasValue && building != null)
+			{
+				return building.GetOrder(level.Value);
+			}
+			else
+				return 0;
+		}
+	}
+	public WealthBonus[] WealthBonuses
+	{
+		get
+		{
+			if (level.HasValue && building != null)
+			{
+				return building.GetWealthBonuses(level.Value);
+			}
+			else
+				return null;
+		}
+	}
+	public int WealthBonusCount
+	{
+		get
+		{
+			if (level.HasValue && building != null)
+			{
+				return building.GetWealthBonuses(level.Value).Length;
+			}
+			else
+				return 0;
+		}
+	}
+	//
     public void ShowContent()
     {
-        if (building != null && level != null)
-            Console.WriteLine("Type: {0} Building: {1} Level: {2}",type , building.Name, level.Value);
-        else if (building == null && level != null)
-            Console.WriteLine("Type: {0} Building: ??? Level: {1}", type, level.Value);
-        else if (building != null && level == null)
-            Console.WriteLine("Type: {0} Building: {1} Level: ???", type, building.Name);
-        else if (building == null && level == null)
-            Console.WriteLine("Type: {0} Building: ??? Level: ???", type);
+		Console.WriteLine("Type: {0} Building: {1} Level: {2}", type, BuildingToString, LevelToString);
     }
+	public void Fill(Random random, BuildingLibrary buildings, RegionData region)
+	{
+		if (BuildingBranch == null)
+		{
+			if (type == BuildingType.RESOURCE)
+			{
+				byte whichResourceBuilding = (byte)region.Resource;
+				for (whichResourceBuilding = 0; region.Resource != buildings[BuildingType.RESOURCE][whichResourceBuilding].Resource; whichResourceBuilding++) { }
+				BuildingBranch = buildings[BuildingType.RESOURCE][whichResourceBuilding];
+			}
+			else
+			{
+				int randomPick = random.Next(0, buildings[type].Count);
+				BuildingBranch = buildings[type][randomPick];
+				buildings[type].RemoveAt(randomPick);
+			}
+		}
+		if (Level == null)
+			Level = (byte)random.Next(0, BuildingBranch.NumberOfLevels);
+	}
+	//
+	private string LevelToString
+	{
+		get
+		{
+			if (level == null)
+				return "???";
+			else
+				return level.Value.ToString();
+		}
+	}
+	private string BuildingToString
+	{
+		get
+		{
+			if (building == null)
+				return "???";
+			else
+				return building.Name;
+		}
+	}
 }
