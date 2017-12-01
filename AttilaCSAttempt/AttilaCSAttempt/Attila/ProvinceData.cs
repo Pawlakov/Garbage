@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System;
+using System.Xml;
 namespace TWAssistant
 {
 	namespace Attila
@@ -6,40 +7,37 @@ namespace TWAssistant
 		class ProvinceData
 		{
 			private string name;
+			private uint fertility; //0-5
 			private RegionData[] regions;
 			//
 			public ProvinceData(XmlNode provinceNode)
 			{
+				name = provinceNode.Attributes.GetNamedItem("n").InnerText;
+				//
+				fertility = Convert.ToUInt32(provinceNode.Attributes.GetNamedItem("f").InnerText);
+				if (fertility > 5)
+					Console.WriteLine("ERROR: Fertility should be under 6 (is {0})!", fertility);
+				//
 				XmlNodeList regionNodeList = provinceNode.ChildNodes;
-				regions = new RegionData[regionNodeList.Count];
-				name = provinceNode.Attributes.GetNamedItem("name").InnerText;
+				if (regionNodeList.Count != 3)
+					Console.WriteLine("ERROR: {0} regions in province instead of 3!", regionNodeList.Count);
+				regions = new RegionData[3];
 				regions[0] = new RegionData(regionNodeList.Item(0), true);
-				for (byte whichRegion = 1; whichRegion < regions.Length; whichRegion++)
-				{
-					regions[whichRegion] = new RegionData(regionNodeList.Item(whichRegion), false);
-				}
+				regions[1] = new RegionData(regionNodeList.Item(1), false);
+				regions[2] = new RegionData(regionNodeList.Item(2), false);
 			}
 			//
 			public string Name
 			{
-				get
-				{
-					return name;
-				}
+				get { return name; }
 			}
-			public int NumberOfRegions
+			public uint Fertility
 			{
-				get
-				{
-					return regions.Length;
-				}
+				get { return fertility; }
 			}
-			public RegionData this[byte whichRegion]
+			public RegionData this[uint whichRegion]
 			{
-				get
-				{
-					return regions[whichRegion];
-				}
+				get { return regions[whichRegion]; }
 			}
 		}
 	}

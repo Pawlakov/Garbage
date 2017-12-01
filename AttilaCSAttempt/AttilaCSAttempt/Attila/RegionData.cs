@@ -14,24 +14,18 @@ namespace TWAssistant
 			public RegionData(XmlNode regionNode, bool iniIsBig)
 			{
 				isBig = iniIsBig;
-				name = regionNode.Attributes.GetNamedItem("name").InnerText;
-				isCoastal = Convert.ToBoolean(regionNode.Attributes.GetNamedItem("is_coastal").InnerText);
-				Enum.TryParse(regionNode.Attributes.GetNamedItem("resource").InnerText, out resource);
+				name = regionNode.Attributes.GetNamedItem("n").InnerText;
+				isCoastal = Convert.ToBoolean(regionNode.Attributes.GetNamedItem("c").InnerText);
+				Enum.TryParse(regionNode.Attributes.GetNamedItem("r").InnerText, out resource);
 			}
 			//
 			public string Name
 			{
-				get
-				{
-					return name;
-				}
+				get { return name; }
 			}
 			public Resource Resource
 			{
-				get
-				{
-					return resource;
-				}
+				get { return resource; }
 			}
 			public bool IsCoastal
 			{
@@ -41,7 +35,7 @@ namespace TWAssistant
 			{
 				get { return isBig; }
 			}
-			public byte NumberOfSlots
+			public uint SlotsCount
 			{
 				get
 				{

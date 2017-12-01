@@ -47,8 +47,10 @@
     <Compile Include="Assistant.cs" />
     <Compile Include="Attila\Map.cs" />
     <Compile Include="Attila\ProvinceData.cs" />
+    <Compile Include="Attila\ProvinceWealth.cs" />
     <Compile Include="Attila\RegionData.cs" />
     <Compile Include="Attila\Simulator.cs" />
+    <Compile Include="Attila\WealthBonus.cs" />
     <Compile Include="Rome2\BuildingBranch.cs" />
     <Compile Include="Rome2\BuildingsLibrary.cs" />
     <Compile Include="Rome2\BuildingSlot.cs" />

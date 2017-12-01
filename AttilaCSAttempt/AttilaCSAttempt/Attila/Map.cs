@@ -4,7 +4,7 @@ namespace TWAssistant
 {
 	namespace Attila
 	{
-		struct Map
+		class Map
 		{
 			private ProvinceData[] provinces;
 			//
@@ -16,21 +16,18 @@ namespace TWAssistant
 				provinces = new ProvinceData[provinceNodeList.Count];
 				for (int whichProvince = 0; whichProvince < provinces.Length; whichProvince++)
 				{
-					provinces[whichProvince] = new ProvinceData(provinceNodeList.Item(whichProvince));
+					provinces[whichProvince] = new ProvinceData(provinceNodeList[whichProvince]);
 				}
 			}
 			//
 			public ProvinceData this[uint whichProvince]
 			{
-				get
-				{
-					return provinces[whichProvince];
-				}
+				get{return provinces[whichProvince];}
 			}
 			//
 			public void ShowList()
 			{
-				for (int whichProvince = 0; whichProvince < provinces.Length; whichProvince++)
+				for (uint whichProvince = 0; whichProvince < provinces.Length; ++whichProvince)
 				{
 					Console.WriteLine("{0}. {1}", whichProvince, provinces[whichProvince].Name);
 				}
