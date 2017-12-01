@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<map>
+  <province name ="Italia">
+    <region name="Roma" is_coastal ="false" resource ="NONE"/>
+    <region name="Neapolis" is_coastal ="true" resource ="OLIVE"/>
+    <region name="Velathri" is_coastal ="false" resource ="WINE"/>
+    <region name="Ariminum" is_coastal ="true" resource ="NONE"/>
+  </province>
+  <province name ="Magna_Graecia">
+    <region name="Brundisium" is_coastal ="true" resource ="NONE"/>
+    <region name="Lilybaeum" is_coastal ="true" resource ="NONE"/>
+    <region name="Cosentia" is_coastal ="false" resource ="NONE"/>
+    <region name="Syracusae" is_coastal ="true" resource ="GRAIN"/>
+  </province>
+  <province name ="Corsica_et_Sardinia">
+    <region name="Karalis" is_coastal ="true" resource ="NONE"/>
+    <region name="Alalia" is_coastal ="true" resource ="NONE"/>
+  </province>
+  <province name ="Macedonia">
+    <region name="Pella" is_coastal ="true" resource ="NONE"/>
+    <region name="Larissa" is_coastal ="false" resource ="HORSE"/>
+    <region name="Apollonia" is_coastal ="true" resource ="WINE"/>
+  </province>
+  <province name ="Hellas">
+    <region name="Athenai" is_coastal ="true" resource ="NONE"/>
+    <region name="Hierapytna" is_coastal ="true" resource ="NONE"/>
+    <region name="Sparta" is_coastal ="false" resource ="MARBLE"/>
+  </province>
+  <province name ="Illyria">
+    <region name="Deliminium" is_coastal ="false" resource ="NONE"/>
+    <region name="Iader" is_coastal ="true" resource ="MARBLE"/>
+    <region name="Epidamnos" is_coastal ="true" resource ="NONE"/>
+  </province>
+  <province name ="Africa">
+    <region name="Carthago" is_coastal ="true" resource ="NONE"/>
+    <region name="Thapsus" is_coastal ="true" resource ="NONE"/>
+    <region name="Lepcis" is_coastal ="true" resource ="GRAIN"/>
+    <region name="Macomades" is_coastal ="true" resource ="NONE"/>
+  </province>
+  <province name ="Phazania">
+    <region name="Garama" is_coastal ="false" resource ="NONE"/>
+    <region name="Cydamus" is_coastal ="false" resource ="NONE"/>
+  </province>
+  <province name ="Mauretania">
+    <region name="Tingis" is_coastal ="true" resource ="NONE"/>
+    <region name="Iol" is_coastal ="true" resource ="LUMBER"/>
+    <region name="Migdol" is_coastal ="true" resource ="PURPLE_DYE"/>
+    <region name="Dimmidi" is_coastal ="false" resource ="HORSE"/>
+  </province>
+  <province name ="Libya">
+    <region name="Cyrene" is_coastal ="true" resource ="NONE"/>
+    <region name="Paraitonion" is_coastal ="true" resource ="NONE"/>
+    <region name="Augila" is_coastal ="false" resource ="NONE"/>
+    <region name="Ammonium" is_coastal ="false" resource ="NONE"/>
+  </province>
+  <province name ="Baetica">
+    <region name="Kartuba" is_coastal ="false" resource ="NONE"/>
+    <region name="Gadira" is_coastal ="true" resource ="WINE"/>
+  </province>
+  <province name ="Lusitania">
+    <region name="Ebora" is_coastal ="false" resource ="NONE"/>
+    <region name="Olispo" is_coastal ="true" resource ="IRON"/>
+  </province>
+  <province name ="Tarraconensis">
+    <region name="Tarraco" is_coastal ="true" resource ="NONE"/>
+    <region name="Aracillum" is_coastal ="false" resource ="MARBLE"/>
+    <region name="Brigantium" is_coastal ="true" resource ="HORSE"/>
+  </province>
+  <province name ="Carthaginensis">
+    <region name="Qart Hadast" is_coastal ="true" resource ="NONE"/>
+    <region name="Ibossis" is_coastal ="true" resource ="NONE"/>
+    <region name="Arse" is_coastal ="true" resource ="OLIVE"/>
+    <region name="Numantia" is_coastal ="false" resource ="NONE"/>
+  </province>
+  <province name ="Provincia">
+    <region name="Massilia" is_coastal ="true" resource ="NONE"/>
+    <region name="Tolosa" is_coastal ="false" resource ="OLIVE"/>
+  </province>
+</map>
