@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<map>
+  <province n ="Baetica" f="4">
+    <region n="Corduba" c ="false" r ="NONE"/>
+    <region n="Hispalis" c ="true" r ="NONE"/>
+    <region n="Malaca" c ="false" r ="WINE"/>
+  </province>
+</map>

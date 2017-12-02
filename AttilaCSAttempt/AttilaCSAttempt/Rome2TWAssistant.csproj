@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assistant.cs" />
+    <Compile Include="Attila\BuildingBranch.cs" />
     <Compile Include="Attila\Map.cs" />
     <Compile Include="Attila\ProvinceData.cs" />
     <Compile Include="Attila\ProvinceWealth.cs" />
@@ -69,6 +70,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Attila\twa_map.xml" />
+    <Content Include="Attila\twa_rm_buildings_wre.xml" />
+    <Content Include="Attila\twa_rm_factions.xml" />
     <Content Include="Rome2\buildings_rome.xml" />
     <Content Include="Rome2\factions.xml" />
     <Content Include="Rome2\map.xml" />

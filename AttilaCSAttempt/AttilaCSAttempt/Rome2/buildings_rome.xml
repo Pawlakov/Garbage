@@ -163,19 +163,19 @@
 		</level>
 	</branch>
 	<branch name="Grain" type="RESOURCE" resource="GRAIN">
-		<level food ="1" order ="0">
+		<level food ="0" order ="0">
 			<bonus category ="AGRICULTURE" is_multiplier="false">40</bonus>
 			<bonus category ="AGRICULTURE" is_multiplier="true">0,1</bonus>
 		</level>
-		<level food ="2" order ="0">
+		<level food ="0" order ="0">
 			<bonus category ="AGRICULTURE" is_multiplier="false">60</bonus>
 			<bonus category ="AGRICULTURE" is_multiplier="true">0,2</bonus>
 		</level>
-		<level food ="3" order ="0">
+		<level food ="0" order ="0">
 			<bonus category ="AGRICULTURE" is_multiplier="false">80</bonus>
 			<bonus category ="AGRICULTURE" is_multiplier="true">0,4</bonus>
 		</level>
-		<level food ="4" order ="0">
+		<level food ="0" order ="0">
 			<bonus category ="AGRICULTURE" is_multiplier="false">100</bonus>
 			<bonus category ="AGRICULTURE" is_multiplier="true">0,8</bonus>
 		</level>

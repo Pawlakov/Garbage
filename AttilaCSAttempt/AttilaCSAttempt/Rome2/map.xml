@@ -76,4 +76,14 @@
     <region name="Massilia" is_coastal ="true" resource ="NONE"/>
     <region name="Tolosa" is_coastal ="false" resource ="OLIVE"/>
   </province>
+  <province name ="Cisalpina">
+    <region name="Medhlan" is_coastal ="false" resource ="NONE"/>
+    <region name="Genua" is_coastal ="true" resource ="NONE"/>
+    <region name="Patavium" is_coastal ="false" resource ="GLASS"/>
+  </province>
+  <province name ="Raetia_et_Noricum">
+    <region name="Noreia" is_coastal ="false" resource ="NONE"/>
+    <region name="Koria" is_coastal ="false" resource ="IRON"/>
+    <region name="Octoduron" is_coastal ="false" resource ="NONE"/>
+  </province>
 </map>
