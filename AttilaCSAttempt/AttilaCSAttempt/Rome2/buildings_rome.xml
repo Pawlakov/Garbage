@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <building_library>
-	<!--CENTER_CITY-->
-	<branch name="CityCivil" type="CENTER_CITY" resource="NONE">
+	<!--CENTERCITY-->
+	<branch name="CityCivil" type="CENTERCITY" resource="NONE">
 		<level food ="0" order ="0">
 			<bonus category ="ALL" is_multiplier="true">0,06</bonus>
 			<bonus category ="SUBSISTENCE" is_multiplier="false">200</bonus>
@@ -19,7 +19,7 @@
 			<bonus category ="SUBSISTENCE" is_multiplier="false">500</bonus>
 		</level>
 	</branch>
-	<branch name="CityGarrison" type="CENTER_CITY" resource="NONE">
+	<branch name="CityGarrison" type="CENTERCITY" resource="NONE">
 		<level food ="0" order ="0">
 			<bonus category ="ALL" is_multiplier="true">0,06</bonus>
 			<bonus category ="SUBSISTENCE" is_multiplier="false">200</bonus>
@@ -37,8 +37,8 @@
 			<bonus category ="SUBSISTENCE" is_multiplier="false">350</bonus>
 		</level>
 	</branch>
-	<!--CENTER_TOWN-->
-	<branch name="TownTrade" type="CENTER_TOWN" resource="NONE">
+	<!--CENTERTOWN-->
+	<branch name="TownTrade" type="CENTERTOWN" resource="NONE">
 		<level food ="0" order ="0">
 			<bonus category ="ALL" is_multiplier="true">0,01</bonus>
 			<bonus category ="SUBSISTENCE" is_multiplier="false">50</bonus>
@@ -59,7 +59,7 @@
 			<bonus category ="LOCAL_COMMERCE" is_multiplier="false">200</bonus>
 		</level>
 	</branch>
-	<branch name="TownFarm" type="CENTER_TOWN" resource="NONE">
+	<branch name="TownFarm" type="CENTERTOWN" resource="NONE">
 		<level food ="0" order ="0">
 			<bonus category ="ALL" is_multiplier="true">0,01</bonus>
 			<bonus category ="SUBSISTENCE" is_multiplier="false">50</bonus>
@@ -77,7 +77,7 @@
 			<bonus category ="AGRICULTURE" is_multiplier="false">200</bonus>
 		</level>
 	</branch>
-	<branch name="TownCivil" type="CENTER_TOWN" resource="NONE">
+	<branch name="TownCivil" type="CENTERTOWN" resource="NONE">
 		<level food ="0" order ="0">
 			<bonus category ="ALL" is_multiplier="true">0,01</bonus>
 			<bonus category ="SUBSISTENCE" is_multiplier="false">50</bonus>

@@ -1,9 +1,11 @@
-﻿namespace TWAssistant
+﻿using System;
+using System.Collections.Generic;
+namespace TWAssistant
 {
 	namespace Attila
 	{
-		enum Resource { IRON, LEAD, GEMSTONES, OLIVE, FUR, WINE, SILK, MARBLE, SALT, GOLD, DYE, LUMBER };
-		enum BuildingType { TOWN, CENTER_TOWN, CITY, CENTER_CITY, COAST, RESOURCE };
+		enum Resource { NONE, IRON, LEAD, GEMSTONES, OLIVE, FUR, WINE, SILK, MARBLE, SALT, GOLD, DYE, LUMBER };
+		enum BuildingType { TOWN, CENTERTOWN, CITY, CENTERCITY, COAST, RESOURCE };
 		enum BonusCategory { ALL, AGRICULTURE, HUSBANDRY, CULTURE, INDUSTRY, COMMERCE, MARITIME_COMMERCE, SUBSISTENCE , MAINTENANCE};
 		class Simulator
 		{
@@ -12,16 +14,17 @@
 			private FactionsList factions;
 			private Faction faction;
 			//
-			private sbyte powerRoundSize;
-			private sbyte powerMaxList;
-			private sbyte powerMinList;
+			private uint roundSize;
+			private uint maxListSize;
+			private uint minListSize;
 			//
-			private sbyte minimalOrder;
-			private sbyte minimalSanitation;
+			private int minimalFood;
+			private int minimalOrder;
+			private int minimalSanitation;
 			//
 			public static int ResourceTypesCount
 			{
-				get { return 12; }
+				get { return 13; }
 			}
 			public static int BuildingTypesCount
 			{
@@ -36,113 +39,86 @@
 			//
 			public void Act()
 			{
-				System.Console.WriteLine("Let's begin.");
+				Console.WriteLine("Let's begin.");
 				//
-				System.Console.WriteLine("Loading map.");
-				map = new Map("map.xml");
-				System.Console.WriteLine("Map loadaded. List of provinces:");
+				Console.WriteLine("Loading map.");
+				map = new Map("twa_map.xml");
+				Console.WriteLine("Map loadaded. List of provinces:");
 				map.ShowList();
-				System.Console.WriteLine("Pick province.");
-				province = map[System.Convert.ToByte(System.Console.ReadLine())];
-				System.Console.WriteLine("You picked: {0}", province.Name);
+				Console.WriteLine("Pick province.");
+				province = map[Convert.ToUInt32(Console.ReadLine())];
+				Console.WriteLine("You picked: {0}", province.Name);
 				//
-				System.Console.WriteLine("Loading factions.");
-				factions = new FactionsList("factions.xml");
-				System.Console.WriteLine("Factions loadaded. List of factions:");
+				Console.WriteLine("Loading factions.");
+				factions = new FactionsList("twa_rm_factions.xml");
+				Console.WriteLine("Factions loadaded. List of factions:");
 				factions.ShowList();
-				System.Console.WriteLine("Pick faction.");
-				faction = factions[System.Convert.ToByte(System.Console.ReadLine())];
-				System.Console.WriteLine("You picked: {0}", faction.Name);
+				Console.WriteLine("Pick faction.");
+				faction = factions[Convert.ToInt32(Console.ReadLine())];
+				Console.WriteLine("You picked: {0}", faction.Name);
 				//
 				template = new ProvinceCombination(province, faction);
-				System.Console.WriteLine("Generated template of slots.");
-				ForceBuildings(template);
-				System.Console.WriteLine("Constraints set.");
+				//System.Console.WriteLine("Generated template of slots.");
+				//ForceBuildings(template);
+				//System.Console.WriteLine("Constraints set.");
 				//
-				System.Console.WriteLine("Choose minimal public order.");
-				minimalOrder = System.Convert.ToSByte(System.Console.ReadLine());
+				Console.WriteLine("Choose minimal food.");
+				minimalFood = Convert.ToInt32(Console.ReadLine());
 				//
-				System.Console.WriteLine("Choose minimal food (if doesn't matter then type any number).");
-				minimalFood = System.Convert.ToSByte(System.Console.ReadLine());
+				Console.WriteLine("Choose minimal public order.");
+				minimalOrder = Convert.ToInt32(Console.ReadLine());
 				//
-				System.Console.WriteLine("Choose x in size of a round, which is 2^x.");
-				powerRoundSize = System.Convert.ToSByte(System.Console.ReadLine());
+				Console.WriteLine("Choose minimal sanitation.");
+				minimalSanitation = Convert.ToInt32(Console.ReadLine());
 				//
-				System.Console.WriteLine("Choose x in size of a biggest list, which is 2^x.");
-				powerMaxList = System.Convert.ToSByte(System.Console.ReadLine());
+				Console.WriteLine("Choose round size.");
+				roundSize = Convert.ToUInt32(Console.ReadLine());
 				//
-				System.Console.WriteLine("Choose x in size of a smallest list, which is 2^x.");
-				powerMinList = System.Convert.ToSByte(System.Console.ReadLine());
+				Console.WriteLine("Choose biggest list size.");
+				maxListSize = Convert.ToUInt32(Console.ReadLine());
 				//
-				System.Console.WriteLine("Which parameter do you want to maximize?");
-				System.Console.WriteLine("0. Wealth (any food)");
-				System.Console.WriteLine("1. Wealth (non-negative food)");
-				System.Console.WriteLine("2. Food");
-				System.Console.WriteLine(">2. Quit");
-				switch (System.Convert.ToByte(System.Console.ReadLine()))
-				{
-					case 0:
-						Generate(new CombinationsComparator<ProvinceCombination>(BetterInWealth), (ProvinceCombination subject) => subject.Order >= minimalOrder);
-						break;
-					case 1:
-						Generate(new CombinationsComparator<ProvinceCombination>(BetterInWealth), (ProvinceCombination subject) => (subject.Order >= minimalOrder && subject.Food >= minimalFood));
-						break;
-					case 2:
-						Generate(new CombinationsComparator<ProvinceCombination>(BetterInFood), (ProvinceCombination subject) => subject.Order >= minimalOrder);
-						break;
-					default:
-						break;
-				}
+				Console.WriteLine("Choose smallest list size.");
+				minListSize = Convert.ToUInt32(Console.ReadLine());
+				Generate(MinimalCondition);
 			}
 			public int BetterInWealth(ProvinceCombination left, ProvinceCombination right)
 			{
 				return (int)(left.Wealth - right.Wealth);
 			}
-			public int BetterInFood(ProvinceCombination left, ProvinceCombination right)
+			//public void ForceBuildings(ProvinceCombination template)
+			//{
+			//	System.Console.WriteLine("Now you can place some building constraints by yourself.");
+			//	while (true)
+			//	{
+			//		template.ShowContent();
+			//		System.Console.WriteLine("What would you like to do now?");
+			//		System.Console.WriteLine("0. Finish placing constraints.");
+			//		System.Console.WriteLine("1. Create new constraint.");
+			//		if (System.Convert.ToByte(System.Console.ReadLine()) == 0)
+			//			break;
+			//		else
+			//		{
+			//			template.ForceConstraint();
+			//		}
+			//	}
+			//}
+			public void Generate(Func<ProvinceCombination, bool> minimalCondition)
 			{
-				if (left.Food == right.Food)
-				{
-					return (int)(left.Wealth - right.Wealth);
-				}
-				else
-					return (int)(left.Food - right.Food);
-			}
-			public void ForceBuildings(ProvinceCombination template)
-			{
-				System.Console.WriteLine("Now you can place some building constraints by yourself.");
-				while (true)
-				{
-					template.ShowContent();
-					System.Console.WriteLine("What would you like to do now?");
-					System.Console.WriteLine("0. Finish placing constraints.");
-					System.Console.WriteLine("1. Create new constraint.");
-					if (System.Convert.ToByte(System.Console.ReadLine()) == 0)
-						break;
-					else
-					{
-						template.ForceConstraint();
-					}
-				}
-			}
-			public void Generate(System.Collections.Generic.IComparer<ProvinceCombination> comparer, System.Func<ProvinceCombination, bool> minimalCondition)
-			{
-				int roundSize = (int)System.Math.Pow(2, powerRoundSize);
-				int firstListSize = (int)System.Math.Pow(2, powerMaxList);
-				int lastListSize = (int)System.Math.Pow(2, powerMinList);
-				System.Collections.Generic.SortedSet<ProvinceCombination> valid = new System.Collections.Generic.SortedSet<ProvinceCombination>(comparer);
+				Random random = new Random();
+				SortedSet<ProvinceCombination> valid = new SortedSet<ProvinceCombination>(new CombinationsComparator(BetterInWealth));
 				ProvinceCombination bestValid = null;
-				int currentCapacity = firstListSize;
+				uint currentCapacity = maxListSize;
 				uint doneRounds = 0;
 				uint doneCombinations = 0;
 				uint doneValid = 0;
 				bool test = true;
-				System.Console.Clear();
+				Console.Clear();
 				while (true)
 				{
 					while (doneValid % roundSize != 0 || test == true)
 					{
 						ProvinceCombination subject = new ProvinceCombination(template);
-						subject.Fill();
+						subject.Fill(random);
 						if (minimalCondition(subject))
 						{
 							valid.Add(subject);
@@ -154,8 +130,8 @@
 							test = false;
 						}
 						doneCombinations++;
-						System.Console.WriteLine("Rounds: {0} | Combinations: {1} | Valid C.: {2}/{3} | Best List: {4}/{5}", doneRounds, doneCombinations, doneValid, roundSize, valid.Count, currentCapacity);
-						System.Console.CursorTop -= 1;
+						Console.WriteLine("Rounds: {0} | Combinations: {1} | Valid C.: {2}/{3} | Best List: {4}/{5}", doneRounds, doneCombinations, doneValid, roundSize, valid.Count, currentCapacity);
+						Console.CursorTop -= 1;
 					}
 					bestValid = valid.Max;
 					foreach (ProvinceCombination combination in valid)
@@ -163,28 +139,32 @@
 						combination.RewardUsefulBuildings();
 					}
 					bestValid.CurbUselessBuildings();
-					System.Console.Clear();
-					System.Console.WriteLine("Best after last round: ");
+					Console.Clear();
+					Console.WriteLine("Best after last round: ");
 					bestValid.ShowContent();
-					if (currentCapacity > lastListSize)
+					if (currentCapacity > minListSize)
 					{
-						currentCapacity = (int)(currentCapacity / System.Math.Sqrt(2));
-						for (int whichCombination = 0; whichCombination < currentCapacity; whichCombination++)
+						currentCapacity = (uint)(currentCapacity * (0.7071));
+						for (uint whichCombination = 0; whichCombination < currentCapacity; ++whichCombination)
 						{
 							valid.Remove(valid.Min);
 						}
 					}
 					doneCombinations = 0;
 					doneValid = 0;
-					doneRounds++;
+					++doneRounds;
 					test = true;
 				}
 			}
+			public bool MinimalCondition(ProvinceCombination subject)
+			{
+				return (subject.Order >= minimalOrder && subject.Food >= minimalFood && subject.getSanitation(0) >= minimalSanitation && subject.getSanitation(1) >= minimalSanitation && subject.getSanitation(2) >= minimalSanitation);
+			}
 		}
-		class CombinationsComparator : System.Collections.Generic.IComparer<ProvinceCombination>
+		class CombinationsComparator :IComparer<ProvinceCombination>
 		{
-			private System.Comparison<ProvinceCombination> comparison;
-			public CombinationsComparator(System.Comparison<ProvinceCombination> comparison)
+			private Comparison<ProvinceCombination> comparison;
+			public CombinationsComparator(Comparison<ProvinceCombination> comparison)
 			{
 				this.comparison = comparison;
 			}

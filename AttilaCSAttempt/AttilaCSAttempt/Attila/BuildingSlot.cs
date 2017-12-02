@@ -1,13 +1,13 @@
 ﻿using System;
 namespace TWAssistant
 {
-	namespace Rome2
+	namespace Attila
 	{
 		class BuildingSlot
 		{
 			private BuildingType type;
 			private BuildingBranch building;
-			private byte? level;
+			private uint? level;
 			//
 			public BuildingSlot(BuildingSlot source)
 			{
@@ -15,23 +15,37 @@ namespace TWAssistant
 				building = source.building;
 				level = source.level;
 			}
-			public BuildingSlot(RegionData region, byte index)
+			public BuildingSlot(RegionData region, BuildingLibrary library, uint index)
 			{
 				level = null;
 				building = null;
 				switch (index)
 				{
 					case 0:
-						if (region.Resource != Resource.NONE)
-							type = BuildingType.RESOURCE;
-						else if (region.IsBig)
+						if (region.IsBig)
 							type = BuildingType.CENTERCITY;
 						else
 							type = BuildingType.CENTERTOWN;
+						building = library.GetBuilding(null, type);
+						level = 3;
 						break;
 					case 1:
 						if (region.IsCoastal)
+						{
 							type = BuildingType.COAST;
+							level = 3;
+						}
+						else if (region.IsBig)
+							type = BuildingType.CITY;
+						else
+							type = BuildingType.TOWN;
+						break;
+					case 2:
+						if (region.Resource != Resource.NONE)
+						{
+							type = BuildingType.RESOURCE;
+							level = 3;
+						}
 						else if (region.IsBig)
 							type = BuildingType.CITY;
 						else
@@ -50,35 +64,68 @@ namespace TWAssistant
 			{
 				get { return type; }
 			}
-			public BuildingBranch BuildingBranch
+			public BuildingBranch Building
 			{
 				get { return building; }
 				set { building = value; }
 			}
-			public byte? Level
+			public uint? Level
 			{
 				get { return level; }
 				set { level = value; }
 			}
-			public short Food
+			public int getFood(uint fertility)
+			{
+				if (level.HasValue && building != null)
+				{
+					return building[level.Value].GetFood(fertility);
+				}
+				else
+					return 0;
+			}
+			public int Order
 			{
 				get
 				{
 					if (level.HasValue && building != null)
 					{
-						return building.GetFood(level.Value);
+						return building[level.Value].Order;
 					}
 					else
 						return 0;
 				}
 			}
-			public short Order
+			public int ProvincionalSanitation
 			{
 				get
 				{
 					if (level.HasValue && building != null)
 					{
-						return building.GetOrder(level.Value);
+						return building[level.Value].ProvincionalSanitation;
+					}
+					else
+						return 0;
+				}
+			}
+			public int RegionalSanitation
+			{
+				get
+				{
+					if (level.HasValue && building != null)
+					{
+						return building[level.Value].RegionalSanitation;
+					}
+					else
+						return 0;
+				}
+			}
+			public int ReligiousInfluence
+			{
+				get
+				{
+					if (level.HasValue && building != null)
+					{
+						return building[level.Value].ReligiousInfluence;
 					}
 					else
 						return 0;
@@ -90,7 +137,7 @@ namespace TWAssistant
 				{
 					if (level.HasValue && building != null)
 					{
-						return building.GetWealthBonuses(level.Value);
+						return building[level.Value].WealthBonuses;
 					}
 					else
 						return null;
@@ -102,7 +149,7 @@ namespace TWAssistant
 				{
 					if (level.HasValue && building != null)
 					{
-						return building.GetWealthBonuses(level.Value).Length;
+						return building[level.Value].WealthBonuses.Length;
 					}
 					else
 						return 0;
@@ -113,26 +160,22 @@ namespace TWAssistant
 			{
 				Console.WriteLine("{0} {1} {2}", type, BuildingToString, LevelToString);
 			}
-			public void Fill(Random random, BuildingLibrary buildings, RegionData region)
+			public void Fill(Random random, BuildingLibrary library, RegionData region)
 			{
-				if (BuildingBranch == null)
+				if (building == null)
 				{
 					if (type == BuildingType.RESOURCE)
 					{
-						byte whichResourceBuilding = (byte)region.Resource;
-						for (whichResourceBuilding = 0; region.Resource != buildings[BuildingType.RESOURCE][whichResourceBuilding].Resource; whichResourceBuilding++) { }
-						BuildingBranch = buildings[BuildingType.RESOURCE][whichResourceBuilding];
+						building = library.GetBuilding(random, region.Resource);
 					}
 					else
 					{
-						int randomPick = random.Next(0, buildings[type].Count);
-						BuildingBranch = buildings[type][randomPick];
-						buildings[type].RemoveAt(randomPick);
+						building = library.GetBuilding(random, type);
 					}
 				}
-				if (Level == null)
+				if (level == null)
 				{
-					level = (byte)random.Next(0, BuildingBranch.NumberOfLevels);
+					level = (byte)random.Next(0, building.NumberOfLevels);
 				}
 			}
 			//

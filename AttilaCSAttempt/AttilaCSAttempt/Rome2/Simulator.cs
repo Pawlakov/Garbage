@@ -3,19 +3,19 @@
 	namespace Rome2
 	{
 		enum Resource { AMBER, PURPLE_DYE, GLASS, GOLD, GRAIN, HORSE, IRON, LEAD, LEATHER, LUMBER, MARBLE, OLIVE, SILK, WINE, NONE };
-		enum BuildingType { TOWN, CENTER_TOWN, CITY, CENTER_CITY, COAST, RESOURCE };
+		enum BuildingType { TOWN, CENTERTOWN, CITY, CENTERCITY, COAST, RESOURCE };
 		enum BonusCategory { ALL, AGRICULTURE, CULTURE, INDUSTRY, LOCAL_COMMERCE, MARITIME_COMMERCE, SUBSISTENCE };
 		class R2_Simulator : Simulator
 		{
-			public override int ResourceTypesCount
+			public static int ResourceTypesCount
 			{
 				get { return 15; }
 			}
-			public override int BuildingTypesCount
+			public static int BuildingTypesCount
 			{
 				get { return 6; }
 			}
-			public override int BonusCategoriesCount
+			public static int BonusCategoriesCount
 			{
 				get { return 7; }
 			}
@@ -183,19 +183,6 @@
 		}
 		abstract class Simulator
 		{
-			public abstract int ResourceTypesCount
-			{
-				get;
-			}
-			public abstract int BuildingTypesCount
-			{
-				get;
-			}
-			public abstract int BonusCategoriesCount
-			{
-				get;
-			}
-			//
 			protected Map map;
 			protected ProvinceData province;
 			protected FactionsList factions;

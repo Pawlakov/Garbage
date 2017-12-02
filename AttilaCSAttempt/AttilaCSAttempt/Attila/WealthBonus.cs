@@ -40,7 +40,7 @@ namespace TWAssistant
 				}
 				else
 				{
-					values[(int)category] += value += (perFertilityValue * fertility);
+					values[(int)category] += (value + (perFertilityValue * fertility));
 				}
 			}
 			//
@@ -53,7 +53,7 @@ namespace TWAssistant
 				string innerText = wealthBonusNode.InnerText;
 				if (innerText.Contains("|"))
 				{
-					if (category != BonusCategory.AGRICULTURE || category != BonusCategory.HUSBANDRY || isMultiplier == true)
+					if ((category != BonusCategory.AGRICULTURE && category != BonusCategory.HUSBANDRY) || isMultiplier == true)
 						Console.WriteLine("ERROR: Wrong fertility-based bonus!");
 					int divisionPosition = innerText.IndexOf('|');
 					string firstValue = innerText.Substring(0, divisionPosition);

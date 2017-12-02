@@ -1,8 +1,11 @@
-﻿class Assistant
+﻿namespace TWAssistant
 {
-	public static void Main()
+	class Assistant
 	{
-		R2_Simulator simulator = new R2_Simulator();
-		simulator.Act();
+		public static void Main()
+		{
+			Attila.Simulator simulator = new Attila.Simulator();
+			simulator.Act();
+		}
 	}
 }

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <building_library>
-	<!--CENTER_CITY-->
-	<branch n="CityCivil" t="CITY">
+	<!--CENTERCITY-->
+	<branch n="CityCivil" t="CENTERCITY">
 		<level f ="-25" o ="2" s="-1">
 			<bonus c ="SUBSISTENCE" m="false">300</bonus>
 		</level>
@@ -15,8 +15,8 @@
 			<bonus c ="SUBSISTENCE" m="false">600</bonus>
 		</level>
 	</branch>
-	<!--CENTER_TOWN-->
-	<branch n="TownCivil" t="TOWN">
+	<!--CENTERTOWN-->
+	<branch n="TownCivil" t="CENTERTOWN">
 		<level f ="-10">
 			<bonus c ="SUBSISTENCE" m="false">175</bonus>
 		</level>
@@ -35,15 +35,15 @@
 		<level>
 			<bonus c ="MARITIME_COMMERCE" m="false">200</bonus>
 		</level>
-		<levelo ="-2" s="-2">
+		<level o="-2" s="-2">
 			<bonus c ="MARITIME_COMMERCE" m="false">425</bonus>
 			<bonus c ="COMMERCE" m="false">425</bonus>
 		</level>
-		<levelo ="-4" s="-4">
+		<level o="-4" s="-4">
 			<bonus c ="MARITIME_COMMERCE" m="false">650</bonus>
 			<bonus c ="COMMERCE" m="false">700</bonus>
 		</level>
-		<levelo ="-5" s="-6">
+		<level o="-5" s="-6">
 			<bonus c ="MARITIME_COMMERCE" m="false">1300</bonus>
 			<bonus c ="COMMERCE" m="false">1200</bonus>
 		</level>
@@ -504,7 +504,7 @@
 			<bonus c ="MAINTENANCE" m="false">-800</bonus>
 		</level>
 	</branch>
-	<branch n="CityHygieneSewres" t="CITY">
+	<branch n="CityHygieneSewers" t="CITY">
 		<level o="1" s="5" _s="4">
 			<bonus c ="MAINTENANCE" m="false">-25</bonus>
 		</level>
@@ -514,7 +514,7 @@
 		<level s="12" _s="7">
 			<bonus c ="MAINTENANCE" m="false">-100</bonus>
 		</level>
-		<level" s="15" _s="8" i="1">
+		<level s="15" _s="8" i="1">
 			<bonus c ="MAINTENANCE" m="false">-200</bonus>
 		</level>>
 	</branch>
@@ -528,7 +528,7 @@
 		<level o="3" _s="13">
 			<bonus c ="MAINTENANCE" m="false">-100</bonus>
 		</level>
-		<level" o="4" _s="16" i="1">
+		<level o="4" _s="16" i="1">
 			<bonus c ="MAINTENANCE" m="false">-200</bonus>
 		</level>>
 	</branch>
@@ -639,34 +639,6 @@
 			<bonus c ="HUSBANDRY" m="true">0,15</bonus>
 		</level>
 	</branch>
-		<level food ="0" order ="1">
-			<bonus category ="LOCAL_COMMERCE" is_multiplier="false">50</bonus>
-		</level>
-		<level food ="0" order ="2">
-			<bonus category ="CULTURE" is_multiplier="false">80</bonus>
-		</level>
-		<level food ="0" order ="4">
-			<bonus category ="CULTURE" is_multiplier="false">160</bonus>
-		</level>
-		<level food ="0" order ="6">
-			<bonus category ="CULTURE" is_multiplier="false">240</bonus>
-		</level>
-	</branch>
-		<level food ="0" order ="2">
-		</level>
-		<level food ="-1" order ="2">
-			<bonus category ="INDUSTRY" is_multiplier="true">0,05</bonus>
-			<bonus category ="CULTURE" is_multiplier="false">60</bonus>
-		</level>
-		<level food ="-4" order ="2">
-			<bonus category ="INDUSTRY" is_multiplier="true">0,1</bonus>
-			<bonus category ="CULTURE" is_multiplier="false">120</bonus>
-		</level>
-		<level food ="-8" order ="2">
-			<bonus category ="INDUSTRY" is_multiplier="true">0,2</bonus>
-			<bonus category ="CULTURE" is_multiplier="false">240</bonus>
-		</level>
-	</branch>
 	<branch n="TownReligiousLatin" t="TOWN">
 		<level o ="2" r="2">
 			<bonus c ="MAINTENANCE" m="false">-100</bonus>
@@ -699,10 +671,10 @@
 			<bonus c ="CULTURE" m="false">300</bonus>
 		</level>
 		<level f="-25" o="3" s="7" _s="7">
-			<<bonus c ="CULTURE" m="false">500</bonus>
+			<bonus c ="CULTURE" m="false">500</bonus>
 		</level>
 		<level f="-35" o="4" s="9" _s="8">
-			<<bonus c ="CULTURE" m="false">800</bonus>
+			<bonus c ="CULTURE" m="false">800</bonus>
 		</level>
 	</branch>
 	<branch n="TownRecruitmentCavalry" t="TOWN">
@@ -736,32 +708,6 @@
 		</level>
 		<level f="-75">
 			<bonus c ="MAINTENANCE" m="false">-600</bonus>
-		</level>
-	</branch>
-		<level food ="4" order ="0">
-			<bonus category ="AGRICULTURE" is_multiplier="false">40</bonus>
-		</level>
-		<level food ="5" order ="-1">
-			<bonus category ="AGRICULTURE" is_multiplier="false">100</bonus>
-		</level>
-		<level food ="7" order ="-3">
-			<bonus category ="AGRICULTURE" is_multiplier="false">175</bonus>
-		</level>
-		<level food ="9" order ="-6">
-			<bonus category ="AGRICULTURE" is_multiplier="false">250</bonus>
-		</level>
-	</branch>
-		<level food ="4" order ="0">
-			<bonus category ="AGRICULTURE" is_multiplier="false">40</bonus>
-		</level>
-		<level food ="4" order ="0">
-			<bonus category ="AGRICULTURE" is_multiplier="false">100</bonus>
-		</level>
-		<level food ="4" order ="0">
-			<bonus category ="AGRICULTURE" is_multiplier="false">150</bonus>
-		</level>
-		<level food ="4" order ="0">
-			<bonus category ="AGRICULTURE" is_multiplier="false">200</bonus>
 		</level>
 	</branch>
 </building_library>

@@ -46,7 +46,12 @@
   <ItemGroup>
     <Compile Include="Assistant.cs" />
     <Compile Include="Attila\BuildingBranch.cs" />
+    <Compile Include="Attila\BuildingsLibrary.cs" />
+    <Compile Include="Attila\BuildingSlot.cs" />
+    <Compile Include="Attila\Faction.cs" />
+    <Compile Include="Attila\FactionsList.cs" />
     <Compile Include="Attila\Map.cs" />
+    <Compile Include="Attila\ProvinceCombination.cs" />
     <Compile Include="Attila\ProvinceData.cs" />
     <Compile Include="Attila\ProvinceWealth.cs" />
     <Compile Include="Attila\RegionData.cs" />
