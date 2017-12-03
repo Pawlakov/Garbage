@@ -9,18 +9,22 @@ namespace TWAssistant
 			private Faction faction;
 			private BuildingSlot[][] slots;
 			private bool isCurrent;
+			private uint originalFertility;
 			//
+			private uint fertility;
 			private int food;
 			private int order;
 			private int[] sanitations;
 			private int religiousInfluence;
 			private float wealth;
 			//
-			public ProvinceCombination(ProvinceData iniProvince, Faction iniFaction)
+			public ProvinceCombination(ProvinceData iniProvince, Faction iniFaction, uint iniFertility)
 			{
 				province = iniProvince;
 				//
 				faction = iniFaction;
+				//
+				originalFertility = iniFertility;
 				//
 				slots = new BuildingSlot[3][];
 				for (uint whichRegion = 0; whichRegion < slots.Length; ++whichRegion)
@@ -41,6 +45,8 @@ namespace TWAssistant
 				province = source.province;
 				//
 				faction = source.faction;
+				//
+				originalFertility = source.originalFertility;
 				//
 				slots = new BuildingSlot[source.slots.Length][];
 				//
@@ -91,7 +97,10 @@ namespace TWAssistant
 						slots[whichRegion][whichSlot].ShowContent();
 					}
 				}
-				Console.WriteLine("W: {0} F: {1} O: {2} S: {3}/{4}/{5}", Wealth, Food, Order, getSanitation(0), getSanitation(1), getSanitation(2));
+				Console.WriteLine("COAST building left: {0}", faction.Buildings.GetCountByType(BuildingType.COAST));
+				Console.WriteLine("CITY building left: {0}", faction.Buildings.GetCountByType(BuildingType.CITY));
+				Console.WriteLine("TOWN building left: {0}", faction.Buildings.GetCountByType(BuildingType.TOWN));
+				Console.WriteLine("W: {0} F: {1} O: {2} S: {3}/{4}/{5} I:{6} ", Wealth, Food, Order, getSanitation(0), getSanitation(1), getSanitation(2), Fertility);
 			}
 			public void RewardUsefulBuildings()
 			{
@@ -156,9 +165,9 @@ namespace TWAssistant
 			}
 			public int getSanitation(uint whichRegion)
 			{
-					if (!this.isCurrent)
-						HarvestBuildings();
-					return this.sanitations[whichRegion];
+				if (!this.isCurrent)
+					HarvestBuildings();
+				return this.sanitations[whichRegion];
 			}
 			public int ReligiousInfluence
 			{
@@ -167,6 +176,15 @@ namespace TWAssistant
 					if (!this.isCurrent)
 						HarvestBuildings();
 					return this.religiousInfluence;
+				}
+			}
+			public uint Fertility
+			{
+				get
+				{
+					if (!this.isCurrent)
+						HarvestBuildings();
+					return this.fertility;
 				}
 			}
 			public float Wealth
@@ -187,7 +205,17 @@ namespace TWAssistant
 				this.sanitations[1] = faction.Sanitation;
 				this.sanitations[2] = faction.Sanitation;
 				this.religiousInfluence = faction.ReligiousInfluence;
-				ProvinceWealth wealthCalculator = new ProvinceWealth(province.Fertility);
+				this.fertility = faction.Fertility + this.originalFertility;
+				for (uint whichRegion = 0; whichRegion < this.slots.Length; ++whichRegion)
+				{
+					for (uint whichSlot = 0; whichSlot < this.slots[whichRegion].Length; ++whichSlot)
+					{
+						this.fertility += this.slots[whichRegion][whichSlot].Fertility;
+					}
+				}
+				if (fertility > 5)
+					fertility = 5;
+				ProvinceWealth wealthCalculator = new ProvinceWealth(fertility);
 				if (this.faction.WealthBonuses != null)
 					for (uint whichBonus = 0; whichBonus < this.faction.WealthBonuses.Length; ++whichBonus)
 						wealthCalculator.AddBonus(this.faction.WealthBonuses[whichBonus]);
@@ -196,14 +224,14 @@ namespace TWAssistant
 					for (uint whichSlot = 0; whichSlot < this.slots[whichRegion].Length; ++whichSlot)
 					{
 						BuildingSlot slot = this.slots[whichRegion][whichSlot];
-						this.food += slot.getFood(province.Fertility);
+						this.food += slot.getFood(fertility);
 						this.order += slot.Order;
 						this.sanitations[0] += slot.ProvincionalSanitation;
 						this.sanitations[1] += slot.ProvincionalSanitation;
 						this.sanitations[2] += slot.ProvincionalSanitation;
 						this.sanitations[whichRegion] += slot.RegionalSanitation;
 						this.religiousInfluence += slot.ReligiousInfluence;
-						for (byte whichBonus = 0; whichBonus < this.slots[whichRegion][whichSlot].WealthBonusCount; whichBonus++)
+						for (uint whichBonus = 0; whichBonus < this.slots[whichRegion][whichSlot].WealthBonusCount; ++whichBonus)
 							wealthCalculator.AddBonus(this.slots[whichRegion][whichSlot].WealthBonuses[whichBonus]);
 					}
 				}

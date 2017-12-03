@@ -71,6 +71,7 @@ namespace TWAssistant
 				private int regionalSanitation;
 				private int provincionalSanitation;
 				private int religiousInfluence;
+				private uint fertility;
 				private WealthBonus[] wealthBonuses;
 				//
 				public BuildingLevel(XmlNode levelNode)
@@ -81,6 +82,7 @@ namespace TWAssistant
 					regionalSanitation = 0;
 					provincionalSanitation = 0;
 					religiousInfluence = 0;
+					fertility = 0;
 					XmlNode temporary;
 					//
 					if (levelNode.Attributes != null)
@@ -109,10 +111,13 @@ namespace TWAssistant
 						if (temporary != null)
 							religiousInfluence = Convert.ToInt32(temporary.InnerText);
 						//
+						temporary = levelNode.Attributes.GetNamedItem("i");
+						if (temporary != null)
+							fertility = Convert.ToUInt32(temporary.InnerText);
 					}
 					XmlNodeList bonusNodeList = levelNode.ChildNodes;
 					wealthBonuses = new WealthBonus[bonusNodeList.Count];
-					for (byte whichBonus = 0; whichBonus < wealthBonuses.Length; whichBonus++)
+					for (int whichBonus = 0; whichBonus < wealthBonuses.Length; ++whichBonus)
 					{
 						wealthBonuses[whichBonus] = new WealthBonus(bonusNodeList.Item(whichBonus));
 					}
@@ -137,6 +142,10 @@ namespace TWAssistant
 				public int ReligiousInfluence
 				{
 					get { return religiousInfluence; }
+				}
+				public uint Fertility
+				{
+					get { return fertility; }
 				}
 				public WealthBonus[] WealthBonuses
 				{

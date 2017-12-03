@@ -14,7 +14,7 @@ namespace TWAssistant
 				sourceDocument.Load(filename);
 				XmlNodeList provinceNodeList = sourceDocument.GetElementsByTagName("province");
 				provinces = new ProvinceData[provinceNodeList.Count];
-				for (int whichProvince = 0; whichProvince < provinces.Length; whichProvince++)
+				for (int whichProvince = 0; whichProvince < provinces.Length; ++whichProvince)
 				{
 					provinces[whichProvince] = new ProvinceData(provinceNodeList[whichProvince]);
 				}

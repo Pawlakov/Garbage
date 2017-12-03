@@ -6,13 +6,14 @@ namespace TWAssistant
 	{
 		enum Resource { NONE, IRON, LEAD, GEMSTONES, OLIVE, FUR, WINE, SILK, MARBLE, SALT, GOLD, DYE, LUMBER };
 		enum BuildingType { TOWN, CENTERTOWN, CITY, CENTERCITY, COAST, RESOURCE };
-		enum BonusCategory { ALL, AGRICULTURE, HUSBANDRY, CULTURE, INDUSTRY, COMMERCE, MARITIME_COMMERCE, SUBSISTENCE , MAINTENANCE};
+		enum BonusCategory { ALL, AGRICULTURE, HUSBANDRY, CULTURE, INDUSTRY, COMMERCE, MARITIME_COMMERCE, SUBSISTENCE, MAINTENANCE }; // Maintenance HAS TO BE THE LAST ONE
 		class Simulator
 		{
 			private Map map;
 			private ProvinceData province;
 			private FactionsList factions;
 			private Faction faction;
+			private ProvinceCombination template;
 			//
 			private uint roundSize;
 			private uint maxListSize;
@@ -21,6 +22,7 @@ namespace TWAssistant
 			private int minimalFood;
 			private int minimalOrder;
 			private int minimalSanitation;
+			private uint fertility;
 			//
 			public static int ResourceTypesCount
 			{
@@ -34,8 +36,6 @@ namespace TWAssistant
 			{
 				get { return 9; }
 			}
-			//
-			private ProvinceCombination template;
 			//
 			public void Act()
 			{
@@ -57,10 +57,8 @@ namespace TWAssistant
 				faction = factions[Convert.ToInt32(Console.ReadLine())];
 				Console.WriteLine("You picked: {0}", faction.Name);
 				//
-				template = new ProvinceCombination(province, faction);
-				//System.Console.WriteLine("Generated template of slots.");
-				//ForceBuildings(template);
-				//System.Console.WriteLine("Constraints set.");
+				Console.WriteLine("Your province's fertility is {0}. Enter desired fertility.", province.Fertility);
+				fertility = Convert.ToUInt32(Console.ReadLine());
 				//
 				Console.WriteLine("Choose minimal food.");
 				minimalFood = Convert.ToInt32(Console.ReadLine());
@@ -70,6 +68,11 @@ namespace TWAssistant
 				//
 				Console.WriteLine("Choose minimal sanitation.");
 				minimalSanitation = Convert.ToInt32(Console.ReadLine());
+				//
+				template = new ProvinceCombination(province, faction, fertility);
+				//System.Console.WriteLine("Generated template of slots.");
+				//ForceBuildings(template);
+				//System.Console.WriteLine("Constraints set
 				//
 				Console.WriteLine("Choose round size.");
 				roundSize = Convert.ToUInt32(Console.ReadLine());
@@ -83,7 +86,14 @@ namespace TWAssistant
 			}
 			public int BetterInWealth(ProvinceCombination left, ProvinceCombination right)
 			{
-				return (int)(left.Wealth - right.Wealth);
+				//if (left.Wealth > right.Wealth)
+				//	return (int)Math.Ceiling(left.Wealth - right.Wealth);
+				//else
+				//	return (int)Math.Floor(left.Wealth - right.Wealth);
+				if (left.Wealth > right.Wealth)
+					return 1;
+				else
+					return -1;
 			}
 			//public void ForceBuildings(ProvinceCombination template)
 			//{
@@ -111,41 +121,44 @@ namespace TWAssistant
 				uint doneRounds = 0;
 				uint doneCombinations = 0;
 				uint doneValid = 0;
-				bool test = true;
 				Console.Clear();
 				while (true)
 				{
-					while (doneValid % roundSize != 0 || test == true)
+					do
 					{
-						ProvinceCombination subject = new ProvinceCombination(template);
-						subject.Fill(random);
-						if (minimalCondition(subject))
+						while (true)
 						{
-							valid.Add(subject);
+							ProvinceCombination subject = new ProvinceCombination(template);
+							++doneCombinations;
+							subject.Fill(random);
+							if (minimalCondition(subject))
 							{
+								valid.Add(subject);
 								if (valid.Count > currentCapacity)
 									valid.Remove(valid.Min);
+								++doneValid;
+								break;
 							}
-							doneValid++;
-							test = false;
 						}
-						doneCombinations++;
 						Console.WriteLine("Rounds: {0} | Combinations: {1} | Valid C.: {2}/{3} | Best List: {4}/{5}", doneRounds, doneCombinations, doneValid, roundSize, valid.Count, currentCapacity);
 						Console.CursorTop -= 1;
-					}
+					} while (doneValid % roundSize != 0);
 					bestValid = valid.Max;
+					//
 					foreach (ProvinceCombination combination in valid)
 					{
 						combination.RewardUsefulBuildings();
 					}
 					bestValid.CurbUselessBuildings();
+					//
 					Console.Clear();
 					Console.WriteLine("Best after last round: ");
 					bestValid.ShowContent();
+					//
 					if (currentCapacity > minListSize)
 					{
 						currentCapacity = (uint)(currentCapacity * (0.7071));
-						for (uint whichCombination = 0; whichCombination < currentCapacity; ++whichCombination)
+						while (valid.Count > currentCapacity)
 						{
 							valid.Remove(valid.Min);
 						}
@@ -153,7 +166,6 @@ namespace TWAssistant
 					doneCombinations = 0;
 					doneValid = 0;
 					++doneRounds;
-					test = true;
 				}
 			}
 			public bool MinimalCondition(ProvinceCombination subject)
@@ -161,7 +173,7 @@ namespace TWAssistant
 				return (subject.Order >= minimalOrder && subject.Food >= minimalFood && subject.getSanitation(0) >= minimalSanitation && subject.getSanitation(1) >= minimalSanitation && subject.getSanitation(2) >= minimalSanitation);
 			}
 		}
-		class CombinationsComparator :IComparer<ProvinceCombination>
+		class CombinationsComparator : IComparer<ProvinceCombination>
 		{
 			private Comparison<ProvinceCombination> comparison;
 			public CombinationsComparator(Comparison<ProvinceCombination> comparison)

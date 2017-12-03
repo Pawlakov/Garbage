@@ -12,6 +12,7 @@ namespace TWAssistant
 			private int order;
 			private int sanitation;
 			private int religiousInfluence;
+			private uint fertility;
 			private WealthBonus[] wealthBonuses;
 			//
 			public Faction(XmlNode factionNode)
@@ -20,6 +21,7 @@ namespace TWAssistant
 				order = 0;
 				sanitation = 0;
 				religiousInfluence = 0;
+				fertility = 0;
 				//
 				name = factionNode.Attributes.GetNamedItem("n").InnerText;
 				//
@@ -43,6 +45,10 @@ namespace TWAssistant
 					temporary = factionNode.Attributes.GetNamedItem("r");
 					if (temporary != null)
 						religiousInfluence = Convert.ToInt32(temporary.InnerText);
+					//
+					temporary = factionNode.Attributes.GetNamedItem("i");
+					if (temporary != null)
+						fertility = Convert.ToUInt32(temporary.InnerText);
 				}
 				XmlNodeList bonusNodesList = factionNode.ChildNodes;
 				wealthBonuses = new WealthBonus[bonusNodesList.Count];
@@ -75,6 +81,10 @@ namespace TWAssistant
 			public int ReligiousInfluence
 			{
 				get { return religiousInfluence; }
+			}
+			public uint Fertility
+			{
+				get { return fertility; }
 			}
 			public WealthBonus[] WealthBonuses
 			{

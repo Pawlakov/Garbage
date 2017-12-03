@@ -32,7 +32,7 @@ namespace TWAssistant
 						multipliers[(int)category] += value;
 					else
 					{
-						for (byte whichCategory = 0; whichCategory < Simulator.BonusCategoriesCount; ++whichCategory)
+						for (uint whichCategory = 0; whichCategory < Simulator.BonusCategoriesCount - 1; ++whichCategory)
 						{
 							multipliers[whichCategory] += value;
 						}

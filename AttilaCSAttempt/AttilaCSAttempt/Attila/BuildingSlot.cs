@@ -131,6 +131,18 @@ namespace TWAssistant
 						return 0;
 				}
 			}
+			public uint Fertility
+			{
+				get
+				{
+					if (level.HasValue && building != null)
+					{
+						return building[level.Value].Fertility;
+					}
+					else
+						return 0;
+				}
+			}
 			public WealthBonus[] WealthBonuses
 			{
 				get
@@ -175,7 +187,7 @@ namespace TWAssistant
 				}
 				if (level == null)
 				{
-					level = (byte)random.Next(0, building.NumberOfLevels);
+					level = (uint)random.Next(0, building.NumberOfLevels);
 				}
 			}
 			//

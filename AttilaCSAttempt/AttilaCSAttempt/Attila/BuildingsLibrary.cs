@@ -84,6 +84,32 @@ namespace TWAssistant
 				else
 					Console.WriteLine("No list for this building type!");
 			}
+			public int GetCountByType(BuildingType type)
+			{
+				List<BuildingBranch> list;
+				switch (type)
+				{
+					case BuildingType.COAST:
+						list = coastBuildings;
+						break;
+					case BuildingType.CITY:
+						list = cityBuildings;
+						break;
+					case BuildingType.TOWN:
+						list = townBuildings;
+						break;
+					default:
+						list = null;
+						break;
+				}
+				if (list != null)
+					return list.Count;
+				else
+				{
+					Console.WriteLine("No list for this building type!");
+					return 0;
+				}
+			}
 			public void RemoveUselessAndResetUsefuliness()
 			{
 				List<BuildingBranch> list;
@@ -168,8 +194,11 @@ namespace TWAssistant
 			}
 			public void Remove(BuildingBranch building)
 			{
-				switch(building.Type)
+				switch (building.Type)
 				{
+					case BuildingType.COAST:
+						coastBuildings.Remove(building);
+						break;
 					case BuildingType.CITY:
 						cityBuildings.Remove(building);
 						break;
