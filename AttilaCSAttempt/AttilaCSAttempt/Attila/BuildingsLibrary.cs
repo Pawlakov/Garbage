@@ -103,7 +103,14 @@ namespace TWAssistant
 						break;
 				}
 				if (list != null)
-					return list.Count;
+				{
+					int result = 0;
+					foreach (BuildingBranch building in list)
+					{
+						result += building.nonVoidCount;
+					}
+					return result;
+				}
 				else
 				{
 					Console.WriteLine("No list for this building type!");
@@ -113,43 +120,26 @@ namespace TWAssistant
 			public void RemoveUselessAndResetUsefuliness()
 			{
 				List<BuildingBranch> list;
-				BuildingBranch building;
-				//
 				list = coastBuildings;
-				for (int whichBuilding = 0; whichBuilding < list.Count; ++whichBuilding)
-				{
-					building = list[whichBuilding];
-					if (building.Usefuliness == 0)
-					{
-						list.RemoveAt(whichBuilding);
-						--whichBuilding;
-					}
-					else
-						building.Usefuliness = 0;
-				}
+				Helper(list);
 				list = cityBuildings;
-				for (int whichBuilding = 0; whichBuilding < list.Count; ++whichBuilding)
-				{
-					building = list[whichBuilding];
-					if (building.Usefuliness == 0)
-					{
-						list.RemoveAt(whichBuilding);
-						--whichBuilding;
-					}
-					else
-						building.Usefuliness = 0;
-				}
+				Helper(list);
 				list = townBuildings;
+				Helper(list);
+			}
+			private void Helper(List<BuildingBranch> list)
+			{
+				BuildingBranch building;
 				for (int whichBuilding = 0; whichBuilding < list.Count; ++whichBuilding)
 				{
 					building = list[whichBuilding];
-					if (building.Usefuliness == 0)
+					//
+					building.ResetUsefuliness();
+					if (building.nonVoidCount == 0)
 					{
 						list.RemoveAt(whichBuilding);
 						--whichBuilding;
 					}
-					else
-						building.Usefuliness = 0;
 				}
 			}
 			public BuildingBranch GetBuilding(Random random, Resource resource)

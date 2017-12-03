@@ -81,10 +81,6 @@ namespace TWAssistant
 				}
 				isCurrent = false;
 			}
-			public void CurbUselessBuildings()
-			{
-				faction.CurbUselessBuildings();
-			}
 			public void ShowContent()
 			{
 				Console.WriteLine("{0}", province.Name);
@@ -97,9 +93,6 @@ namespace TWAssistant
 						slots[whichRegion][whichSlot].ShowContent();
 					}
 				}
-				Console.WriteLine("COAST building left: {0}", faction.Buildings.GetCountByType(BuildingType.COAST));
-				Console.WriteLine("CITY building left: {0}", faction.Buildings.GetCountByType(BuildingType.CITY));
-				Console.WriteLine("TOWN building left: {0}", faction.Buildings.GetCountByType(BuildingType.TOWN));
 				Console.WriteLine("W: {0} F: {1} O: {2} S: {3}/{4}/{5} I:{6} ", Wealth, Food, Order, getSanitation(0), getSanitation(1), getSanitation(2), Fertility);
 			}
 			public void RewardUsefulBuildings()
@@ -108,7 +101,7 @@ namespace TWAssistant
 				{
 					for (uint whichSlot = 0; whichSlot < slots[whichRegion].Length; ++whichSlot)
 					{
-						++(slots[whichRegion][whichSlot].Building.Usefuliness);
+						slots[whichRegion][whichSlot].Reward();
 					}
 				}
 			}

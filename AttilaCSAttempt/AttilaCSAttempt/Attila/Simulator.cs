@@ -86,14 +86,12 @@ namespace TWAssistant
 			}
 			public int BetterInWealth(ProvinceCombination left, ProvinceCombination right)
 			{
-				//if (left.Wealth > right.Wealth)
-				//	return (int)Math.Ceiling(left.Wealth - right.Wealth);
-				//else
-				//	return (int)Math.Floor(left.Wealth - right.Wealth);
 				if (left.Wealth > right.Wealth)
 					return 1;
-				else
+				else if (left.Wealth < right.Wealth)
 					return -1;
+				else
+					return 0;
 			}
 			//public void ForceBuildings(ProvinceCombination template)
 			//{
@@ -130,7 +128,7 @@ namespace TWAssistant
 						{
 							ProvinceCombination subject = new ProvinceCombination(template);
 							++doneCombinations;
-							subject.Fill(random);
+							subject.Fill(random); // Tu jest pies pogrzebany
 							if (minimalCondition(subject))
 							{
 								valid.Add(subject);
@@ -149,9 +147,12 @@ namespace TWAssistant
 					{
 						combination.RewardUsefulBuildings();
 					}
-					bestValid.CurbUselessBuildings();
-					//
+					faction.CurbUselessBuildings();
 					Console.Clear();
+					Console.WriteLine("COAST building left: {0}", faction.Buildings.GetCountByType(BuildingType.COAST));
+					Console.WriteLine("CITY building left: {0}", faction.Buildings.GetCountByType(BuildingType.CITY));
+					Console.WriteLine("TOWN building left: {0}", faction.Buildings.GetCountByType(BuildingType.TOWN));
+					//
 					Console.WriteLine("Best after last round: ");
 					bestValid.ShowContent();
 					//
@@ -159,9 +160,7 @@ namespace TWAssistant
 					{
 						currentCapacity = (uint)(currentCapacity * (0.7071));
 						while (valid.Count > currentCapacity)
-						{
 							valid.Remove(valid.Min);
-						}
 					}
 					doneCombinations = 0;
 					doneValid = 0;

@@ -7,7 +7,6 @@ namespace TWAssistant
 		class BuildingBranch
 		{
 			private string name;
-			private uint usefuliness;
 			private BuildingType type;
 			private Resource resource;
 			private BuildingLevel[] levels;
@@ -17,8 +16,6 @@ namespace TWAssistant
 				XmlNodeList levelNodeList = branchNode.ChildNodes;
 				//
 				name = branchNode.Attributes.GetNamedItem("n").InnerText;
-				//
-				usefuliness = 0;
 				//
 				Enum.TryParse(branchNode.Attributes.GetNamedItem("t").InnerText, out type);
 				//
@@ -41,11 +38,6 @@ namespace TWAssistant
 			{
 				get { return name; }
 			}
-			public uint Usefuliness
-			{
-				get { return usefuliness; }
-				set { usefuliness = value; }
-			}
 			public BuildingType Type
 			{
 				get { return type; }
@@ -58,9 +50,43 @@ namespace TWAssistant
 			{
 				get { return levels.Length; }
 			}
+			public int nonVoidCount
+			{
+				get
+				{
+					int result = 0;
+					foreach (BuildingLevel level in levels)
+					{
+						if (!level.IsVoid)
+							++result;
+					}
+					return result;
+				}
+			}
 			public BuildingLevel this[uint whichLevel]
 			{
 				get { return levels[whichLevel]; }
+			}
+			//
+			public void RewardLevel(uint level)
+			{
+				levels[level].Reward();
+			}
+			public void ResetUsefuliness()
+			{
+				foreach (BuildingLevel level in levels)
+				{
+					level.ResetUsefuliness();
+				}
+			}
+			public uint GetLevel(Random random)
+			{
+				uint result;
+				do
+				{
+					result = (uint)random.Next(0, levels.Length);
+				} while (levels[result].IsVoid == true);
+				return result;
 			}
 			//
 			public class BuildingLevel
@@ -72,6 +98,8 @@ namespace TWAssistant
 				private int provincionalSanitation;
 				private int religiousInfluence;
 				private uint fertility;
+				private uint usefuliness;
+				private bool isVoid;
 				private WealthBonus[] wealthBonuses;
 				//
 				public BuildingLevel(XmlNode levelNode)
@@ -83,6 +111,8 @@ namespace TWAssistant
 					provincionalSanitation = 0;
 					religiousInfluence = 0;
 					fertility = 0;
+					usefuliness = 0;
+					isVoid = false;
 					XmlNode temporary;
 					//
 					if (levelNode.Attributes != null)
@@ -147,9 +177,32 @@ namespace TWAssistant
 				{
 					get { return fertility; }
 				}
+				public uint Usefuliness
+				{
+					get { return usefuliness; }
+				}
+				public bool IsVoid
+				{
+					get { return isVoid; }
+				}
 				public WealthBonus[] WealthBonuses
 				{
 					get { return wealthBonuses; }
+				}
+				//
+				public void Reward()
+				{
+					++usefuliness;
+				}
+				public void ResetUsefuliness()
+				{
+					if (usefuliness == 0)
+						isVoid = true;
+					else
+					{
+						usefuliness = 0;
+						isVoid = false;
+					}
 				}
 			}
 		}

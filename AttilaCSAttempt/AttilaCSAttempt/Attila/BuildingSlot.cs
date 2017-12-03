@@ -187,8 +187,12 @@ namespace TWAssistant
 				}
 				if (level == null)
 				{
-					level = (uint)random.Next(0, building.NumberOfLevels);
+					level = building.GetLevel(random);
 				}
+			}
+			public void Reward()
+			{
+				building.RewardLevel(level.Value);
 			}
 			//
 			private string LevelToString

@@ -516,7 +516,7 @@
 		</level>
 		<level s="15" _s="8" i="1">
 			<bonus c ="MAINTENANCE" m="false">-200</bonus>
-		</level>>
+		</level>
 	</branch>
 	<branch n="CityHygieneWaterworks" t="CITY">
 		<level o="1" s="5" _s="4">
@@ -530,7 +530,7 @@
 		</level>
 		<level o="4" _s="16" i="1">
 			<bonus c ="MAINTENANCE" m="false">-200</bonus>
-		</level>>
+		</level>
 	</branch>
 	<branch n="CityRecruitmentCavalry" t="CITY">
 		<level>
