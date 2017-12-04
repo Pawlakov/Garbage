@@ -17,7 +17,7 @@ namespace TWAssistant
 			//
 			private uint roundSize;
 			private uint maxListSize;
-			private uint minListSize;
+			private double reductionRate;
 			//
 			private int minimalFood;
 			private int minimalOrder;
@@ -39,34 +39,30 @@ namespace TWAssistant
 			//
 			public void Act()
 			{
-				Console.WriteLine("Let's begin.");
-				//
+				Console.Clear();
 				Console.WriteLine("Loading map.");
 				map = new Map("twa_map.xml");
 				Console.WriteLine("Map loadaded. List of provinces:");
 				map.ShowList();
-				Console.WriteLine("Pick province.");
+				Console.Write("Pick a province: ");
 				province = map[Convert.ToUInt32(Console.ReadLine())];
-				Console.WriteLine("You picked: {0}", province.Name);
 				//
+				Console.Clear();
 				Console.WriteLine("Loading factions.");
-				factions = new FactionsList("twa_rm_factions.xml");
+				factions = new FactionsList("twa_factions.xml");
 				Console.WriteLine("Factions loadaded. List of factions:");
 				factions.ShowList();
-				Console.WriteLine("Pick faction.");
+				Console.Write("Pick a faction: ");
 				faction = factions[Convert.ToInt32(Console.ReadLine())];
-				Console.WriteLine("You picked: {0}", faction.Name);
 				//
-				Console.WriteLine("Your province's fertility is {0}. Enter desired fertility.", province.Fertility);
+				Console.Clear();
+				Console.Write("Your province's default fertility is {0}. Choose fertility: ", province.Fertility);
 				fertility = Convert.ToUInt32(Console.ReadLine());
-				//
-				Console.WriteLine("Choose minimal food.");
+				Console.Write("Choose minimal food: ");
 				minimalFood = Convert.ToInt32(Console.ReadLine());
-				//
-				Console.WriteLine("Choose minimal public order.");
+				Console.Write("Choose minimal public order: ");
 				minimalOrder = Convert.ToInt32(Console.ReadLine());
-				//
-				Console.WriteLine("Choose minimal sanitation.");
+				Console.Write("Choose minimal sanitation: ");
 				minimalSanitation = Convert.ToInt32(Console.ReadLine());
 				//
 				template = new ProvinceCombination(province, faction, fertility);
@@ -74,14 +70,13 @@ namespace TWAssistant
 				//ForceBuildings(template);
 				//System.Console.WriteLine("Constraints set
 				//
-				Console.WriteLine("Choose round size.");
+				Console.Clear();
+				Console.Write("Choose round size: ");
 				roundSize = Convert.ToUInt32(Console.ReadLine());
-				//
-				Console.WriteLine("Choose biggest list size.");
+				Console.Write("Choose biggest list size: ");
 				maxListSize = Convert.ToUInt32(Console.ReadLine());
-				//
-				Console.WriteLine("Choose smallest list size.");
-				minListSize = Convert.ToUInt32(Console.ReadLine());
+				Console.Write("Choose reduction rate per round: ");
+				reductionRate = Convert.ToDouble(Console.ReadLine());
 				Generate(MinimalCondition);
 			}
 			public int BetterInWealth(ProvinceCombination left, ProvinceCombination right)
@@ -120,7 +115,7 @@ namespace TWAssistant
 				uint doneCombinations = 0;
 				uint doneValid = 0;
 				Console.Clear();
-				while (true)
+				while (currentCapacity > 1)
 				{
 					do
 					{
@@ -128,7 +123,7 @@ namespace TWAssistant
 						{
 							ProvinceCombination subject = new ProvinceCombination(template);
 							++doneCombinations;
-							subject.Fill(random); // Tu jest pies pogrzebany
+							subject.Fill(random);
 							if (minimalCondition(subject))
 							{
 								valid.Add(subject);
@@ -138,7 +133,7 @@ namespace TWAssistant
 								break;
 							}
 						}
-						Console.WriteLine("Rounds: {0} | Combinations: {1} | Valid C.: {2}/{3} | Best List: {4}/{5}", doneRounds, doneCombinations, doneValid, roundSize, valid.Count, currentCapacity);
+						Console.WriteLine("Rounds: {0} | Combinations per Valid: {1} | Valid Found: {2}/{3} | Current List: {4}/{5}", doneRounds, doneCombinations/doneValid, doneValid, roundSize, valid.Count, currentCapacity);
 						Console.CursorTop -= 1;
 					} while (doneValid % roundSize != 0);
 					bestValid = valid.Max;
@@ -153,12 +148,12 @@ namespace TWAssistant
 					Console.WriteLine("CITY building left: {0}", faction.Buildings.GetCountByType(BuildingType.CITY));
 					Console.WriteLine("TOWN building left: {0}", faction.Buildings.GetCountByType(BuildingType.TOWN));
 					//
-					Console.WriteLine("Best after last round: ");
+					Console.WriteLine("Best so far: ");
 					bestValid.ShowContent();
 					//
-					if (currentCapacity > minListSize)
+					if (currentCapacity > 1)
 					{
-						currentCapacity = (uint)(currentCapacity * (0.7071));
+						currentCapacity = (uint)(currentCapacity * reductionRate);
 						while (valid.Count > currentCapacity)
 							valid.Remove(valid.Min);
 					}
@@ -166,6 +161,10 @@ namespace TWAssistant
 					doneValid = 0;
 					++doneRounds;
 				}
+				Console.Clear();
+				Console.WriteLine("AND THE WINNER IS...");
+				bestValid.ShowContent();
+				Console.ReadKey();
 			}
 			public bool MinimalCondition(ProvinceCombination subject)
 			{

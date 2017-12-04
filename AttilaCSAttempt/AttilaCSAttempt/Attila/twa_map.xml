@@ -2,8 +2,8 @@
 <map>
 	<province n="Baetica" f="4">
 		<region n="Corduba" c="false" r="NONE" />
-		<region n="Hispalis" c="true" r="NONE" />
-		<region n="Malaca" c="false" r="WINE" />
+		<region n="Hispalis" c="false" r="NONE" />
+		<region n="Malaca" c="true" r="WINE" />
 	</province>
 	<province n="Lusitania" f="5">
 		<region n="Emerita_Augusta" c="false" r="NONE" />

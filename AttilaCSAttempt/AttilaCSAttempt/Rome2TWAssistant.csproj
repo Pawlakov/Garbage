@@ -73,11 +73,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Attila\twa_buildings_wre_lachri.xml" />
+    <None Include="Attila\twa_factions.xml" />
+    <None Include="Attila\twa_rm_buildings_wre_lachri.xml" />
+    <None Include="Attila\twa_buildings_wre_ropag.xml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Attila\twa_map.xml" />
-    <Content Include="Attila\twa_rm_buildings_wre.xml" />
-    <Content Include="Attila\twa_rm_factions.xml" />
     <Content Include="Rome2\buildings_rome.xml" />
     <Content Include="Rome2\factions.xml" />
     <Content Include="Rome2\map.xml" />
