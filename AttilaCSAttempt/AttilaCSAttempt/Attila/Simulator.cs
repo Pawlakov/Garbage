@@ -2,27 +2,27 @@
 using System.Collections.Generic;
 namespace TWAssistant
 {
-	namespace Attila
+	namespace Attila // TODO: What if no resource building? // Negative food?
 	{
 		enum Resource { NONE, IRON, LEAD, GEMSTONES, OLIVE, FUR, WINE, SILK, MARBLE, SALT, GOLD, DYE, LUMBER };
 		enum BuildingType { TOWN, CENTERTOWN, CITY, CENTERCITY, COAST, RESOURCE };
 		enum BonusCategory { ALL, AGRICULTURE, HUSBANDRY, CULTURE, INDUSTRY, COMMERCE, MARITIME_COMMERCE, SUBSISTENCE, MAINTENANCE }; // Maintenance HAS TO BE THE LAST ONE
 		class Simulator
 		{
-			private Map map;
-			private ProvinceData province;
-			private FactionsList factions;
-			private Faction faction;
-			private ProvinceCombination template;
+			Map map;
+			ProvinceData province;
+			FactionsList factions;
+			Faction faction;
+			ProvinceCombination template;
 			//
-			private uint roundSize;
-			private uint maxListSize;
-			private double reductionRate;
+			uint roundSize;
+			uint maxListSize;
+			double reductionRate;
 			//
-			private int minimalFood;
-			private int minimalOrder;
-			private int minimalSanitation;
-			private uint fertility;
+			int minimalFood;
+			int minimalOrder;
+			int minimalSanitation;
+			uint fertility;
 			//
 			public static int ResourceTypesCount
 			{
@@ -66,9 +66,7 @@ namespace TWAssistant
 				minimalSanitation = Convert.ToInt32(Console.ReadLine());
 				//
 				template = new ProvinceCombination(province, faction, fertility);
-				//System.Console.WriteLine("Generated template of slots.");
-				//ForceBuildings(template);
-				//System.Console.WriteLine("Constraints set
+				ForceBuildings(template);
 				//
 				Console.Clear();
 				Console.Write("Choose round size: ");
@@ -83,28 +81,22 @@ namespace TWAssistant
 			{
 				if (left.Wealth > right.Wealth)
 					return 1;
-				else if (left.Wealth < right.Wealth)
+				if (left.Wealth < right.Wealth)
 					return -1;
-				else
-					return 0;
+				return 0;
 			}
-			//public void ForceBuildings(ProvinceCombination template)
-			//{
-			//	System.Console.WriteLine("Now you can place some building constraints by yourself.");
-			//	while (true)
-			//	{
-			//		template.ShowContent();
-			//		System.Console.WriteLine("What would you like to do now?");
-			//		System.Console.WriteLine("0. Finish placing constraints.");
-			//		System.Console.WriteLine("1. Create new constraint.");
-			//		if (System.Convert.ToByte(System.Console.ReadLine()) == 0)
-			//			break;
-			//		else
-			//		{
-			//			template.ForceConstraint();
-			//		}
-			//	}
-			//}
+			public void ForceBuildings(ProvinceCombination template)
+			{
+				while (true)
+				{
+					Console.Clear();
+					template.ShowContent();
+					Console.Write("Force building/level? (0-no/1-yes): ");
+					if (Convert.ToInt32(Console.ReadLine()) == 0)
+						break;
+					template.ForceBuilding();
+				}
+			}
 			public void Generate(Func<ProvinceCombination, bool> minimalCondition)
 			{
 				Random random = new Random();
@@ -173,7 +165,7 @@ namespace TWAssistant
 		}
 		class CombinationsComparator : IComparer<ProvinceCombination>
 		{
-			private Comparison<ProvinceCombination> comparison;
+			readonly Comparison<ProvinceCombination> comparison;
 			public CombinationsComparator(Comparison<ProvinceCombination> comparison)
 			{
 				this.comparison = comparison;

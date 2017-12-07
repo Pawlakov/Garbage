@@ -33,7 +33,7 @@ namespace TWAssistant
 						if (region.IsCoastal)
 						{
 							type = BuildingType.COAST;
-							level = 3;
+							//level = 3;
 						}
 						else if (region.IsBig)
 							type = BuildingType.CITY;
@@ -44,7 +44,7 @@ namespace TWAssistant
 						if (region.Resource != Resource.NONE)
 						{
 							type = BuildingType.RESOURCE;
-							level = 3;
+							//level = 3;
 						}
 						else if (region.IsBig)
 							type = BuildingType.CITY;

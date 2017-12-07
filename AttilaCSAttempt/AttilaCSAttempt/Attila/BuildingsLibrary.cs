@@ -7,13 +7,13 @@ namespace TWAssistant
 	{
 		class BuildingLibrary
 		{
-			private BuildingBranch cityCivilbuilding;
-			private BuildingBranch townCivilbuilding;
-			private List<BuildingBranch>[] resourceBuildings;
+			BuildingBranch cityCivilbuilding;
+			BuildingBranch townCivilbuilding;
+			List<BuildingBranch>[] resourceBuildings;
 			//
-			private List<BuildingBranch> coastBuildings;
-			private List<BuildingBranch> cityBuildings;
-			private List<BuildingBranch> townBuildings;
+			readonly List<BuildingBranch> coastBuildings;
+			readonly List<BuildingBranch> cityBuildings;
+			readonly List<BuildingBranch> townBuildings;
 			//
 			public BuildingLibrary(string filename)
 			{
@@ -58,7 +58,7 @@ namespace TWAssistant
 				townBuildings = new List<BuildingBranch>(source.townBuildings);
 			}
 			//
-			public void ShowListOneType(BuildingType type)
+			public void ShowListOneType(BuildingType type, Resource resource)
 			{
 				List<BuildingBranch> list;
 				switch (type)
@@ -72,6 +72,9 @@ namespace TWAssistant
 					case BuildingType.TOWN:
 						list = townBuildings;
 						break;
+					case BuildingType.RESOURCE:
+						list = resourceBuildings[(int)resource];
+						break;
 					default:
 						list = null;
 						break;
@@ -83,6 +86,32 @@ namespace TWAssistant
 					}
 				else
 					Console.WriteLine("No list for this building type!");
+			}
+			public BuildingBranch GetExactBuilding(BuildingType type, Resource resource, int choice)
+			{
+				List<BuildingBranch> list;
+				switch (type)
+				{
+					case BuildingType.COAST:
+						list = coastBuildings;
+						break;
+					case BuildingType.CITY:
+						list = cityBuildings;
+						break;
+					case BuildingType.TOWN:
+						list = townBuildings;
+						break;
+					case BuildingType.RESOURCE:
+						list = resourceBuildings[(int)resource];
+						break;
+					default:
+						list = null;
+						break;
+				}
+				if (list != null)
+					return list[choice];
+				Console.WriteLine("No list for this building type!");
+				return null;
 			}
 			public int GetCountByType(BuildingType type)
 			{
@@ -127,7 +156,7 @@ namespace TWAssistant
 				list = townBuildings;
 				Helper(list);
 			}
-			private void Helper(List<BuildingBranch> list)
+			void Helper(List<BuildingBranch> list)
 			{
 				BuildingBranch building;
 				for (int whichBuilding = 0; whichBuilding < list.Count; ++whichBuilding)

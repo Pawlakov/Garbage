@@ -6,10 +6,10 @@ namespace TWAssistant
 	{
 		class WealthBonus
 		{
-			private BonusCategory category;
-			private bool isMultiplier;
-			private float value;
-			private float perFertilityValue;
+			BonusCategory category;
+			bool isMultiplier;
+			float value;
+			float perFertilityValue;
 			//
 			public WealthBonus(XmlNode wealthBonusNode)
 			{
@@ -22,6 +22,13 @@ namespace TWAssistant
 				category = iniCategory;
 				//
 				Setup(wealthBonusNode);
+			}
+			public WealthBonus(BonusCategory iniCategory, bool iniIsMultiplier, float iniValue, float iniPerFertilityValue)
+			{
+				category = iniCategory;
+				isMultiplier = iniIsMultiplier;
+				value = iniValue;
+				perFertilityValue = iniPerFertilityValue;
 			}
 			//
 			public void Execute(ref float[] values, ref float[] multipliers, uint fertility)
@@ -44,7 +51,7 @@ namespace TWAssistant
 				}
 			}
 			//
-			private void Setup(XmlNode wealthBonusNode)
+			void Setup(XmlNode wealthBonusNode)
 			{
 				isMultiplier = Convert.ToBoolean(wealthBonusNode.Attributes.GetNamedItem("m").InnerText);
 				if (category == BonusCategory.ALL && isMultiplier == false)

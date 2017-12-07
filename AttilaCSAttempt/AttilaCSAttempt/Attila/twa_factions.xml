@@ -3,6 +3,8 @@
   <faction n="WesternRomanEmpire-LatinChristian(Radious Mod)" b ="twa_rm_buildings_wre_lachri.xml" r="1" s="1">
   </faction>
   <faction n="WesternRomanEmpire-LatinChristian(Vanilla)" b ="twa_buildings_wre_lachri.xml" r="1" s="1">
+    <bonus c ="MARITIME_COMMERCE" m="true">-0,08</bonus>
+    <bonus c ="ALL" m="true">-0,55</bonus>
   </faction>
   <faction n="WesternRomanEmpire-RomanPagan(Vanilla)" b ="twa_buildings_wre_ropag.xml" s="1">
   </faction>
