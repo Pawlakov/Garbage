@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<factions>
+	<faction n="WesternRomanEmpire-LatinChristian" b="XMLs/Radious/twa_rm_buildings_wre_lachri.xml" s="1">
+		<bonus c="MARITIME_COMMERCE" m="true">-0,1</bonus>
+		<bonus c="ALL" m="true">-0,40</bonus>
+	</faction>
+	<faction n="EasternRomanEmpire-GreekChristian" b="XMLs/Radious/twa_rm_buildings_ere_grechri.xml" r="1" s="1">
+		<bonus c="MARITIME_COMMERCE" m="true">-0,1</bonus>
+		<bonus c="ALL" m="true">-0,25</bonus>
+	</faction>
+</factions>

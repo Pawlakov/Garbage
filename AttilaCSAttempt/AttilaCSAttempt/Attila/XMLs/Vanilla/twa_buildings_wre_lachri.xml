@@ -363,12 +363,6 @@
 		<level f="-20">
 			<bonus c ="CULTURE" m="false">450</bonus>
 		</level>
-		<level f="-40">
-			<bonus c ="CULTURE" m="false">750</bonus>
-		</level>
-		<level f="-80">
-			<bonus c ="CULTURE" m="false">1250</bonus>
-		</level>
 	</branch>
 	<branch n="CityCentreArena" t="CITY">
 		<level o ="3">
@@ -377,12 +371,6 @@
 		<level f="-30" o="7" r="-1">
 			<bonus c ="CULTURE" m="false">300</bonus>
 		</level>
-		<level f="-50" o="15" s="-2" r="-2">
-			<bonus c ="CULTURE" m="false">500</bonus>
-		</level>
-		<level f="-100" o="21" s="-4" r="-3">
-			<bonus c ="CULTURE" m="false">825</bonus>
-		</level>
 	</branch>
 	<branch n="CityCentreTheatre" t="CITY">
 		<level o ="3">
@@ -390,12 +378,6 @@
 		</level>
 		<level f="-30" o="7" r="-1">
 			<bonus c ="CULTURE" m="false">300</bonus>
-		</level>
-		<level f="-50" o="10" s="-1" r="-3">
-			<bonus c ="CULTURE" m="false">1000</bonus>
-		</level>
-		<level f="-100" o="13" s="-2" r="-5">
-			<bonus c ="CULTURE" m="false">1650</bonus>
 		</level>
 	</branch>
 	<branch n="CityAdministrationMonument" t="CITY">
@@ -522,12 +504,6 @@
 		<level s="6" _s="4">
 			<bonus c ="MAINTENANCE" m="false">-50</bonus>
 		</level>
-		<level s="9" _s="5">
-			<bonus c ="MAINTENANCE" m="false">-100</bonus>
-		</level>
-		<level s="12" _s="6">
-			<bonus c ="MAINTENANCE" m="false">-200</bonus>
-		</level>
 	</branch>
 	<branch n="CityHygieneWaterworks" t="CITY">
 		<level o="1" s="2" _s="2">
@@ -535,12 +511,6 @@
 		</level>
 		<level o="2" _s="8">
 			<bonus c ="MAINTENANCE" m="false">-50</bonus>
-		</level>
-		<level o="3" _s="12">
-			<bonus c ="MAINTENANCE" m="false">-100</bonus>
-		</level>
-		<level o="4" _s="16">
-			<bonus c ="MAINTENANCE" m="false">-200</bonus>
 		</level>
 	</branch>
 	<branch n="CityRecruitmentCavalry" t="CITY">
@@ -686,12 +656,6 @@
 		</level>
 		<level f="-20" o="2" s="3" _s="4">
 			<bonus c ="CULTURE" m="false">300</bonus>
-		</level>
-		<level f="-30" o="3" s="5" _s="5">
-			<bonus c ="CULTURE" m="false">500</bonus>
-		</level>
-		<level f="-40" o="4" s="6" _s="7">
-			<bonus c ="CULTURE" m="false">825</bonus>
 		</level>
 	</branch>
 	<branch n="TownRecruitmentCavalry" t="TOWN">

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<factions>
+	<faction n="EasternRomanEmpire-GreekChristian(Modpack)" b="XMLs/ModPack/twa_mpack_buildings_ere_grechri.xml">
+		<bonus c="MARITIME_COMMERCE" m="true">-0,08</bonus>
+		<bonus c="ALL" m="true">-0,4</bonus>
+	</faction>
+	<faction n="EasternRomanEmpire-GreekChristian(Modpack)-LegacyTechs" b="XMLs/ModPack/twa_mpack_buildings_ere_grechri_legacy.xml">
+		<bonus c="MARITIME_COMMERCE" m="true">-0,08</bonus>
+		<bonus c="ALL" m="true">-0,4</bonus>
+	</faction>
+</factions>
