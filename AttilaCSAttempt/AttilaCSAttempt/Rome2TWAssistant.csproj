@@ -70,6 +70,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rome2\ProvinceWealth.cs" />
     <Compile Include="Rome2\WealthBonus.cs" />
+    <Compile Include="Attila\BuildingLevel.cs" />
+    <Compile Include="Attila\ProvinceTraditions.cs" />
+    <Compile Include="Attila\ProvinceReligion.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -88,6 +91,9 @@
     <None Include="Attila\XMLs\ModPack\twa_mpack_buildings_ere_grechri.xml" />
     <None Include="Attila\XMLs\ModPack\twa_mpack_buildings_ere_grechri_legacy.xml" />
     <None Include="Attila\XMLs\ModPack\twa_mpack_factions.xml" />
+    <None Include="Attila\XMLs\ModPack\twa_mpack_buildings_wre_lachri.xml" />
+    <None Include="Attila\XMLs\ModPack\twa_mpack_buildings_wre_lachri_legacy.xml" />
+    <None Include="Attila\XMLs\ModPack\twa_mpack_buildings_wre.xml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Rome2\buildings_rome.xml" />

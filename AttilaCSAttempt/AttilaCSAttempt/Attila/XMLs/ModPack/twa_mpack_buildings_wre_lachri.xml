@@ -380,21 +380,15 @@
 			<bonus c ="CULTURE" m="false">300</bonus>
 		</level>
 	</branch>
-	<branch n="Treasury" t="CITY">
+	<branch n="Monument" t="CITY">
 		<level f="-10" o ="3">
 			<bonus c ="CULTURE" m="false">300</bonus>
 		</level>
-		<level f="-15" o="3">
-			<bonus c ="COMMERCE" m="true">0,1</bonus>
-			<bonus c ="MARITIME_COMMERCE" m="true">0,1</bonus>
+		<level o ="5">
 		</level>
-		<level f="-35" o="3">
-			<bonus c ="COMMERCE" m="true">0,15</bonus>
-			<bonus c ="MARITIME_COMMERCE" m="true">0,15</bonus>
+		<level o ="7">
 		</level>
-		<level f="-75" o="3">
-			<bonus c ="COMMERCE" m="true">0,2</bonus>
-			<bonus c ="MARITIME_COMMERCE" m="true">0,2</bonus>
+		<level o ="9">
 		</level>
 	</branch>
 	<branch n="Palace" t="CITY">
@@ -403,15 +397,15 @@
 		</level>
 		<level f="-20" o ="9">
 			<bonus c ="CULTURE" m="false">300</bonus>
-			<bonus c ="ALL" m="true">0,04</bonus>
+			<bonus c ="ALL" m="true">0,05</bonus>
 		</level>
 		<level f="-50" o ="13">
 			<bonus c ="CULTURE" m="false">500</bonus>
-			<bonus c ="ALL" m="true">0,06</bonus>
+			<bonus c ="ALL" m="true">0,07</bonus>
 		</level>
 		<level f="-100" o ="17">
 			<bonus c ="CULTURE" m="false">900</bonus>
-			<bonus c ="ALL" m="true">0,08</bonus>
+			<bonus c ="ALL" m="true">0,1</bonus>
 		</level>
 	</branch>
 	<branch n="Brickyard" t="CITY">
@@ -475,24 +469,24 @@
 		<level o ="-8" s="-8">
 		</level>
 	</branch>
-	<branch n="GreekTemple" t="CITY">
+	<branch n="LatinTemple" t="CITY">
 		<level o ="3" r="3">
 		</level>
-		<level o ="5" r="5">
+		<level o ="4" r="6">
 		</level>
-		<level o ="7" r="7">
+		<level o ="6" r="9">
 		</level>
-		<level o ="10" r="10">
+		<level o ="8" r="12">
 		</level>
 	</branch>
-	<branch n="GreekMonastery" t="CITY">
+	<branch n="LatinMonastery" t="CITY">
 		<level o="3" r="4">
 		</level>
-		<level r="4">
+		<level s="6" r="4">
 		</level>
-		<level r="5">
+		<level s="10" r="5">
 		</level>
-		<level r="6">
+		<level s="15" r="6">
 		</level>
 	</branch>
 	<branch n="Sewers" t="CITY">
@@ -531,10 +525,10 @@
 			<bonus c ="MAINTENANCE" m="false">-200</bonus>
 		</level>
 		<level>
-			<bonus c ="MAINTENANCE" m="false">-400</bonus>
+			<bonus c ="MAINTENANCE" m="false">-600</bonus>
 		</level>
 		<level>
-			<bonus c ="MAINTENANCE" m="false">-800</bonus>
+			<bonus c ="MAINTENANCE" m="false">-1000</bonus>
 		</level>
 	</branch>
 	<branch n="InfantryBarracks" t="CITY">
@@ -577,20 +571,6 @@
 		</level>
 		<level f ="70" _f="20" o ="-5" s="-5">
 			<bonus c ="HUSBANDRY" m="false">500|150</bonus>
-		</level>
-	</branch>
-	<branch n="Horses" t="TOWN">
-		<level f ="10" _f="8">
-			<bonus c ="HUSBANDRY" m="false">30|30</bonus>
-		</level>
-		<level f ="30" _f="6" o ="-1" s="-1">
-			<bonus c ="HUSBANDRY" m="false">240|70</bonus>
-		</level>
-		<level f ="40" _f="8" o ="-3" s="-3">
-			<bonus c ="HUSBANDRY" m="false">420|125</bonus>
-		</level>
-		<level f ="50" _f="10" o ="-5" s="-5">
-			<bonus c ="HUSBANDRY" m="false">650|200</bonus>
 		</level>
 	</branch>
 	<branch n="Sheep" t="TOWN">
@@ -638,7 +618,7 @@
 			<bonus c ="HUSBANDRY" m="true">0,15</bonus>
 		</level>
 	</branch>
-	<branch n="GreekTemple" t="TOWN">
+	<branch n="LatinTemple" t="TOWN">
 		<level o ="2" r="1">
 		</level>
 		<level o ="3" r="2">
@@ -646,6 +626,16 @@
 		<level o ="4" r="3">
 		</level>
 		<level o ="5" r="4">
+		</level>
+	</branch>
+	<branch n="Garrison" t="TOWN">
+		<level f="-10" o ="3">
+		</level>
+		<level f="-20" o ="5">
+		</level>
+		<level f="-40" o ="7">
+		</level>
+		<level f="-80" o ="9">
 		</level>
 	</branch>
 	<branch n="Fountain" t="TOWN">
@@ -676,10 +666,10 @@
 			<bonus c ="MAINTENANCE" m="false">-200</bonus>
 		</level>
 		<level>
-			<bonus c ="MAINTENANCE" m="false">-400</bonus>
+			<bonus c ="MAINTENANCE" m="false">-600</bonus>
 		</level>
 		<level>
-			<bonus c ="MAINTENANCE" m="false">-800</bonus>
+			<bonus c ="MAINTENANCE" m="false">-1000</bonus>
 		</level>
 	</branch>
 	<branch n="InfantryBarracks" t="TOWN">

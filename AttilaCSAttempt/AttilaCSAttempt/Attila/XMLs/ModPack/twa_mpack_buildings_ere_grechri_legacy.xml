@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <building_library>
 	<!--CENTERCITY-->
-	<branch n="CityCivil" t="CENTERCITY">
+	<branch n="Civil" t="CENTERCITY">
 		<level f ="-30" o ="2" s="-1">
 			<bonus c ="SUBSISTENCE" m="false">300</bonus>
 		</level>
@@ -16,7 +16,7 @@
 		</level>
 	</branch>
 	<!--CENTERTOWN-->
-	<branch n="TownCivil" t="CENTERTOWN">
+	<branch n="Civil" t="CENTERTOWN">
 		<level f ="-10">
 			<bonus c ="SUBSISTENCE" m="false">150</bonus>
 		</level>
@@ -31,7 +31,7 @@
 		</level>
 	</branch>
 	<!--COAST-->
-	<branch n="PortTrade" t="COAST">
+	<branch n="TradePort" t="COAST">
 		<level>
 			<bonus c ="MARITIME_COMMERCE" m="false">225</bonus>
 		</level>
@@ -48,7 +48,7 @@
 			<bonus c ="COMMERCE" m="false">1250</bonus>
 		</level>
 	</branch>
-	<branch n="PortFish" t="COAST">
+	<branch n="FishPort" t="COAST">
 		<level>
 			<bonus c ="MARITIME_COMMERCE" m="false">225</bonus>
 		</level>
@@ -62,7 +62,7 @@
 			<bonus c ="MARITIME_COMMERCE" m="false">1250</bonus>
 		</level>
 	</branch>
-	<branch n="PortMilitary" t="COAST">
+	<branch n="MilitaryPort" t="COAST">
 		<level>
 			<bonus c ="MARITIME_COMMERCE" m="false">225</bonus>
 		</level>
@@ -74,7 +74,7 @@
 		</level>
 	</branch>
 	<!--RESOURCE-->
-	<branch n="ResourceIronWeapons" t="RESOURCE" r="IRON">
+	<branch n="IronWeapons" t="RESOURCE" r="IRON">
 		<level >
 		</level>
 		<level o ="-1" s="-2">
@@ -84,7 +84,7 @@
 		<level o ="-4" s="-6">
 		</level>
 	</branch>
-	<branch n="ResourceIronTools" t="RESOURCE" r="IRON">
+	<branch n="IronTools" t="RESOURCE" r="IRON">
 		<level >
 		</level>
 		<level o ="-1" s="-2">
@@ -100,7 +100,7 @@
 			<bonus c ="AGRICULTURE" m="true">0,15</bonus>
 		</level>
 	</branch>
-	<branch n="ResourceLead" t="RESOURCE" r="LEAD">
+	<branch n="Lead" t="RESOURCE" r="LEAD">
 		<level >
 			<bonus c ="INDUSTRY" m="true">0,05</bonus>
 		</level>
@@ -114,7 +114,7 @@
 			<bonus c ="INDUSTRY" m="true">0,2</bonus>
 		</level>
 	</branch>
-	<branch n="ResourceGemstones" t="RESOURCE" r="GEMSTONES">
+	<branch n="Gemstones" t="RESOURCE" r="GEMSTONES">
 		<level >
 		</level>
 		<level o ="-1" s="-2">
@@ -124,7 +124,7 @@
 		<level o ="-4" s="-6">
 		</level>
 	</branch>
-	<branch n="ResourceOlive" t="RESOURCE" r="OLIVE">
+	<branch n="Olive" t="RESOURCE" r="OLIVE">
 		<level f="50">
 			<bonus c ="COMMERCE" m="true">0,05</bonus>
 			<bonus c ="MARITIME_COMMERCE" m="true">0,05</bonus>
@@ -142,7 +142,7 @@
 			<bonus c ="MARITIME_COMMERCE" m="true">0,2</bonus>
 		</level>
 	</branch>
-	<branch n="ResourceFur" t="RESOURCE" r="FUR">
+	<branch n="Fur" t="RESOURCE" r="FUR">
 		<level f="30">
 			<bonus c ="COMMERCE" m="false">100</bonus>
 		</level>
@@ -156,7 +156,7 @@
 			<bonus c ="COMMERCE" m="false">500</bonus>
 		</level>
 	</branch>
-	<branch n="ResourceWineWineyard" t="RESOURCE" r="WINE">
+	<branch n="Wineyard" t="RESOURCE" r="WINE">
 		<level f="50" o="3">
 		</level>
 		<level f="50" o="5" s="-1">
@@ -166,7 +166,7 @@
 		<level f="90" o="9" s="-5">
 		</level>
 	</branch>
-	<branch n="ResourceWineOrchard" t="RESOURCE" r="WINE">
+	<branch n="Orchard" t="RESOURCE" r="WINE">
 		<level f="50" o="3">
 		</level>
 		<level f="90" o="3" s="-1">
@@ -176,7 +176,7 @@
 		<level f="170" o="5" s="-5">
 		</level>
 	</branch>
-	<branch n="ResourceSilk" t="RESOURCE" r="SILK">
+	<branch n="Silk" t="RESOURCE" r="SILK">
 		<level >
 			<bonus c ="COMMERCE" m="true">0,05</bonus>
 			<bonus c ="MARITIME_COMMERCE" m="true">0,05</bonus>
@@ -194,7 +194,7 @@
 			<bonus c ="MARITIME_COMMERCE" m="true">0,2</bonus>
 		</level>
 	</branch>
-	<branch n="ResourceMarbleSculptor" t="RESOURCE" r="MARBLE">
+	<branch n="MarbleSculptor" t="RESOURCE" r="MARBLE">
 		<level>
 		</level>
 		<level o="-1" s="-2" r="1">
@@ -207,7 +207,7 @@
 			<bonus c ="CULTURE" m="true">0,15</bonus>
 		</level>
 	</branch>
-	<branch n="ResourceMarbleQuarry" t="RESOURCE" r="MARBLE">
+	<branch n="MarbleQuarry" t="RESOURCE" r="MARBLE">
 		<level>
 		</level>
 		<level o="-2" s="-2">
@@ -220,7 +220,7 @@
 			<bonus c ="INDUSTRY" m="false">1650</bonus>
 		</level>
 	</branch>
-	<branch n="ResourceSalt" t="RESOURCE" r="SALT">
+	<branch n="Salt" t="RESOURCE" r="SALT">
 		<level f="30">
 			<bonus c ="INDUSTRY" m="false">120</bonus>
 		</level>
@@ -234,7 +234,7 @@
 			<bonus c ="INDUSTRY" m="false">900</bonus>
 		</level>
 	</branch>
-	<branch n="ResourceGoldMine" t="RESOURCE" r="GOLD">
+	<branch n="GoldMine" t="RESOURCE" r="GOLD">
 		<level o="-2" s="-2">
 			<bonus c ="INDUSTRY" m="false">600</bonus>
 			<bonus c ="COMMERCE" m="true">0,1</bonus>
@@ -250,7 +250,7 @@
 			<bonus c ="INDUSTRY" m="false">2500</bonus>
 		</level>
 	</branch>
-	<branch n="ResourceGoldJeweller" t="RESOURCE" r="GOLD">
+	<branch n="GoldJeweller" t="RESOURCE" r="GOLD">
 		<level o="-2" s="-2">
 			<bonus c ="INDUSTRY" m="false">600</bonus>
 			<bonus c ="COMMERCE" m="true">0,1</bonus>
@@ -266,7 +266,7 @@
 			<bonus c ="INDUSTRY" m="false">3000</bonus>
 		</level>
 	</branch>
-	<branch n="ResourceDye" t="RESOURCE" r="DYE">
+	<branch n="Dye" t="RESOURCE" r="DYE">
 		<level>
 			<bonus c ="INDUSTRY" m="true">0,02</bonus>
 			<bonus c ="COMMERCE" m="true">0,02</bonus>
@@ -288,7 +288,7 @@
 			<bonus c ="MARITIME_COMMERCE" m="true">0,08</bonus>
 		</level>
 	</branch>
-	<branch n="ResourceLumber" t="RESOURCE" r="LUMBER">
+	<branch n="Lumber" t="RESOURCE" r="LUMBER">
 		<level>
 			<bonus c ="INDUSTRY" m="true">0,05</bonus>
 		</level>
@@ -303,7 +303,7 @@
 		</level>
 	</branch>
 	<!--CITY-->
-	<branch n="CityCentreWine" t="CITY">
+	<branch n="WineCentre" t="CITY">
 		<level o ="3">
 			<bonus c ="COMMERCE" m="false">225</bonus>
 		</level>
@@ -320,7 +320,7 @@
 			<bonus c ="COMMERCE" m="false">2000</bonus>
 		</level>
 	</branch>
-	<branch n="CityCentreFood" t="CITY">
+	<branch n="FoodCentre" t="CITY">
 		<level o ="3">
 			<bonus c ="COMMERCE" m="false">225</bonus>
 		</level>
@@ -339,7 +339,7 @@
 			<bonus c ="COMMERCE" m="false">400</bonus>
 		</level>
 	</branch>
-	<branch n="CityCentreSlaves" t="CITY">
+	<branch n="SlavesCentre" t="CITY">
 		<level o ="3">
 			<bonus c ="COMMERCE" m="false">225</bonus>
 		</level>
@@ -356,7 +356,7 @@
 			<bonus c ="COMMERCE" m="false">1450</bonus>
 		</level>
 	</branch>
-	<branch n="CityCentreLibrary" t="CITY">
+	<branch n="Library" t="CITY">
 		<level o ="3">
 			<bonus c ="COMMERCE" m="false">225</bonus>
 		</level>
@@ -370,7 +370,7 @@
 			<bonus c ="CULTURE" m="false">1250</bonus>
 		</level>
 	</branch>
-	<branch n="CityCentreArena" t="CITY">
+	<branch n="Arena" t="CITY">
 		<level o ="3">
 			<bonus c ="COMMERCE" m="false">225</bonus>
 		</level>
@@ -384,7 +384,7 @@
 			<bonus c ="CULTURE" m="false">825</bonus>
 		</level>
 	</branch>
-	<branch n="CityCentreTheatre" t="CITY">
+	<branch n="Theatre" t="CITY">
 		<level o ="3">
 			<bonus c ="COMMERCE" m="false">225</bonus>
 		</level>
@@ -398,7 +398,7 @@
 			<bonus c ="CULTURE" m="false">1650</bonus>
 		</level>
 	</branch>
-	<branch n="CityAdministrationTreasury" t="CITY">
+	<branch n="Treasury" t="CITY">
 		<level f="-10" o ="3">
 			<bonus c ="CULTURE" m="false">300</bonus>
 		</level>
@@ -415,7 +415,7 @@
 			<bonus c ="MARITIME_COMMERCE" m="true">0,2</bonus>
 		</level>
 	</branch>
-	<branch n="CityAdministrationPalace" t="CITY">
+	<branch n="Palace" t="CITY">
 		<level f="-10" o ="3">
 			<bonus c ="CULTURE" m="false">300</bonus>
 		</level>
@@ -432,7 +432,7 @@
 			<bonus c ="ALL" m="true">0,08</bonus>
 		</level>
 	</branch>
-	<branch n="CityIndustryBrickyard" t="CITY">
+	<branch n="Brickyard" t="CITY">
 		<level>
 			<bonus c ="INDUSTRY" m="false">375</bonus>
 		</level>
@@ -449,7 +449,7 @@
 			<bonus c ="COMMERCE" m="false">1250</bonus>
 		</level>
 	</branch>
-	<branch n="CityIndustryMetalworks" t="CITY">
+	<branch n="Metalworks" t="CITY">
 		<level>
 			<bonus c ="INDUSTRY" m="false">375</bonus>
 		</level>
@@ -463,7 +463,7 @@
 			<bonus c ="INDUSTRY" m="false">2500</bonus>
 		</level>
 	</branch>
-	<branch n="CityMilitaryArmour" t="CITY">
+	<branch n="MilitaryArmour" t="CITY">
 		<level>
 		</level>
 		<level o ="-2" s="-2">
@@ -473,7 +473,7 @@
 		<level o ="-8" s="-8">
 		</level>
 	</branch>
-	<branch n="CityMilitaryMissiles" t="CITY">
+	<branch n="MilitaryMissiles" t="CITY">
 		<level>
 		</level>
 		<level o ="-2" s="-2">
@@ -483,7 +483,7 @@
 		<level o ="-8" s="-8">
 		</level>
 	</branch>
-	<branch n="CityMilitaryWeapons" t="CITY">
+	<branch n="MilitaryWeapons" t="CITY">
 		<level>
 		</level>
 		<level o ="-2" s="-2">
@@ -493,33 +493,33 @@
 		<level o ="-8" s="-8">
 		</level>
 	</branch>
-	<branch n="CityTempleGreek" t="CITY">
+	<branch n="GreekTemple" t="CITY">
 		<level o ="3" r="3">
 		</level>
 		<level o ="5" r="5">
 		</level>
 	</branch>
-	<branch n="CityMonasteryGreek" t="CITY">
+	<branch n="GreekMonastery" t="CITY">
 		<level o="3" r="4">
 		</level>
 		<level r="4">
 		</level>
 	</branch>
-	<branch n="CityHygieneSewers" t="CITY">
+	<branch n="Sewers" t="CITY">
 		<level o="1" s="3" _s="2">
 			<bonus c ="MAINTENANCE" m="false">-25</bonus>
 		</level>
-		<level s="6" _s="4" i="3">
+		<level s="6" _s="4" i="1">
 			<bonus c ="MAINTENANCE" m="false">-50</bonus>
 		</level>
-		<level s="9" _s="5" i="3">
+		<level s="9" _s="5" i="2">
 			<bonus c ="MAINTENANCE" m="false">-100</bonus>
 		</level>
 		<level s="12" _s="6" i="3">
 			<bonus c ="MAINTENANCE" m="false">-200</bonus>
 		</level>
 	</branch>
-	<branch n="CityHygieneWaterworks" t="CITY">
+	<branch n="Waterworks" t="CITY">
 		<level o="1" s="2" _s="2">
 			<bonus c ="MAINTENANCE" m="false">-25</bonus>
 		</level>
@@ -533,7 +533,7 @@
 			<bonus c ="MAINTENANCE" m="false">-200</bonus>
 		</level>
 	</branch>
-	<branch n="CityRecruitmentCavalry" t="CITY">
+	<branch n="CavalryBarracks" t="CITY">
 		<level>
 		</level>
 		<level>
@@ -546,7 +546,7 @@
 			<bonus c ="MAINTENANCE" m="false">-1000</bonus>
 		</level>
 	</branch>
-	<branch n="CityRecruitmentSkirmishers" t="CITY">
+	<branch n="SkirmishersBarracks" t="CITY">
 		<level>
 		</level>
 		<level>
@@ -559,7 +559,7 @@
 			<bonus c ="MAINTENANCE" m="false">-800</bonus>
 		</level>
 	</branch>
-	<branch n="CityRecruitmentInfantry" t="CITY">
+	<branch n="InfantryBarracks" t="CITY">
 		<level>
 		</level>
 		<level>
@@ -573,7 +573,7 @@
 		</level>
 	</branch>
 	<!--TOWN-->
-	<branch n="TownAgricultureWheat" t="TOWN">
+	<branch n="Wheat" t="TOWN">
 		<level f ="10" _f="8">
 			<bonus c ="AGRICULTURE" m="false">30|30</bonus>
 		</level>
@@ -587,7 +587,7 @@
 			<bonus c ="AGRICULTURE" m="false">80|80</bonus>
 		</level>
 	</branch>
-	<branch n="TownAgricultureCattle" t="TOWN">
+	<branch n="Cattle" t="TOWN">
 		<level f ="10" _f="8">
 			<bonus c ="HUSBANDRY" m="false">30|30</bonus>
 		</level>
@@ -601,7 +601,7 @@
 			<bonus c ="HUSBANDRY" m="false">500|150</bonus>
 		</level>
 	</branch>
-	<branch n="TownAgricultureHorses" t="TOWN">
+	<branch n="Horses" t="TOWN">
 		<level f ="10" _f="8">
 			<bonus c ="HUSBANDRY" m="false">30|30</bonus>
 		</level>
@@ -615,7 +615,7 @@
 			<bonus c ="HUSBANDRY" m="false">650|200</bonus>
 		</level>
 	</branch>
-	<branch n="TownAgricultureSheep" t="TOWN">
+	<branch n="Sheep" t="TOWN">
 		<level f ="10" _f="8">
 			<bonus c ="HUSBANDRY" m="false">30|30</bonus>
 		</level>
@@ -629,7 +629,7 @@
 			<bonus c ="HUSBANDRY" m="false">1250|165</bonus>
 		</level>
 	</branch>
-	<branch n="TownIndustryMine" t="TOWN">
+	<branch n="Mine" t="TOWN">
 		<level >
 			<bonus c ="INDUSTRY" m="false">375</bonus>
 		</level>
@@ -643,7 +643,7 @@
 			<bonus c ="INDUSTRY" m="false">1650</bonus>
 		</level>
 	</branch>
-	<branch n="TownIndustryTannery" t="TOWN">
+	<branch n="Tannery" t="TOWN">
 		<level>
 			<bonus c ="INDUSTRY" m="false">375</bonus>
 		</level>
@@ -660,7 +660,7 @@
 			<bonus c ="HUSBANDRY" m="true">0,15</bonus>
 		</level>
 	</branch>
-	<branch n="TownReligiousGreek" t="TOWN">
+	<branch n="GreekTemple" t="TOWN">
 		<level o ="2" r="1">
 		</level>
 		<level o ="3" r="2">
@@ -668,7 +668,7 @@
 		<level o ="4" r="3">
 		</level>
 	</branch>
-	<branch n="TownHygiene" t="TOWN">
+	<branch n="Fountain" t="TOWN">
 		<level f="-10" o="1" s="2" _s="2">
 			<bonus c ="CULTURE" m="false">150</bonus>
 		</level>
@@ -682,7 +682,7 @@
 			<bonus c ="CULTURE" m="false">825</bonus>
 		</level>
 	</branch>
-	<branch n="TownRecruitmentCavalry" t="TOWN">
+	<branch n="CavalryBarracks" t="TOWN">
 		<level>
 		</level>
 		<level>
@@ -695,7 +695,7 @@
 			<bonus c ="MAINTENANCE" m="false">-1000</bonus>
 		</level>
 	</branch>
-	<branch n="TownRecruitmentSkirmishers" t="TOWN">
+	<branch n="SkirmishersBarracks" t="TOWN">
 		<level>
 		</level>
 		<level>
@@ -708,7 +708,7 @@
 			<bonus c ="MAINTENANCE" m="false">-800</bonus>
 		</level>
 	</branch>
-	<branch n="TownRecruitmentInfantry" t="TOWN">
+	<branch n="InfantryBarracks" t="TOWN">
 		<level>
 		</level>
 		<level>

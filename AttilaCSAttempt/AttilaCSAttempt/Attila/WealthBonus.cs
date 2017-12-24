@@ -4,34 +4,65 @@ namespace TWAssistant
 {
 	namespace Attila
 	{
-		class WealthBonus
+		public struct WealthBonus
 		{
-			BonusCategory category;
-			bool isMultiplier;
-			float value;
-			float perFertilityValue;
+			readonly BonusCategory category;
+			readonly bool isMultiplier;
+			readonly float value;
+			readonly float perFertilityValue;
 			//
 			public WealthBonus(XmlNode wealthBonusNode)
 			{
 				Enum.TryParse(wealthBonusNode.Attributes.GetNamedItem("c").InnerText, out category);
 				//
-				Setup(wealthBonusNode);
+				isMultiplier = Convert.ToBoolean(wealthBonusNode.Attributes.GetNamedItem("m").InnerText);
+				if (category == BonusCategory.ALL && isMultiplier == false)
+					throw new Exception("Non-percentage ALL bonus.");
+				//
+				string innerText = wealthBonusNode.InnerText;
+				if (innerText.Contains("|"))
+				{
+					if ((category != BonusCategory.AGRICULTURE && category != BonusCategory.HUSBANDRY) || isMultiplier == true)
+						throw new Exception("Wrong fertility-based bonus.");
+					int divisionPosition = innerText.IndexOf('|');
+					string firstValue = innerText.Substring(0, divisionPosition);
+					string secondValue = innerText.Substring(divisionPosition + 1);
+					value = Convert.ToSingle(firstValue);
+					perFertilityValue = Convert.ToSingle(secondValue);
+				}
+				else
+				{
+					value = Convert.ToSingle(innerText);
+					perFertilityValue = 0.0f;
+				}
 			}
 			public WealthBonus(XmlNode wealthBonusNode, BonusCategory iniCategory)
 			{
 				category = iniCategory;
 				//
-				Setup(wealthBonusNode);
-			}
-			public WealthBonus(BonusCategory iniCategory, bool iniIsMultiplier, float iniValue, float iniPerFertilityValue)
-			{
-				category = iniCategory;
-				isMultiplier = iniIsMultiplier;
-				value = iniValue;
-				perFertilityValue = iniPerFertilityValue;
+				isMultiplier = Convert.ToBoolean(wealthBonusNode.Attributes.GetNamedItem("m").InnerText);
+				if (category == BonusCategory.ALL && isMultiplier == false)
+					throw new Exception("Non-percentage ALL bonus.");
+				//
+				string innerText = wealthBonusNode.InnerText;
+				if (innerText.Contains("|"))
+				{
+					if ((category != BonusCategory.AGRICULTURE && category != BonusCategory.HUSBANDRY) || isMultiplier == true)
+						throw new Exception("Wrong fertility-based bonus.");
+					int divisionPosition = innerText.IndexOf('|');
+					string firstValue = innerText.Substring(0, divisionPosition);
+					string secondValue = innerText.Substring(divisionPosition + 1);
+					value = Convert.ToSingle(firstValue);
+					perFertilityValue = Convert.ToSingle(secondValue);
+				}
+				else
+				{
+					value = Convert.ToSingle(innerText);
+					perFertilityValue = 0.0f;
+				}
 			}
 			//
-			public void Execute(ref float[] values, ref float[] multipliers, uint fertility)
+			public void Execute(ref float[] values, ref float[] multipliers, int fertility)
 			{
 				if (isMultiplier)
 				{
@@ -48,30 +79,6 @@ namespace TWAssistant
 				else
 				{
 					values[(int)category] += (value + (perFertilityValue * fertility));
-				}
-			}
-			//
-			void Setup(XmlNode wealthBonusNode)
-			{
-				isMultiplier = Convert.ToBoolean(wealthBonusNode.Attributes.GetNamedItem("m").InnerText);
-				if (category == BonusCategory.ALL && isMultiplier == false)
-					Console.WriteLine("ERROR: Non-percentage ALL bonus!");
-				//
-				string innerText = wealthBonusNode.InnerText;
-				if (innerText.Contains("|"))
-				{
-					if ((category != BonusCategory.AGRICULTURE && category != BonusCategory.HUSBANDRY) || isMultiplier == true)
-						Console.WriteLine("ERROR: Wrong fertility-based bonus!");
-					int divisionPosition = innerText.IndexOf('|');
-					string firstValue = innerText.Substring(0, divisionPosition);
-					string secondValue = innerText.Substring(divisionPosition + 1);
-					value = Convert.ToSingle(firstValue);
-					perFertilityValue = Convert.ToSingle(secondValue);
-				}
-				else
-				{
-					value = Convert.ToSingle(innerText);
-					perFertilityValue = 0.0f;
 				}
 			}
 		}

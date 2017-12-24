@@ -3,74 +3,79 @@ namespace TWAssistant
 {
 	namespace Attila
 	{
-		class ProvinceCombination
+		public class ProvinceCombination
 		{
 			readonly ProvinceData province;
 			readonly Faction faction;
-			readonly BuildingSlot[][] slots;
-			bool isCurrent;
-			readonly uint originalFertility;
+			readonly int originalFertility;
+			readonly Religion religion;
+			readonly int maxFertility;
+			readonly int incomingOsmosis;
 			//
-			uint fertility;
+			readonly BuildingSlot[][] slots;
+			//
+			int fertility;
 			int food;
 			int order;
+			int influence;
+			int counterinfluence;
+			int osmosis;
 			readonly int[] sanitations;
-			int religiousInfluence;
 			float wealth;
+			bool isCurrent;
 			//
-			public ProvinceCombination(ProvinceData iniProvince, Faction iniFaction, uint iniFertility, bool useResource)
+			public ProvinceCombination(ProvinceData iniProvince, Faction iniFaction, int iniFertility, int iniOsmosis, int whichMod, Religion iniReligion)
 			{
 				province = iniProvince;
-				//
 				faction = iniFaction;
-				//
 				originalFertility = iniFertility;
+				incomingOsmosis = iniOsmosis;
+				religion = iniReligion;
+				if (whichMod == 2)
+					maxFertility = 6;
+				else
+					maxFertility = 5;
 				//
-				slots = new BuildingSlot[3][];
-				for (uint whichRegion = 0; whichRegion < slots.Length; ++whichRegion)
+				slots = new BuildingSlot[province.RegionCount][];
+				for (int whichRegion = 0; whichRegion < slots.Length; ++whichRegion)
 				{
 					slots[whichRegion] = new BuildingSlot[province[whichRegion].SlotsCount];
-					for (uint whichSlot = 0; whichSlot < slots[whichRegion].Length; ++whichSlot)
-					{
-						slots[whichRegion][whichSlot] = new BuildingSlot(province[whichRegion], faction.Buildings, whichSlot, useResource);
-					}
+					for (int whichSlot = 0; whichSlot < slots[whichRegion].Length; ++whichSlot)
+						slots[whichRegion][whichSlot] = new BuildingSlot(province[whichRegion], whichSlot);
 				}
 				//
-				sanitations = new int[3];
-				//
+				sanitations = new int[slots.Length];
 				isCurrent = false;
 			}
 			public ProvinceCombination(ProvinceCombination source)
 			{
 				province = source.province;
-				//
 				faction = source.faction;
-				//
 				originalFertility = source.originalFertility;
+				religion = source.religion;
+				maxFertility = source.maxFertility;
 				//
-				slots = new BuildingSlot[3][];
-				slots[0] = new BuildingSlot[6];
-				slots[1] = new BuildingSlot[4];
-				slots[2] = new BuildingSlot[4];
-				//
-				for (uint whichRegion = 0; whichRegion < source.slots.Length; ++whichRegion)
-					for (uint whichSlot = 0; whichSlot < source.slots[whichRegion].Length; ++whichSlot)
+				slots = new BuildingSlot[source.slots.Length][];
+				for (int whichRegion = 0; whichRegion < source.slots.Length; ++whichRegion)
+				{
+					slots[whichRegion] = new BuildingSlot[source.slots[whichRegion].Length];
+					for (int whichSlot = 0; whichSlot < source.slots[whichRegion].Length; ++whichSlot)
 						slots[whichRegion][whichSlot] = new BuildingSlot(source.slots[whichRegion][whichSlot]);
+				}
 				//
-				sanitations = new int[3];
-				//
+				sanitations = new int[slots.Length];
 				isCurrent = false;
 			}
 			//
 			public void Fill(Random random)
 			{
-				for (uint whichRegion = 0; whichRegion < 3; ++whichRegion)
+				for (int whichRegion = 0; whichRegion < slots.Length; ++whichRegion)
 				{
 					BuildingLibrary buildings = new BuildingLibrary(faction.Buildings);
-					for (uint whichSlot = 0; whichSlot < slots[whichRegion].Length; ++whichSlot)
+					for (int whichSlot = 0; whichSlot < slots[whichRegion].Length; ++whichSlot)
 						if (slots[whichRegion][whichSlot].Building != null)
-							buildings.Remove(slots[whichRegion][whichSlot].Building);
-					for (uint whichBuilding = 0; whichBuilding < slots[whichRegion].Length; ++whichBuilding)
+							buildings.Remove(slots[whichRegion][whichSlot].BuildingBranch);
+					for (int whichBuilding = 0; whichBuilding < slots[whichRegion].Length; ++whichBuilding)
 						slots[whichRegion][whichBuilding].Fill(random, buildings, province[whichRegion]);
 				}
 				isCurrent = false;
@@ -78,43 +83,40 @@ namespace TWAssistant
 			public void ShowContent()
 			{
 				Console.WriteLine("{0}", province.Name);
-				for (uint whichRegion = 0; whichRegion < slots.Length; ++whichRegion)
+				for (int whichRegion = 0; whichRegion < slots.Length; ++whichRegion)
 				{
-					Console.WriteLine("	{0}: {1}", whichRegion, province[whichRegion].Name);
-					for (uint whichSlot = 0; whichSlot < slots[whichRegion].Length; ++whichSlot)
+					Console.WriteLine("{0}", province[whichRegion].Name);
+					for (int whichSlot = 0; whichSlot < slots[whichRegion].Length; ++whichSlot)
 					{
-						Console.Write("		{0}: ", whichSlot);
+						Console.Write("{0}. ", whichSlot);
 						slots[whichRegion][whichSlot].ShowContent();
 					}
 				}
-				Console.WriteLine("W:{0} F:{1} O:{2} S:{3}/{4}/{5} R:{6} I:{7} ", Wealth, Food, Order, getSanitation(0), getSanitation(1), getSanitation(2), ReligiousInfluence, Fertility);
+				Console.WriteLine("Wea:{0} Foo:{1} Ord:{2} San:{3}/{4}/{5} Rel:{6}/{7} Osm:{8} Fer:{9} ", Wealth, Food, Order, getSanitation(0), getSanitation(1), getSanitation(2), Influence, Counterinfluence, ReligiousOsmosis, Fertility);
 			}
-			public void RewardUsefulBuildings()
+			public void RewardBuildings()
 			{
-				for (uint whichRegion = 0; whichRegion < slots.Length; ++whichRegion)
-				{
-					for (uint whichSlot = 0; whichSlot < slots[whichRegion].Length; ++whichSlot)
-					{
+				for (int whichRegion = 0; whichRegion < slots.Length; ++whichRegion)
+					for (int whichSlot = 0; whichSlot < slots[whichRegion].Length; ++whichSlot)
 						slots[whichRegion][whichSlot].Reward();
-					}
-				}
 			}
+			/*
 			public void ForceBuilding()
 			{
-				uint whichRegion;
-				uint whichSlot;
+				int whichRegion;
+				int whichSlot;
 				int choice;
 				Console.Write("Region: ");
-				whichRegion = Convert.ToUInt32(Console.ReadLine());
+				whichRegion = Convert.ToInt32(Console.ReadLine());
 				Console.Write("Slot: ");
-				whichSlot = Convert.ToUInt32(Console.ReadLine());
+				whichSlot = Convert.ToInt32(Console.ReadLine());
 				Console.Write("0-Level / 1-Building: ");
 				choice = Convert.ToInt32(Console.ReadLine());
 				if (choice == 0)
 				{
 					Console.Write("Level: ");
 					choice = Convert.ToInt32(Console.ReadLine());
-					slots[whichRegion][whichSlot].Level = (uint)choice;
+					slots[whichRegion][whichSlot].Level = choice;
 				}
 				else
 				{
@@ -125,8 +127,9 @@ namespace TWAssistant
 				}
 				isCurrent = false;
 			}
+			*/
 			//
-			public BuildingSlot this[uint whichRegion, uint whichSlot]
+			public BuildingSlot this[int whichRegion, int whichSlot]
 			{
 				get { return slots[whichRegion][whichSlot]; }
 			}
@@ -154,16 +157,34 @@ namespace TWAssistant
 					HarvestBuildings();
 				return sanitations[whichRegion];
 			}
-			public int ReligiousInfluence
+			public int ReligiousOsmosis
 			{
 				get
 				{
 					if (!isCurrent)
 						HarvestBuildings();
-					return religiousInfluence;
+					return osmosis;
 				}
 			}
-			public uint Fertility
+			public int Influence
+			{
+				get
+				{
+					if (!isCurrent)
+						HarvestBuildings();
+					return influence;
+				}
+			}
+			public int Counterinfluence
+			{
+				get
+				{
+					if (!isCurrent)
+						HarvestBuildings();
+					return counterinfluence;
+				}
+			}
+			public int Fertility
 			{
 				get
 				{
@@ -184,43 +205,54 @@ namespace TWAssistant
 			//
 			void HarvestBuildings()
 			{
-				food = faction.Food;
-				order = faction.Order;
-				sanitations[0] = faction.Sanitation;
-				sanitations[1] = faction.Sanitation;
-				sanitations[2] = faction.Sanitation;
-				religiousInfluence = faction.ReligiousInfluence;
 				fertility = faction.Fertility + originalFertility;
-				for (uint whichRegion = 0; whichRegion < 3; ++whichRegion)
+				for (int whichRegion = 0; whichRegion < slots.Length; ++whichRegion)
 				{
-					for (uint whichSlot = 0; whichSlot < slots[whichRegion].Length; ++whichSlot)
+					for (int whichSlot = 0; whichSlot < slots[whichRegion].Length; ++whichSlot)
 					{
-						fertility += slots[whichRegion][whichSlot].Fertility;
+						fertility += slots[whichRegion][whichSlot].BuildingLevel.Irigation;
 					}
 				}
-				if (fertility > 6)
-					fertility = 6;
+				if (fertility > maxFertility)
+					fertility = maxFertility;
+				if (fertility < 0)
+					fertility = 0;
+				//
+				food = 0;
+				order = 0;
+				for (int whichRegion = 0; whichRegion < sanitations.Length; ++whichRegion)
+					sanitations[whichRegion] = faction.Sanitation;
+				osmosis = 0;
+				//
 				ProvinceWealth wealthCalculator = new ProvinceWealth(fertility);
 				if (faction.WealthBonuses != null)
-					for (uint whichBonus = 0; whichBonus < faction.WealthBonuses.Length; ++whichBonus)
+					for (int whichBonus = 0; whichBonus < faction.WealthBonuses.Length; ++whichBonus)
 						wealthCalculator.AddBonus(faction.WealthBonuses[whichBonus]);
+				ProvinceReligion religionCalculator = new ProvinceReligion(province.Traditions, religion);
+				religionCalculator.AddInfluence(incomingOsmosis, religion);
 				//
-				for (uint whichRegion = 0; whichRegion < 3; ++whichRegion)
+				for (int whichRegion = 0; whichRegion < slots.Length; ++whichRegion)
 				{
-					for (uint whichSlot = 0; whichSlot < slots[whichRegion].Length; ++whichSlot)
+					for (int whichSlot = 0; whichSlot < slots[whichRegion].Length; ++whichSlot)
 					{
-						BuildingSlot slot = slots[whichRegion][whichSlot];
-						food += slot.getFood(fertility);
-						order += slot.Order;
-						sanitations[0] += slot.ProvincionalSanitation;
-						sanitations[1] += slot.ProvincionalSanitation;
-						sanitations[2] += slot.ProvincionalSanitation;
-						sanitations[whichRegion] += slot.RegionalSanitation;
-						religiousInfluence += slot.ReligiousInfluence;
-						for (uint whichBonus = 0; whichBonus < slots[whichRegion][whichSlot].WealthBonusCount; ++whichBonus)
-							wealthCalculator.AddBonus(slots[whichRegion][whichSlot].WealthBonuses[whichBonus]);
+						BuildingLevel level = slots[whichRegion][whichSlot].BuildingLevel;
+						food += level.GetFood(fertility);
+						order += level.Order;
+						for (int whichSanitation = 0; whichSanitation < sanitations.Length; ++whichSanitation)
+							sanitations[whichSanitation] += level.ProvincionalSanitation;
+						sanitations[whichRegion] += level.RegionalSanitation;
+						osmosis += level.ReligiousOsmosis;
+						//
+						Religion? potentialReligion = slots[whichRegion][whichSlot].BuildingBranch.Religion;
+						if (potentialReligion.HasValue)
+							religionCalculator.AddInfluence(level.ReligiousInfluence, potentialReligion.Value);
+						for (int whichBonus = 0; whichBonus < level.WealthBonuses.Length; ++whichBonus)
+							wealthCalculator.AddBonus(level.WealthBonuses[whichBonus]);
 					}
 				}
+				order += religionCalculator.Order;
+				influence = religionCalculator.Influence;
+				counterinfluence = religionCalculator.Counterinfluence;
 				wealth = wealthCalculator.Wealth;
 				isCurrent = true;
 			}

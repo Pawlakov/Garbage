@@ -5,14 +5,14 @@ namespace TWAssistant
 	{
 		class ProvinceWealth
 		{
-			readonly uint fertility;
+			readonly int fertility;
 			float[] multipliers;
 			float[] values;
 			readonly List<WealthBonus> bonuses;
 			bool isCurrent;
 			float wealth;
 			//
-			public ProvinceWealth(uint iniFertility)
+			public ProvinceWealth(int iniFertility)
 			{
 				fertility = iniFertility;
 				multipliers = new float[Simulator.BonusCategoriesCount];
@@ -30,12 +30,7 @@ namespace TWAssistant
 						return wealth;
 					}
 					wealth = 0;
-					ResetArrays();
 					ExecuteBonuses();
-					for (uint whichCategory = 0; whichCategory < Simulator.BonusCategoriesCount; ++whichCategory)
-					{
-						wealth += (multipliers[whichCategory] * values[whichCategory]);
-					}
 					return wealth;
 				}
 			}
@@ -46,21 +41,17 @@ namespace TWAssistant
 				isCurrent = false;
 			}
 			//
-			void ResetArrays()
+			void ExecuteBonuses()
 			{
-				for (uint whichCategory = 0; whichCategory < Simulator.BonusCategoriesCount; ++whichCategory)
+				for (int whichCategory = 0; whichCategory < Simulator.BonusCategoriesCount; ++whichCategory)
 				{
 					multipliers[whichCategory] = 1;
 					values[whichCategory] = 0;
 				}
-				isCurrent = false;
-			}
-			void ExecuteBonuses()
-			{
 				for (int whichBonus = 0; whichBonus < bonuses.Count; ++whichBonus)
-				{
 					bonuses[whichBonus].Execute(ref values, ref multipliers, fertility);
-				}
+				for (int whichCategory = 0; whichCategory < Simulator.BonusCategoriesCount; ++whichCategory)
+					wealth += (multipliers[whichCategory] * values[whichCategory]);
 				isCurrent = true;
 			}
 		}

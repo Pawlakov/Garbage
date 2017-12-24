@@ -3,22 +3,25 @@ namespace TWAssistant
 {
 	namespace Attila
 	{
-		class BuildingSlot
+		public class BuildingSlot
 		{
 			BuildingType type;
-			BuildingBranch building;
-			uint? level;
+			BuildingBranch buildingBranch;
+			BuildingLevel buildingLevel;
+			int? level;
 			//
 			public BuildingSlot(BuildingSlot source)
 			{
 				type = source.type;
-				building = source.building;
+				buildingBranch = source.buildingBranch;
+				buildingLevel = source.buildingLevel;
 				level = source.level;
 			}
-			public BuildingSlot(RegionData region, BuildingLibrary library, uint index, bool useResource)
+			public BuildingSlot(RegionData region, int index)
 			{
 				level = null;
-				building = null;
+				buildingBranch = null;
+				buildingLevel = null;
 				switch (index)
 				{
 					case 0:
@@ -26,14 +29,13 @@ namespace TWAssistant
 							type = BuildingType.CENTERCITY;
 						else
 							type = BuildingType.CENTERTOWN;
-						building = library.GetBuilding(null, type);
-						level = 3;
+						level = 4;
 						break;
 					case 1:
 						if (region.IsCoastal)
 						{
 							type = BuildingType.COAST;
-							//level = 3;
+							level = 4;
 						}
 						else if (region.IsBig)
 							type = BuildingType.CITY;
@@ -41,10 +43,10 @@ namespace TWAssistant
 							type = BuildingType.TOWN;
 						break;
 					case 2:
-						if (region.Resource != Resource.NONE && useResource)
+						if (region.Resource != Resource.NONE)
 						{
 							type = BuildingType.RESOURCE;
-							//level = 3;
+							level = 4;
 						}
 						else if (region.IsBig)
 							type = BuildingType.CITY;
@@ -64,145 +66,81 @@ namespace TWAssistant
 			{
 				get { return type; }
 			}
-			public BuildingBranch Building
+			public BuildingBranch BuildingBranch
 			{
-				get { return building; }
-				set { building = value; }
+				get { return buildingBranch; }
+				set { buildingBranch = value; }
 			}
-			public uint? Level
+			public BuildingLevel BuildingLevel
+			{
+				get { return buildingLevel; }
+				set { buildingLevel = value; }
+			}
+			public int? Level
 			{
 				get { return level; }
 				set { level = value; }
 			}
-			public int getFood(uint fertility)
+			public BuildingLevel Building
 			{
-				if (level.HasValue && building != null)
-				{
-					return building[level.Value].GetFood(fertility);
-				}
-					return 0;
-			}
-			public int Order
-			{
-				get
-				{
-					if (level.HasValue && building != null)
-					{
-						return building[level.Value].Order;
-					}
-						return 0;
-				}
-			}
-			public int ProvincionalSanitation
-			{
-				get
-				{
-					if (level.HasValue && building != null)
-					{
-						return building[level.Value].ProvincionalSanitation;
-					}
-						return 0;
-				}
-			}
-			public int RegionalSanitation
-			{
-				get
-				{
-					if (level.HasValue && building != null)
-					{
-						return building[level.Value].RegionalSanitation;
-					}
-						return 0;
-				}
-			}
-			public int ReligiousInfluence
-			{
-				get
-				{
-					if (level.HasValue && building != null)
-					{
-						return building[level.Value].ReligiousInfluence;
-					}
-						return 0;
-				}
-			}
-			public uint Fertility
-			{
-				get
-				{
-					if (level.HasValue && building != null)
-					{
-						return building[level.Value].Fertility;
-					}
-						return 0;
-				}
-			}
-			public WealthBonus[] WealthBonuses
-			{
-				get
-				{
-					if (level.HasValue && building != null)
-					{
-						return building[level.Value].WealthBonuses;
-					}
-						return null;
-				}
-			}
-			public int WealthBonusCount
-			{
-				get
-				{
-					if (level.HasValue && building != null)
-					{
-						return building[level.Value].WealthBonuses.Length;
-					}
-						return 0;
-				}
+				get { return buildingLevel; }
 			}
 			//
 			public void ShowContent()
 			{
-				Console.WriteLine("{0} {1} {2}", type, BuildingToString, LevelToString);
+				Console.WriteLine("{0} {1}", BuildingToString, LevelToString);
 			}
 			public void Fill(Random random, BuildingLibrary library, RegionData region)
 			{
-				if (building == null)
+				if (buildingLevel == null)
 				{
-					if (type == BuildingType.RESOURCE)
+					if (buildingBranch == null)
 					{
-						building = library.GetBuilding(random, region.Resource);
+						if (type == BuildingType.RESOURCE)
+						{
+							buildingBranch = library.GetBuilding(region.Resource);
+						}
+						else
+						{
+							buildingBranch = library.GetBuilding(random, type);
+						}
+					}
+					if (level == null)
+					{
+						buildingLevel = buildingBranch[buildingBranch.GetLevel(random)];
+						level = buildingLevel.Level;
 					}
 					else
 					{
-						building = library.GetBuilding(random, type);
+						buildingLevel = buildingBranch[buildingBranch.GetLevel(random, level.Value)];
 					}
-				}
-				if (level == null)
-				{
-					level = building.GetLevel(random);
 				}
 			}
 			public void Reward()
 			{
-				building.RewardLevel(level.Value);
+				buildingLevel.Reward();
 			}
 			//
 			string LevelToString
 			{
 				get
 				{
-					if (level == null)
-						return "???";
-					return level.Value.ToString();
+					if (buildingLevel != null)
+						return buildingLevel.Level.ToString();
+					if (level != null)
+						return level.Value.ToString();
+					return "?";
 				}
 			}
 			string BuildingToString
 			{
 				get
 				{
-					if (building == null)
-						return "???";
-					return building.Name;
+					if (buildingLevel != null)
+						return buildingLevel.Name;
+					if (buildingBranch != null)
+						return buildingBranch.Name;
+					return type.ToString();
 				}
 			}
 		}

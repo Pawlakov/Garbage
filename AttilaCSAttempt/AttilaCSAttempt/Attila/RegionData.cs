@@ -4,19 +4,34 @@ namespace TWAssistant
 {
 	namespace Attila
 	{
-		class RegionData
+		public struct RegionData
 		{
-			string name;
-			Resource resource;
-			bool isCoastal;
-			bool isBig;
+			readonly string name;
+			readonly Resource resource;
+			readonly bool isCoastal;
+			readonly bool isBig;
+			readonly int slotsCountOffset;
 			//
 			public RegionData(XmlNode regionNode, bool iniIsBig)
 			{
-				isBig = iniIsBig;
+				XmlNode temporary;
+				resource = Resource.NONE;
+				slotsCountOffset = 0;
+				//
 				name = regionNode.Attributes.GetNamedItem("n").InnerText;
+				//
+				temporary = regionNode.Attributes.GetNamedItem("r");
+				if (temporary != null)
+					if (!Enum.TryParse(temporary.InnerText, out resource))
+						throw (new Exception("Couldn't figure out resource type."));
+				//
 				isCoastal = Convert.ToBoolean(regionNode.Attributes.GetNamedItem("c").InnerText);
-				Enum.TryParse(regionNode.Attributes.GetNamedItem("r").InnerText, out resource);
+				//
+				isBig = iniIsBig;
+				//
+				temporary = regionNode.Attributes.GetNamedItem("o");
+				if (temporary != null)
+					slotsCountOffset = Convert.ToInt32(temporary.InnerText);
 			}
 			//
 			public string Name
@@ -35,13 +50,16 @@ namespace TWAssistant
 			{
 				get { return isBig; }
 			}
-			public uint SlotsCount
+			public int SlotsCount
 			{
 				get
 				{
+					int result;
 					if (isBig)
-						return 6;
-					return 4;
+						result = 6;
+					else
+						result = 4;
+					return result += (slotsCountOffset);
 				}
 			}
 		}

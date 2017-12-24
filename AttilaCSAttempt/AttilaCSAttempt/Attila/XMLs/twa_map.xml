@@ -1,148 +1,263 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <map>
-	<province n="Baetica" f="5">
-		<region n="Corduba" c="false" r="NONE" />
-		<region n="Hispalis" c="false" r="NONE" />
+	<!--Hispania-->
+	<province n="BAETICA" f="5">
+		<traditions>
+			<tradition r="LACHRI">3</tradition>
+			<tradition r="ARICHRI">3</tradition>
+			<tradition r="ROMPAG">3</tradition>
+		</traditions>
+		<region n="Corduba" c="false" />
+		<region n="Hispalis" c="false" />
 		<region n="Malaca" c="true" r="WINE" />
 	</province>
-	<province n="Lusitania" f="6">
-		<region n="Emerita_Augusta" c="false" r="NONE" />
-		<region n="Olispo" c="true" r="NONE" />
+	<province n="CARTHAGINENSIS" f="4">
+		<traditions>
+			<tradition r="LACHRI">2</tradition>
+			<tradition r="ARICHRI">3</tradition>
+			<tradition r="ROMPAG">3</tradition>
+			<tradition r="CELPAG">1</tradition>
+		</traditions>
+		<region n="Carthago_Nova" c="true" />
+		<region n="Segobriga" c="false" r="OLIVE" />
+		<region n="Toletum" c="false" />
+	</province>
+	<province n="GALLAECIA" f="6">
+		<traditions>
+			<tradition r="ARICHRI">3</tradition>
+			<tradition r="ROMPAG">3</tradition>
+			<tradition r="CELPAG">3</tradition>
+		</traditions>
+		<region n="Bracara" c="false" r="GOLD" />
+		<region n="Brigantium" c="true" />
+		<region n="Asturica" c="false" />
+	</province>
+	<province n="LUSITANIA" f="6">
+		<traditions>
+			<tradition r="LACHRI">1</tradition>
+			<tradition r="ARICHRI">3</tradition>
+			<tradition r="ROMPAG">3</tradition>
+			<tradition r="CELPAG">2</tradition>
+		</traditions>
+		<region n="Emerita_Augusta" c="false" />
+		<region n="Olispo" c="true" />
 		<region n="Pax_Augusta" c="false" r="IRON" />
 	</province>
-	<province n="Gallaecia" f="6">
-		<region n="Bracara" c="false" r="GOLD" />
-		<region n="Brigantium" c="true" r="NONE" />
-		<region n="Asturica" c="false" r="NONE" />
-	</province>
-	<province n="Carthaginensis" f="4">
-		<region n="Carthago_Nova" c="true" r="NONE" />
-		<region n="Segobriga" c="false" r="OLIVE" />
-		<region n="Toletum" c="false" r="NONE" />
-	</province>
-	<province n="Tarraconensis" f="4">
-		<region n="Tarraco" c="true" r="NONE" />
+	<province n="TARRACONENSIS" f="4">
+		<traditions>
+			<tradition r="LACHRI">1</tradition>
+			<tradition r="ARICHRI">2</tradition>
+			<tradition r="ROMPAG">3</tradition>
+			<tradition r="CELPAG">3</tradition>
+		</traditions>
+		<region n="Tarraco" c="true" />
 		<region n="Pompaelo" c="false" r="MARBLE" />
-		<region n="Caesaraugsta" c="false" r="NONE" />
+		<region n="Caesaraugsta" c="false" />
 	</province>
-	<province n="Insulae_Occidentalis" f="6">
-		<region n="Caralis" c="true" r="NONE" />
-		<region n="Palma" c="true" r="NONE" />
-		<region n="Ajax" c="true" r="NONE" />
-	</province>
-	<province n="Mauretania" f="6">
-		<region n="Caesarea" c="true" r="NONE" />
-		<region n="Tingis" c="true" r="LUMBER" />
-		<region n="Tamousiga" c="true" r="NONE" />
-	</province>
-	<province n="Africa" f="6">
-		<region n="Carthago" c="true" r="NONE" />
-		<region n="Hadrumentum" c="true" r="NONE" />
+	<!--Africa
+	<province n="AFRICA" f="6">
+		<region n="Carthago" c="true" />
+		<region n="Hadrumentum" c="true" />
 		<region n="Constantina" c="false" r="MARBLE" />
 	</province>
-	<province n="Tripolitana" f="4">
-		<region n="Leptis_Magna" c="true" r="NONE" />
+	<province n="INSULAE OCCIDENTALIS" f="6">
+		<region n="Caralis" c="true" />
+		<region n="Palma" c="true" />
+		<region n="Ajax" c="true" />
+	</province>
+	<province n="MAURETANIA" f="6">
+		<region n="Caesarea" c="true" />
+		<region n="Tingis" c="true" r="LUMBER" />
+		<region n="Tamousiga" c="true" />
+	</province>
+	<province n="SAHARA" f="2">
+		<region n="Garama" c="false" />
+		<region n="Cydamus" c="false" />
+		<region n="Dimmidi" c="false" r="GEMSTONES" />
+	</province>
+	<province n="TRIPOLITANA" f="4">
+		<region n="Leptis_Magna" c="true" />
 		<region n="Sabrata" c="true" r="DYE" />
-		<region n="Macomades" c="true" r="NONE" />
+		<region n="Macomades" c="true" />
 	</province>
-	<province n="Aquitania" f="6">
-		<region n="Burdigala" c="true" r="NONE" />
+	<!Gallia
+	<province n="AQUITANIA" f="6">
+		<region n="Burdigala" c="true" />
 		<region n="Avaricum" c="false" r="GOLD" />
-		<region n="Elusa" c="false" r="NONE" />
+		<region n="Elusa" c="false" />
 	</province>
-	<province n="Narbonensis" f="6">
-		<region n="Aquae_Sextiae" c="false" r="WINE" />
-		<region n="Vienna" c="false" r="NONE" />
-		<region n="Narbo" c="true" r="NONE" />
+	<province n="BELGICA" f="5">
+		<region n="Augusta_Treverorum" c="false" r="LUMBER" />
+		<region n="Colonia_Agrippina" c="false" />
+		<region n="Durocortorum" c="false" />
 	</province>
-	<province n="Lugdunensis" f="5">
-		<region n="Lugdunum" c="false" r="NONE" />
-		<region n="Turonum" c="false" r="NONE" />
+	<province n="LUGDUNENSIS" f="5">
+		<region n="Lugdunum" c="false" />
+		<region n="Turonum" c="false" />
 		<region n="Rotomagus" c="true" r="SALT" />
 	</province>
-	<province n="Liguria" f="6">
-		<region n="Mediolanum" c="false" r="NONE" />
-		<region n="Genua" c="true" r="MARBLE" />
-		<region n="Segusio" c="false" r="NONE" />
+	<province n="MAXIMA SEQUANORUM" f="5">
+		<region n="Vesontio" c="false" />
+		<region n="Argentoratum" c="false" o="-1"/>
+		<region n="Octodurum" c="false" r="IRON" />
 	</province>
-	<province n="Italia" f="6">
-		<region n="Roma" c="false" r="NONE" />
-		<region n="Fiorentia" c="false" r="NONE" />
+	<province n="NARBONENSIS" f="6">
+		<region n="Aquae_Sextiae" c="false" r="WINE" />
+		<region n="Vienna" c="false" />
+		<region n="Narbo" c="true" />
+	</province>
+	<!Italia
+	<province n="ITALIA" f="6">
+		<region n="Roma" c="false" />
+		<region n="Fiorentia" c="false" />
 		<region n="Neapolis" c="true" r="SALT" />
 	</province>
-	<province n="Magna_Graecia" f="5">
-		<region n="Tarentum" c="true" r="NONE" />
+	<province n="LIGURIA" f="6">
+		<region n="Mediolanum" c="false" />
+		<region n="Genua" c="true" r="MARBLE" />
+		<region n="Segusio" c="false" />
+	</province>
+	<province n="MAGNA GRAECIA" f="5">
+		<region n="Tarentum" c="true" />
 		<region n="Syracusae" c="true" r="WINE" />
-		<region n="Rhegium" c="true" r="NONE" />
+		<region n="Rhegium" c="true" />
 	</province>
-	<province n="Venetia" f="6">
-		<region n="Ravenna" c="true" r="NONE" />
+	<province n="RAETIA ET NORICUM" f="5">
+		<region n="Augusta_Vindelicorum" c="false" />
+		<region n="Iuvavum" c="false" r="LUMBER" />
+		<region n="Virunum" c="false" />
+	</province>
+	<province n="VENETIA" f="6">
+		<region n="Ravenna" c="true" />
 		<region n="Verona" c="false" r="OLIVE" />
-		<region n="Aquileia" c="true" r="NONE" />
+		<region n="Aquileia" c="true" />
 	</province>
-	<province n="Thracia" f="5">
-		<region n="Constantinopolis" c="true" r="NONE" />
-		<region n="Trimontium" c="false" r="GOLD" />
-		<region n="Marcianopolis" c="false" r="NONE" />
+	<!Britannia
+	<province n="BRITANNIA INFERIOR" f="4">
+		<region n="Eburacum" c="false" />
+		<region n="Lindum" c="false" />
+		<region n="Segontium" c="true" r="LEAD" />
 	</province>
-	<province n="Macedonia" f="4">
-		<region n="Thessalonica" c="true" r="NONE" />
+	<province n="BRITANNIA SUPERIOR" f="4">
+		<region n="Londinium" c="false" r="IRON" />
+		<region n="Corinium" c="false" />
+		<region n="Camulodunum" c="true" />
+	</province>
+	<province n="CALEDONIA ET HIBERNIA" f="4">
+		<region n="Tuesis" c="false" />
+		<region n="Eildon" c="false" r="LUMBER" />
+		<region n="Eblana" c="true" />
+	</province>
+	<province n="FRISIA" f="4">
+		<region n="Tulifurdum" c="false" r="FUR" />
+		<region n="Flevum" c="true" />
+		<region n="Angulus" c="false" />
+	</province>
+	<province n="SCANDZA" f="3">
+		<region n="Hrefnesholt" c="true" r="LUMBER" />
+		<region n="Hafn" c="true" />
+		<region n="Alabu" c="true" />
+	</province>
+	<!Germania
+	<province n="GERMANIA" f="4">
+		<region n="Uburzis" c="false" r="GEMSTONES" />
+		<region n="Aregelia" c="false" />
+		<region n="Lupfurdum" c="false" />
+	</province>
+	<province n="GOTHISCANDZA" f="3">
+		<region n="Gothiscandza" c="true" />
+		<region n="Ascaucalis" c="false" r="SALT" />
+		<region n="Rugion" c="true" />
+	</province>
+	<province n="HERCYNIA" f="4">
+		<region n="Casurgis" c="false" />
+		<region n="Budorgis" c="false" r="LEAD" />
+		<region n="Nitrahwa" c="false" />
+	</province>
+	<!Iliria
+	<province n="DALMATIA" f="5">
+		<region n="Salona" c="true" r="WINE" />
+		<region n="Siscia" c="false" />
+		<region n="Domavia" c="false" />
+	</province>
+	<province n="DARDANIA" f="5">
+		<region n="Serdica" c="false" />
+		<region n="Scupi" c="false" r="LEAD" />
+		<region n="Viminacium" c="false" />
+	</province>
+	<province n="MACEDONIA" f="4">
+		<region n="Thessalonica" c="true" />
 		<region n="Corinthus" c="true" r="MARBLE" />
 		<region n="Dyrrachium" c="true" r="OLIVE" />
 	</province>
-	<province n="Dardania" f="5">
-		<region n="Serdica" c="false" r="NONE" />
-		<region n="Scupi" c="false" r="LEAD" />
-		<region n="Viminacium" c="false" r="NONE" />
+	<province n="PANNONIA" f="6">
+		<region n="Sirmium" c="false" />
+		<region n="Sopianae" c="false" />
+		<region n="Savaria" c="false" r="FUR" />
 	</province>
-	<province n="Bithynia" f="5">
-		<region n="Ancyra" c="false" r="SILK" />
-		<region n="Sinope" c="false" r="NONE" />
-		<region n="Nicomedia" c="true" r="NONE" />
+	<province n="THRACIA" f="5">
+		<region n="Constantinopolis" c="true" />
+		<region n="Trimontium" c="false" r="GOLD" />
+		<region n="Marcianopolis" c="false" />
 	</province>
-	<province n="Asia" f="4">
-		<region n="Ephesus" c="true" r="NONE" />
+	<!Oriens
+	<province n="ASIA" f="4">
+		<region n="Ephesus" c="true" />
 		<region n="Synnada" c="false" r="MARBLE" />
-		<region n="Cyzicus" c="true" r="NONE" />
+		<region n="Cyzicus" c="true" />
 	</province>
-	<province n="Cilicia" f="4">
-		<region n="Tarsus" c="true" r="OLIVE" />
-		<region n="Iconium" c="false" r="NONE" />
-		<region n="Myra" c="true" r="NONE" />
+	<province n="BITHYNIA" f="5">
+		<region n="Ancyra" c="false" r="SILK"  o="-1"/>
+		<region n="Sinope" c="false" />
+		<region n="Nicomedia" c="true" />
 	</province>
-	<province n="Cappadocia" f="4">
-		<region n="Caesarea_Eusebia" c="false" r="NONE" />
+	<province n="CAPPADOCIA" f="4">
+		<region n="Caesarea_Eusebia" c="false" />
 		<region n="Melitene" c="false" r="LEAD" />
-		<region n="Trapezus" c="true" r="NONE" />
+		<region n="Trapezus" c="true" />
+	</province>
+	<province n="CILICIA" f="4">
+		<region n="Tarsus" c="true" r="OLIVE" />
+		<region n="Iconium" c="false" />
+		<region n="Myra" c="true" />
+	</province>
+	<province n="SYRIA" f="4">
+		<region n="Antiochia" c="true" />
+		<region n="Tyrus" c="true" r="DYE" />
+		<region n="Emesa" c="false" />
+	</province>
+	<!Aegyptus
+	<province n="Aegyptus" f="6">
+		<region n="Alexandria" c="true" />
+		<region n="Berenice" c="true" />
+		<region n="Oxyrhynchus" c="false" r="GOLD" />
+	</province>
+	<!SPICE at Adulis
+	<province n="Aethiopia" f="2">
+		<region n="Aksum" c="false" r="FUR" />
+		<region n="Adulis" c="true" />
+		<region n="Pachoras" c="false" />
 	</province>
 	<province n="Insulae_Orientalis" f="6">
-		<region n="Gortyna" c="true" r="NONE" />
-		<region n="Constantia" c="true" r="NONE" />
-		<region n="Rhodes" c="true" r="NONE" />
-	</province>
-	<province n="Osroene" f="6">
-		<region n="Edessa" c="false" r="WINE" />
-		<region n="Amida" c="false" r="NONE" />
-		<region n="Nisibis" c="false" r="NONE" />
-	</province>
-	<province n="Syria" f="4">
-		<region n="Antiochia" c="true" r="NONE" />
-		<region n="Tyrus" c="true" r="DYE" />
-		<region n="Emesa" c="false" r="NONE" />
-	</province>
-	<province n="Palestina" f="3">
-		<region n="Nova_Trajana_Bostra" c="false" r="NONE" />
-		<region n="Aila" c="true" r="GEMSTONES" />
-		<region n="Aelia_Capitolina" c="false" r="NONE" />
-	</province>
-	<province n="Aegyptus" f="6">
-		<region n="Alexandria" c="true" r="NONE" />
-		<region n="Berenice" c="true" r="NONE" />
-		<region n="Oxyrhynchus" c="false" r="GOLD" />
+		<region n="Gortyna" c="true" />
+		<region n="Constantia" c="true" />
+		<region n="Rhodes" c="true" />
 	</province>
 	<province n="Lybia" f="3">
 		<region n="Ptolemais" c="true" r="OLIVE" />
-		<region n="Paraetonium" c="true" r="NONE" />
-		<region n="Augila" c="false" r="NONE" />
+		<region n="Paraetonium" c="true" />
+		<region n="Augila" c="false" />
 	</province>
+	<province n="Palestina" f="3">
+		<region n="Nova_Trajana_Bostra" c="false" o="-1"/>
+		<region n="Aila" c="true" r="GEMSTONES" />
+		<region n="Aelia_Capitolina" c="false" />
+	</province>
+	<!
+	<province n="Osroene" f="6">
+		<region n="Edessa" c="false" r="WINE" />
+		<region n="Amida" c="false" />
+		<region n="Nisibis" c="false" />
+	</province>
+	-->
 </map>

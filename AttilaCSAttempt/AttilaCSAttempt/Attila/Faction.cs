@@ -4,85 +4,46 @@ namespace TWAssistant
 {
 	namespace Attila
 	{
-		class Faction
+		public class Faction
 		{
-			private string name;
-			private BuildingLibrary buildings;
-			private int food;
-			private int order;
-			private int sanitation;
-			private int religiousInfluence;
-			private uint fertility;
-			private WealthBonus[] wealthBonuses;
+			readonly string name;
+			readonly int sanitation;
+			readonly int fertility;
+			readonly WealthBonus[] wealthBonuses;
+			readonly BuildingLibrary buildings;
 			//
-			public Faction(XmlNode factionNode)
+			public Faction(XmlNode factionNode, Religion stateRelgion, bool useLegacyTechs)
 			{
-				food = 0;
-				order = 0;
+				XmlNode temporary = factionNode.Attributes.GetNamedItem("n");
+				name = temporary.InnerText;
 				sanitation = 0;
-				religiousInfluence = 0;
+				temporary = factionNode.Attributes.GetNamedItem("s");
+				if (temporary != null)
+					sanitation = Convert.ToInt32(temporary.InnerText);
 				fertility = 0;
+				temporary = factionNode.Attributes.GetNamedItem("i");
+				if (temporary != null)
+					fertility = Convert.ToInt32(temporary.InnerText);
 				//
-				name = factionNode.Attributes.GetNamedItem("n").InnerText;
-				//
-				buildings = new BuildingLibrary(factionNode.Attributes.GetNamedItem("b").InnerText);
-				//
-				if (factionNode.Attributes != null)
-				{
-					XmlNode temporary;
-					temporary = factionNode.Attributes.GetNamedItem("f");
-					if (temporary != null)
-						food = Convert.ToInt32(temporary.InnerText);
-					//
-					temporary = factionNode.Attributes.GetNamedItem("o");
-					if (temporary != null)
-						order = Convert.ToInt32(temporary.InnerText);
-					//
-					temporary = factionNode.Attributes.GetNamedItem("s");
-					if (temporary != null)
-						sanitation = Convert.ToInt32(temporary.InnerText);
-					//
-					temporary = factionNode.Attributes.GetNamedItem("r");
-					if (temporary != null)
-						religiousInfluence = Convert.ToInt32(temporary.InnerText);
-					//
-					temporary = factionNode.Attributes.GetNamedItem("i");
-					if (temporary != null)
-						fertility = Convert.ToUInt32(temporary.InnerText);
-				}
 				XmlNodeList bonusNodesList = factionNode.ChildNodes;
 				wealthBonuses = new WealthBonus[bonusNodesList.Count];
 				for (int whichBonus = 0; whichBonus < wealthBonuses.Length; ++whichBonus)
 				{
 					wealthBonuses[whichBonus] = new WealthBonus(bonusNodesList[whichBonus]);
 				}
+				//
+				buildings = new BuildingLibrary(factionNode.Attributes.GetNamedItem("b").InnerText, stateRelgion, useLegacyTechs);
 			}
 			//
 			public string Name
 			{
 				get { return name; }
 			}
-			public BuildingLibrary Buildings
-			{
-				get { return buildings; }
-			}
-			public int Food
-			{
-				get { return food; }
-			}
-			public int Order
-			{
-				get { return order; }
-			}
 			public int Sanitation
 			{
 				get { return sanitation; }
 			}
-			public int ReligiousInfluence
-			{
-				get { return religiousInfluence; }
-			}
-			public uint Fertility
+			public int Fertility
 			{
 				get { return fertility; }
 			}
@@ -90,10 +51,14 @@ namespace TWAssistant
 			{
 				get { return wealthBonuses; }
 			}
-			//
-			public void CurbUselessBuildings()
+			public BuildingLibrary Buildings
 			{
-				buildings.RemoveUselessAndResetUsefuliness();
+				get { return buildings; }
+			}
+			//
+			public void EvaluateBuildings()
+			{
+				buildings.EvaluateBuildings();
 			}
 		}
 	}

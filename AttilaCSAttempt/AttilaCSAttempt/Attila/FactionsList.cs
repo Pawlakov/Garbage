@@ -6,9 +6,9 @@ namespace TWAssistant
 	{
 		struct FactionsList
 		{
-			private Faction[] factions;
+			readonly Faction[] factions;
 			//
-			public FactionsList(string filename)
+			public FactionsList(string filename, Religion stateReligion, bool useLegacyTechs)
 			{
 				XmlDocument sourceFile = new XmlDocument();
 				sourceFile.Load(filename);
@@ -16,8 +16,9 @@ namespace TWAssistant
 				factions = new Faction[factionNodesList.Count];
 				for (int whichFaction = 0; whichFaction < factions.Length; ++whichFaction)
 				{
-					factions[whichFaction] = new Faction(factionNodesList[whichFaction]);
+					factions[whichFaction] = new Faction(factionNodesList[whichFaction], stateReligion, useLegacyTechs);
 				}
+
 			}
 			//
 			public Faction this[int whichFaction]

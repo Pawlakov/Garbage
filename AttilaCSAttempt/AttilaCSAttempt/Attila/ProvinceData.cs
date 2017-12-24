@@ -4,34 +4,38 @@ namespace TWAssistant
 {
 	namespace Attila
 	{
-		class ProvinceData
+		public struct ProvinceData
 		{
-			string name;
-			uint fertility; //0-5
+			readonly string name;
+			readonly int fertility; //0-5 or 1-6 depending on mod
+			readonly ProvinceTraditions traditions;
 			readonly RegionData[] regions;
 			//
-			public ProvinceData(XmlNode provinceNode)
+			public ProvinceData(XmlNode provinceNode, int whichMod)
 			{
 				name = provinceNode.Attributes.GetNamedItem("n").InnerText;
 				//
-				fertility = Convert.ToUInt32(provinceNode.Attributes.GetNamedItem("f").InnerText);
-				if (fertility > 5)
-					Console.WriteLine("ERROR: Fertility should be under 6 (is {0})!", fertility);
+				fertility = Convert.ToInt32(provinceNode.Attributes.GetNamedItem("f").InnerText);
+				if (fertility > 6 || fertility < 1)
+					throw (new Exception("Fertility should be between 1 and 6 (is " + fertility + ")!"));
+				if (whichMod != 2)
+					fertility -= 1;
 				//
-				XmlNodeList regionNodeList = provinceNode.ChildNodes;
-				if (regionNodeList.Count != 3)
-					Console.WriteLine("ERROR: {0} regions in province instead of 3!", regionNodeList.Count);
-				regions = new RegionData[3];
+				XmlNodeList childNodeList = provinceNode.ChildNodes;
+				if (childNodeList.Count != 4)
+					Console.WriteLine("Warning: Unexpected childnodes count ({0}) in province!", childNodeList.Count);
+				traditions = new ProvinceTraditions(childNodeList[0]);
+				//
+				regions = new RegionData[childNodeList.Count - 1];
 				try
 				{
-				regions[0] = new RegionData(regionNodeList.Item(0), true);
-				regions[1] = new RegionData(regionNodeList.Item(1), false);
-				regions[2] = new RegionData(regionNodeList.Item(2), false);
+					for (int whichRegion = 0; whichRegion < regions.Length; ++whichRegion)
+						regions[whichRegion] = new RegionData(childNodeList.Item(whichRegion + 1), !Convert.ToBoolean(whichRegion));
 				}
 				catch (Exception exception)
 				{
+					Console.WriteLine("Province {0} fell of a bike.", name);
 					Console.WriteLine(exception.Message);
-					Console.WriteLine("{0} fell of a bike.", name);
 					Console.ReadKey();
 				}
 			}
@@ -40,13 +44,21 @@ namespace TWAssistant
 			{
 				get { return name; }
 			}
-			public uint Fertility
+			public int Fertility
 			{
 				get { return fertility; }
 			}
-			public RegionData this[uint whichRegion]
+			public ProvinceTraditions Traditions
+			{
+				get { return traditions; }
+			}
+			public RegionData this[int whichRegion]
 			{
 				get { return regions[whichRegion]; }
+			}
+			public int RegionCount
+			{
+				get { return regions.Length; }
 			}
 		}
 	}

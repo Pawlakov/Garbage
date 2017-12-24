@@ -8,7 +8,7 @@ namespace TWAssistant
 		{
 			readonly ProvinceData[] provinces;
 			//
-			public Map(string filename)
+			public Map(string filename, int whichMod)
 			{
 				XmlDocument sourceDocument = new XmlDocument();
 				sourceDocument.Load(filename);
@@ -16,7 +16,7 @@ namespace TWAssistant
 				provinces = new ProvinceData[provinceNodeList.Count];
 				for (int whichProvince = 0; whichProvince < provinces.Length; ++whichProvince)
 				{
-					provinces[whichProvince] = new ProvinceData(provinceNodeList[whichProvince]);
+					provinces[whichProvince] = new ProvinceData(provinceNodeList[whichProvince], whichMod);
 				}
 			}
 			//

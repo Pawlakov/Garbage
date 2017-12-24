@@ -4,33 +4,68 @@ namespace TWAssistant
 {
 	namespace Attila
 	{
-		class BuildingBranch
+		public class BuildingBranch
 		{
-			string name;
-			BuildingType type;
-			Resource resource;
-			BuildingLevel[] levels;
+			readonly string name;
+			readonly BuildingType type;
 			//
-			public BuildingBranch(XmlNode branchNode)
+			readonly BuildingLevel[] levels;
+			//
+			readonly Resource resource;
+			readonly Religion? religion;
+			readonly bool isReligionExclusive;
+			//
+			public BuildingBranch(XmlNode branchNode, Religion stateReligion, bool useLegacy)
 			{
-				XmlNodeList levelNodeList = branchNode.ChildNodes;
-				//
+				
 				name = branchNode.Attributes.GetNamedItem("n").InnerText;
-				//
 				Enum.TryParse(branchNode.Attributes.GetNamedItem("t").InnerText, out type);
-				//
-				XmlNode temporary = branchNode.Attributes.GetNamedItem("r");
-				if (type == BuildingType.RESOURCE)
-					Enum.TryParse(temporary.InnerText, out resource);
-				else
-					resource = Resource.NONE;
-				if (type == BuildingType.RESOURCE && resource == Resource.NONE)
-					Console.WriteLine("ERROR: Resource building with NONE resource({0})!", name);
-				//
+				XmlNodeList levelNodeList = branchNode.ChildNodes;
 				levels = new BuildingLevel[levelNodeList.Count];
 				for (int whichLevel = 0; whichLevel < levels.Length; ++whichLevel)
 				{
-					levels[whichLevel] = new BuildingLevel(levelNodeList.Item(whichLevel));
+					try
+					{
+						levels[whichLevel] = new BuildingLevel(levelNodeList.Item(whichLevel));
+					}
+					catch (Exception exception)
+					{
+						Console.WriteLine("{0} fell off a bike.", name);
+						Console.WriteLine(exception.Message);
+						Console.WriteLine(exception.StackTrace);
+						Console.ReadKey();
+					}
+				}
+				//
+				resource = Resource.NONE;
+				religion = null;
+				isReligionExclusive = false;
+				XmlNode temporary = branchNode.Attributes.GetNamedItem("r");
+				if (type == BuildingType.RESOURCE)
+					Enum.TryParse(temporary.InnerText, out resource);
+				if (type == BuildingType.RESOURCE && resource == Resource.NONE)
+					throw new Exception("Resource building with NONE resource(" + name + ").");
+				
+				temporary = branchNode.Attributes.GetNamedItem("rel");
+				if (temporary != null)
+				{
+					Religion temporaryReligion;
+					Enum.TryParse(temporary.InnerText, out temporaryReligion);
+					religion = temporaryReligion;
+					temporary = branchNode.Attributes.GetNamedItem("rex");
+					isReligionExclusive = Convert.ToBoolean(temporary.InnerText);
+				}
+				if (isReligionExclusive && stateReligion != religion.Value)
+				{
+					for (int whichLevel = 0; whichLevel < levels.Length; ++whichLevel)
+					{
+						levels[whichLevel].ForceVoid();
+					}
+				}
+				for (int whichLevel = 0; whichLevel<levels.Length; ++whichLevel)
+				{
+					if (levels[whichLevel].IsLegacy == !useLegacy)
+						levels[whichLevel].ForceVoid();
 				}
 			}
 			//
@@ -42,10 +77,7 @@ namespace TWAssistant
 			{
 				get { return type; }
 			}
-			public Resource Resource
-			{
-				get { return resource; }
-			}
+			//
 			public int NumberOfLevels
 			{
 				get { return levels.Length; }
@@ -63,147 +95,42 @@ namespace TWAssistant
 					return result;
 				}
 			}
-			public BuildingLevel this[uint whichLevel]
+			public BuildingLevel this[int whichLevel]
 			{
 				get { return levels[whichLevel]; }
 			}
 			//
-			public void RewardLevel(uint level)
+			public Resource Resource
 			{
-				levels[level].Reward();
+				get { return resource; }
 			}
-			public void ResetUsefuliness()
+			public Religion? Religion
 			{
-				foreach (BuildingLevel level in levels)
-				{
-					level.ResetUsefuliness();
-				}
+				get { return religion; }
 			}
-			public uint GetLevel(Random random)
+			//
+			public void EvalueateLevels()
 			{
-				uint result;
+				for (int whichLevel = 0; whichLevel < levels.Length; ++whichLevel)
+					levels[whichLevel].Evaluate();
+			}
+			public int GetLevel(Random random)
+			{
+				int result;
 				do
 				{
-					result = (uint)random.Next(0, levels.Length);
+					result = random.Next(0, levels.Length);
 				} while (levels[result].IsVoid == true);
 				return result;
 			}
-			//
-			public class BuildingLevel
+			public int GetLevel(Random random, int desiredLevel)
 			{
-				int food;
-				int foodPerFertility;
-				int order;
-				int regionalSanitation;
-				int provincionalSanitation;
-				int religiousInfluence;
-				uint fertility;
-				uint usefuliness;
-				bool isVoid;
-				WealthBonus[] wealthBonuses;
-				//
-				public BuildingLevel(XmlNode levelNode)
+				int result;
+				do
 				{
-					food = 0;
-					foodPerFertility = 0;
-					order = 0;
-					regionalSanitation = 0;
-					provincionalSanitation = 0;
-					religiousInfluence = 0;
-					fertility = 0;
-					usefuliness = 0;
-					isVoid = false;
-					XmlNode temporary;
-					//
-					if (levelNode.Attributes != null)
-					{
-						temporary = levelNode.Attributes.GetNamedItem("f");
-						if (temporary != null)
-							food = Convert.ToInt32(temporary.InnerText);
-						//
-						temporary = levelNode.Attributes.GetNamedItem("_f");
-						if (temporary != null)
-							foodPerFertility = Convert.ToInt32(temporary.InnerText);
-						//
-						temporary = levelNode.Attributes.GetNamedItem("o");
-						if (temporary != null)
-							order = Convert.ToInt32(temporary.InnerText);
-						//
-						temporary = levelNode.Attributes.GetNamedItem("s");
-						if (temporary != null)
-							regionalSanitation = Convert.ToInt32(temporary.InnerText);
-						//
-						temporary = levelNode.Attributes.GetNamedItem("_s");
-						if (temporary != null)
-							provincionalSanitation = Convert.ToInt32(temporary.InnerText);
-						//
-						temporary = levelNode.Attributes.GetNamedItem("r");
-						if (temporary != null)
-							religiousInfluence = Convert.ToInt32(temporary.InnerText);
-						//
-						temporary = levelNode.Attributes.GetNamedItem("i");
-						if (temporary != null)
-							fertility = Convert.ToUInt32(temporary.InnerText);
-					}
-					XmlNodeList bonusNodeList = levelNode.ChildNodes;
-					wealthBonuses = new WealthBonus[bonusNodeList.Count];
-					for (int whichBonus = 0; whichBonus < wealthBonuses.Length; ++whichBonus)
-					{
-						wealthBonuses[whichBonus] = new WealthBonus(bonusNodeList.Item(whichBonus));
-					}
-				}
-				//
-				public int GetFood(uint fertility)
-				{
-					return food + (int)(fertility * foodPerFertility);
-				}
-				public int Order
-				{
-					get { return order; }
-				}
-				public int RegionalSanitation
-				{
-					get { return regionalSanitation; }
-				}
-				public int ProvincionalSanitation
-				{
-					get { return provincionalSanitation; }
-				}
-				public int ReligiousInfluence
-				{
-					get { return religiousInfluence; }
-				}
-				public uint Fertility
-				{
-					get { return fertility; }
-				}
-				public uint Usefuliness
-				{
-					get { return usefuliness; }
-				}
-				public bool IsVoid
-				{
-					get { return isVoid; }
-				}
-				public WealthBonus[] WealthBonuses
-				{
-					get { return wealthBonuses; }
-				}
-				//
-				public void Reward()
-				{
-					++usefuliness;
-				}
-				public void ResetUsefuliness()
-				{
-					if (usefuliness == 0)
-						isVoid = true;
-					else
-					{
-						usefuliness = 0;
-						isVoid = false;
-					}
-				}
+					result = random.Next(0, levels.Length);
+				} while (levels[result].IsVoid == true || levels[result].Level != desiredLevel);
+				return result;
 			}
 		}
 	}

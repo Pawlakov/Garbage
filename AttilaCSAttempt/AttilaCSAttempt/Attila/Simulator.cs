@@ -6,30 +6,32 @@ namespace TWAssistant
 {
 	namespace Attila
 	{
-		enum Resource { NONE, IRON, LEAD, GEMSTONES, OLIVE, FUR, WINE, SILK, MARBLE, SALT, GOLD, DYE, LUMBER };
-		enum BuildingType { TOWN, CENTERTOWN, CITY, CENTERCITY, COAST, RESOURCE };
-		enum BonusCategory { ALL, AGRICULTURE, HUSBANDRY, CULTURE, INDUSTRY, COMMERCE, MARITIME_COMMERCE, SUBSISTENCE, MAINTENANCE }; // Maintenance HAS TO BE THE LAST ONE
-		class Simulator
+		public enum Resource { NONE, IRON, LEAD, GEMSTONES, OLIVE, FUR, WINE, SILK, MARBLE, SALT, GOLD, DYE, LUMBER };
+		public enum BuildingType { TOWN, CENTERTOWN, CITY, CENTERCITY, COAST, RESOURCE };
+		public enum BonusCategory { ALL, AGRICULTURE, HUSBANDRY, CULTURE, INDUSTRY, COMMERCE, MARITIME_COMMERCE, SUBSISTENCE, MAINTENANCE }; // Maintenance HAS TO BE THE LAST ONE
+		public enum Religion { LACHRI, GRECHRI, ARICHRI, EACHRI, ROMPAG, CELPAG, GERPAG, SEMPAG, MANICH, ZORO, TENGRI, JUDA, MINO };
+		public class Simulator
 		{
+			//int whichMod;
 			Map map;
 			ProvinceData province;
+			Religion religion;
+			bool useLegacyTechs;
 			FactionsList factions;
 			Faction faction;
 			ProvinceCombination template;
 			//
-			uint firstRoundTime;
-			uint roundSize;
-			uint maxListSize;
+			int firstRoundTime;
+			int roundSize;
+			int maxListSize;
 			double reductionRate;
 			int parallelCount;
 			object parallelLock = new object();
 			//
-			bool useResource;
-			int minimalFood;
 			int minimalOrder;
-			int minimalReligiousInfluence;
 			int minimalSanitation;
-			uint fertility;
+			int fertility;
+			int osmosis;
 			//
 			public static int ResourceTypesCount
 			{
@@ -43,60 +45,86 @@ namespace TWAssistant
 			{
 				get { return 9; }
 			}
+			public static int ReligionTypesCount
+			{
+				get { return 13; }
+			}
 			//
 			public void Act()
 			{
+				/*
 				Console.Clear();
-				map = new Map("XMLs/twa_map.xml");
+				Console.Write("0-Vanilla/1-Radious/2-Modpack: ");
+				whichMod = Convert.ToInt32(Console.ReadLine());
+				*/
+				//
+				Console.Clear();
+				map = new Map("XMLs/twa_map.xml", 2);
 				Console.WriteLine("List of provinces:");
 				map.ShowList();
 				Console.Write("Pick a province: ");
 				province = map[Convert.ToUInt32(Console.ReadLine())];
 				//
 				Console.Clear();
-				Console.Write("0-Vanilla/1-Radious/2-Modpack: ");
-				switch (Convert.ToInt32(Console.ReadLine()))
+				Console.WriteLine("Avaible religions: ");
+				for (int whichReligion = 0; whichReligion < ReligionTypesCount; ++whichReligion)
+					Console.WriteLine("{0}. {1}", whichReligion, (Religion)whichReligion);
+				Console.Write("Pick a religion: ");
+				religion = (Religion)Convert.ToInt32(Console.ReadLine());
+				Console.Write("Use legacy techs? (if possible) true/false: ");
+				useLegacyTechs = Convert.ToBoolean(Console.ReadLine());
+				//
+				Console.Clear();
+				/*
+				switch (whichMod)
 				{
 					case 0:
-						factions = new FactionsList("XMLs/Vanilla/twa_factions.xml");
+						factions = new FactionsList("XMLs/Vanilla/twa_factions.xml", religion, useLegacyTechs);
 						break;
 					case 1:
-					factions = new FactionsList("XMLs/Radious/twa_rm_factions.xml");
+						factions = new FactionsList("XMLs/Radious/twa_rm_factions.xml", religion, useLegacyTechs);
 						break;
 					case 2:
-						factions = new FactionsList("XMLs/ModPack/twa_mpack_factions.xml");
-						break;
-					default:
-						Console.WriteLine("Factions fell off a bike.");
+						factions = new FactionsList("XMLs/ModPack/twa_mpack_factions.xml", religion, useLegacyTechs);
 						break;
 				}
+				*/
+				try
+				{
+					factions = new FactionsList("XMLs/ModPack/twa_mpack_factions.xml", religion, useLegacyTechs);
+				}
+				catch (Exception exception)
+				{
+					Console.WriteLine(exception.Message);
+					Console.WriteLine(exception.StackTrace);
+					Console.ReadKey();
+				}
+				//
 				Console.WriteLine("List of factions:");
 				factions.ShowList();
 				Console.Write("Pick a faction: ");
 				faction = factions[Convert.ToInt32(Console.ReadLine())];
+
 				//
 				Console.Clear();
-				Console.Write("Your province's default fertility is {0}. Choose fertility: ", province.Fertility);
-				fertility = Convert.ToUInt32(Console.ReadLine());
-				Console.Write("Choose minimal food: ");
-				minimalFood = Convert.ToInt32(Console.ReadLine());
+				Console.WriteLine("Default fertility in {0} is {1}", province.Name, province.Fertility);
+				Console.Write("Choose fertility: ");
+				fertility = Convert.ToInt32(Console.ReadLine());
+				Console.Write("Choose incoming osmosis: ");
+				osmosis = Convert.ToInt32(Console.ReadLine());
 				Console.Write("Choose minimal public order: ");
 				minimalOrder = Convert.ToInt32(Console.ReadLine());
-				Console.Write("Choose minimal religious influence: ");
-				minimalReligiousInfluence = Convert.ToInt32(Console.ReadLine());
 				Console.Write("Choose minimal sanitation: ");
 				minimalSanitation = Convert.ToInt32(Console.ReadLine());
-				Console.Write("Use resource buildings?(0-no 1-yes): ");
-				useResource = (Convert.ToUInt32(Console.ReadLine()) != 0);
 				//
-				template = new ProvinceCombination(province, faction, fertility, useResource);
-				ForceBuildings(template);
+				template = new ProvinceCombination(province, faction, fertility, osmosis, 2, religion);
+				//ForceBuildings(template);
 				//
 				Console.Clear();
 				Console.Write("Choose first round time: ");
-				firstRoundTime = 60000 * Convert.ToUInt32(Console.ReadLine());
+				firstRoundTime = 1000 * Convert.ToInt32(Console.ReadLine());
 				Console.Write("Choose biggest list size: ");
-				maxListSize = Convert.ToUInt32(Console.ReadLine());
+				maxListSize = Convert.ToInt32(Console.ReadLine());
 				Console.Write("Choose reduction rate per round: ");
 				reductionRate = Convert.ToDouble(Console.ReadLine());
 				Console.Write("Choose parallel lists count: ");
@@ -111,24 +139,24 @@ namespace TWAssistant
 					return -1;
 				return 0;
 			}
-			public void ForceBuildings(ProvinceCombination template)
+			/*public void ForceBuildings(ProvinceCombination template)
 			{
 				while (true)
 				{
 					Console.Clear();
 					template.ShowContent();
-					Console.Write("Force building/level? (0-no/1-yes): ");
+					Console.Write("Force building/level? (0-No/1-Yes): ");
 					if (Convert.ToInt32(Console.ReadLine()) == 0)
 						break;
 					template.ForceBuilding();
 				}
-			}
+			}*/
 			public void Generate(Func<ProvinceCombination, bool> minimalCondition)
 			{
 				SortedSet<ProvinceCombination> valid = new SortedSet<ProvinceCombination>(new CombinationsComparator(BetterInWealth));
 				ProvinceCombination bestValid = null;
-				uint capacity = maxListSize;
-				uint doneRounds = 0;
+				int capacity = maxListSize;
+				int doneRounds = 0;
 				int cursorPosition = 0;
 				//
 				Console.Clear();
@@ -136,14 +164,14 @@ namespace TWAssistant
 				{
 					SortedSet<ProvinceCombination>[] results = new SortedSet<ProvinceCombination>[parallelCount];
 					Parallel.For(0, parallelCount, (int whichResult) => results[whichResult] = Round(minimalCondition, capacity, (cursorPosition + whichResult)));
-					for (int whichResult = 0; whichResult<parallelCount; ++whichResult)
+					for (int whichResult = 0; whichResult < parallelCount; ++whichResult)
 						valid.UnionWith(results[whichResult]);
 					while (valid.Count > capacity)
 						valid.Remove(valid.Min);
 					bestValid = valid.Max;
 					foreach (ProvinceCombination combination in valid)
-						combination.RewardUsefulBuildings();
-					faction.CurbUselessBuildings();
+						combination.RewardBuildings();
+					faction.EvaluateBuildings();
 					Console.Clear();
 					Console.WriteLine("COAST building left: {0}", faction.Buildings.GetCountByType(BuildingType.COAST));
 					Console.WriteLine("CITY building left: {0}", faction.Buildings.GetCountByType(BuildingType.CITY));
@@ -156,7 +184,7 @@ namespace TWAssistant
 					//
 					if (capacity > 1)
 					{
-						capacity = (uint)(capacity * reductionRate);
+						capacity = (int)(capacity * reductionRate);
 						while (valid.Count > capacity)
 							valid.Remove(valid.Min);
 					}
@@ -167,13 +195,13 @@ namespace TWAssistant
 				bestValid.ShowContent();
 				Console.ReadKey();
 			}
-			SortedSet<ProvinceCombination> Round(Func<ProvinceCombination, bool> minimalCondition, uint capacity, int cursorLine)
+			SortedSet<ProvinceCombination> Round(Func<ProvinceCombination, bool> minimalCondition, int capacity, int cursorLine)
 			{
 				SortedSet<ProvinceCombination> result = new SortedSet<ProvinceCombination>(new CombinationsComparator(BetterInWealth));
-				Random random = new Random(cursorLine + minimalOrder + (int)capacity);
+				Random random = new Random(cursorLine + minimalOrder + capacity);
 				Stopwatch stopwatch = new Stopwatch();
-				uint doneCombinations = 0;
-				uint doneValid = 0;
+				int doneCombinations = 0;
+				int doneValid = 0;
 				string report;
 				//
 				if (roundSize > 0)
@@ -230,19 +258,18 @@ namespace TWAssistant
 					} while (stopwatch.ElapsedMilliseconds < firstRoundTime);
 					stopwatch.Stop();
 					roundSize = doneValid;
-					capacity = (uint)result.Count;
+					capacity = result.Count;
 				}
 				//
 				return result;
 			}
 			public bool MinimalCondition(ProvinceCombination subject)
 			{
-				return (subject.Order >= minimalOrder 
-				        && subject.Food >= minimalFood 
-				        && subject.ReligiousInfluence >= minimalReligiousInfluence
-				        && subject.getSanitation(0) >= minimalSanitation 
-				        && subject.getSanitation(1) >= minimalSanitation 
-				        && subject.getSanitation(2) >= minimalSanitation);
+				return (subject.Order >= minimalOrder
+						&& subject.Food >= 0
+						&& subject.getSanitation(0) >= minimalSanitation
+						&& subject.getSanitation(1) >= minimalSanitation
+						&& subject.getSanitation(2) >= minimalSanitation);
 			}
 		}
 		class CombinationsComparator : IComparer<ProvinceCombination>
