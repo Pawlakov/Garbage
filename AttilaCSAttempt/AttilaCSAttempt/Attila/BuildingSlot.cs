@@ -108,7 +108,7 @@ namespace TWAssistant
 					if (level == null)
 					{
 						buildingLevel = buildingBranch[buildingBranch.GetLevel(random)];
-						level = buildingLevel.Level;
+						level = buildingLevel.level;
 					}
 					else
 					{
@@ -126,7 +126,7 @@ namespace TWAssistant
 				get
 				{
 					if (buildingLevel != null)
-						return buildingLevel.Level.ToString();
+						return buildingLevel.level.ToString();
 					if (level != null)
 						return level.Value.ToString();
 					return "?";
@@ -137,9 +137,9 @@ namespace TWAssistant
 				get
 				{
 					if (buildingLevel != null)
-						return buildingLevel.Name;
+						return buildingLevel.name;
 					if (buildingBranch != null)
-						return buildingBranch.Name;
+						return buildingBranch.name;
 					return type.ToString();
 				}
 			}

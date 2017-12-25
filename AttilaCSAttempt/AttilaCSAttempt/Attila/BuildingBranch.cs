@@ -6,14 +6,14 @@ namespace TWAssistant
 	{
 		public class BuildingBranch
 		{
-			readonly string name;
-			readonly BuildingType type;
+			readonly public string name;
+			readonly public BuildingType type;
 			//
-			readonly BuildingLevel[] levels;
+			readonly public BuildingLevel[] levels;
 			//
-			readonly Resource resource;
-			readonly Religion? religion;
-			readonly bool isReligionExclusive;
+			readonly public Resource resource;
+			readonly public Religion? religion;
+			readonly public bool isReligionExclusive;
 			//
 			public BuildingBranch(XmlNode branchNode, Religion stateReligion, bool useLegacy)
 			{
@@ -45,7 +45,7 @@ namespace TWAssistant
 					Enum.TryParse(temporary.InnerText, out resource);
 				if (type == BuildingType.RESOURCE && resource == Resource.NONE)
 					throw new Exception("Resource building with NONE resource(" + name + ").");
-				
+				//
 				temporary = branchNode.Attributes.GetNamedItem("rel");
 				if (temporary != null)
 				{
@@ -55,34 +55,18 @@ namespace TWAssistant
 					temporary = branchNode.Attributes.GetNamedItem("rex");
 					isReligionExclusive = Convert.ToBoolean(temporary.InnerText);
 				}
-				if (isReligionExclusive && stateReligion != religion.Value)
-				{
-					for (int whichLevel = 0; whichLevel < levels.Length; ++whichLevel)
-					{
-						levels[whichLevel].ForceVoid();
-					}
-				}
 				for (int whichLevel = 0; whichLevel<levels.Length; ++whichLevel)
 				{
-					if (levels[whichLevel].IsLegacy == !useLegacy)
+					if (levels[whichLevel].isLegacy == !useLegacy)
 						levels[whichLevel].ForceVoid();
 				}
-			}
-			//
-			public string Name
-			{
-				get { return name; }
-			}
-			public BuildingType Type
-			{
-				get { return type; }
 			}
 			//
 			public int NumberOfLevels
 			{
 				get { return levels.Length; }
 			}
-			public int nonVoidCount
+			public int NonVoidCount
 			{
 				get
 				{
@@ -98,15 +82,6 @@ namespace TWAssistant
 			public BuildingLevel this[int whichLevel]
 			{
 				get { return levels[whichLevel]; }
-			}
-			//
-			public Resource Resource
-			{
-				get { return resource; }
-			}
-			public Religion? Religion
-			{
-				get { return religion; }
 			}
 			//
 			public void EvalueateLevels()
@@ -129,7 +104,7 @@ namespace TWAssistant
 				do
 				{
 					result = random.Next(0, levels.Length);
-				} while (levels[result].IsVoid == true || levels[result].Level != desiredLevel);
+				} while (levels[result].IsVoid == true || levels[result].level != desiredLevel);
 				return result;
 			}
 		}

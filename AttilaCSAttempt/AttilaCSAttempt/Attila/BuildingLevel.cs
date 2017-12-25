@@ -6,22 +6,22 @@ namespace TWAssistant
 	{
 		public class BuildingLevel
 		{
-			string name;
-			int level;
-			bool? isLegacy;
+			readonly public string name;
+			readonly public int level;
+			readonly public bool? isLegacy;
 			//
-			int food;
-			int irigation;
-			int foodPerFertility;
+			readonly int food;
+			readonly public int irigation;
+			readonly int foodPerFertility;
 			//
-			int order;
-			WealthBonus[] wealthBonuses;
+			readonly public int order;
+			readonly public WealthBonus[] wealthBonuses;
 			//
-			int regionalSanitation;
-			int provincionalSanitation;
+			readonly public int regionalSanitation;
+			readonly public int provincionalSanitation;
 			//
-			int religiousInfluence;
-			int religiousOsmosis;
+			readonly public int religiousInfluence;
+			readonly public int religiousOsmosis;
 			//
 			int usefuliness;
 			bool isVoid;
@@ -88,53 +88,9 @@ namespace TWAssistant
 					religiousOsmosis = Convert.ToInt32(temporary.InnerText);
 			}
 			//
-			public string Name
-			{
-				get { return name; }
-			}
-			public int Level
-			{
-				get { return level; }
-			}
-			public bool? IsLegacy
-			{
-				get { return isLegacy; }
-			}
-			//
 			public int GetFood(int fertility)
 			{
 				return food + fertility * foodPerFertility;
-			}
-			public int Irigation
-			{
-				get { return irigation; }
-			}
-			//
-			public int Order
-			{
-				get { return order; }
-			}
-			public WealthBonus[] WealthBonuses
-			{
-				get { return wealthBonuses; }
-			}
-			//
-			public int RegionalSanitation
-			{
-				get { return regionalSanitation; }
-			}
-			public int ProvincionalSanitation
-			{
-				get { return provincionalSanitation; }
-			}
-			//
-			public int ReligiousInfluence
-			{
-				get { return religiousInfluence; }
-			}
-			public int ReligiousOsmosis
-			{
-				get { return religiousOsmosis; }
 			}
 			//
 			public int Usefuliness

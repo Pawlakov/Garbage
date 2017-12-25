@@ -432,7 +432,7 @@
 		<level n="WeaponsWorkshop" l="4" o ="-8" s="-8">
 		</level>
 	</branch>
-	<branch n="Latin" t="CITY">
+	<branch n="Latin" t="CITY" rel="LACHRI" rex="true">
 		<level n="LatinTemple" l="1" o ="3" r="3">
 		</level>
 		<level n="LatinTemple" l="2" o ="4" r="6" ro="1">
@@ -448,7 +448,7 @@
 		<level n="LatinMonastery" l="4" s="15" r="6" ro="3" lcy="false">
 		</level>
 	</branch>
-	<branch n="PaganTemple" t="CITY" rel="ROPAG" rex="true">
+	<branch n="PaganTemple" t="CITY" rel="ROMPAG" rex="true">
 		<level n="PaganTemple" l="1" f="-30" o="3" r="3">
 		</level>
 		<level n="PaganTemple" l="2" f="-60" o="5" r="5">
@@ -640,7 +640,7 @@
 			<bonus c ="CULTURE" m="false">825</bonus>
 		</level>
 	</branch>
-	<branch n="CavalryBarracks" t="CITY">
+	<branch n="CavalryBarracks" t="TOWN">
 		<level n="Barracks" l="1">
 		</level>
 		<level n="CavalryBarracks" l="2">
@@ -653,7 +653,7 @@
 			<bonus c ="MAINTENANCE" m="false">-1000</bonus>
 		</level>
 	</branch>
-	<branch n="SkirmishersBarracks" t="CITY">
+	<branch n="SkirmishersBarracks" t="TOWN">
 		<level n="Barracks" l="1">
 		</level>
 		<level n="SkirmishersBarracks" l="2">
@@ -666,7 +666,7 @@
 			<bonus c ="MAINTENANCE" m="false">-800</bonus>
 		</level>
 	</branch>
-	<branch n="InfantryBarracks" t="CITY">
+	<branch n="InfantryBarracks" t="TOWN">
 		<level n="Barracks" l="1">
 		</level>
 		<level n="InfantryBarracks" l="2">

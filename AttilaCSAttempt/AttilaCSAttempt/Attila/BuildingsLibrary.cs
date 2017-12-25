@@ -40,10 +40,19 @@ namespace TWAssistant
 						throw new Exception("Two building for one resource.");
 					resourceBuildings[(int)resource] = new BuildingBranch(node, stateReligion, useLegacy);
 				}
+				BuildingBranch temporaryBranch;
 				foreach (XmlNode node in nodeList[(int)BuildingType.CITY])
-					cityBuildings.Add(new BuildingBranch(node, stateReligion, useLegacy));
+				{
+					temporaryBranch = new BuildingBranch(node, stateReligion, useLegacy);
+					if (!temporaryBranch.isReligionExclusive || temporaryBranch.religion == stateReligion)
+						cityBuildings.Add(temporaryBranch);
+				}
 				foreach (XmlNode node in nodeList[(int)BuildingType.TOWN])
-					townBuildings.Add(new BuildingBranch(node, stateReligion, useLegacy));
+				{
+					temporaryBranch = new BuildingBranch(node, stateReligion, useLegacy);
+					if (!temporaryBranch.isReligionExclusive || temporaryBranch.religion == stateReligion)
+						townBuildings.Add(temporaryBranch);
+				}
 			}
 			public BuildingLibrary(BuildingLibrary source)
 			{
@@ -74,7 +83,7 @@ namespace TWAssistant
 				if (list != null)
 					for (int whichBuilding = 0; whichBuilding < list.Count; ++whichBuilding)
 					{
-						Console.WriteLine("{0}. {1}", whichBuilding, list[whichBuilding].Name);
+						Console.WriteLine("{0}. {1}", whichBuilding, list[whichBuilding].name);
 					}
 				else
 					Console.WriteLine("No list for this type.");
@@ -111,14 +120,14 @@ namespace TWAssistant
 						list = townBuildings;
 						break;
 					case BuildingType.COAST:
-						return coastBuilding.nonVoidCount;
+						return coastBuilding.NonVoidCount;
 					default:
 						return 0;
 				}
 				int result = 0;
 				foreach (BuildingBranch building in list)
 				{
-					result += building.nonVoidCount;
+					result += building.NonVoidCount;
 				}
 				return result;
 			}
@@ -138,7 +147,7 @@ namespace TWAssistant
 				{
 					building = list[whichBuilding];
 					building.EvalueateLevels();
-					if (building.nonVoidCount == 0)
+					if (building.NonVoidCount == 0)
 					{
 						list.RemoveAt(whichBuilding);
 						--whichBuilding;
@@ -178,7 +187,7 @@ namespace TWAssistant
 			}
 			public void Remove(BuildingBranch building)
 			{
-				switch (building.Type)
+				switch (building.type)
 				{
 					case BuildingType.CITY:
 						cityBuildings.Remove(building);

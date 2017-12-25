@@ -17,8 +17,6 @@ namespace TWAssistant
 			int fertility;
 			int food;
 			int order;
-			int influence;
-			int counterinfluence;
 			int osmosis;
 			readonly int[] sanitations;
 			float wealth;
@@ -52,6 +50,7 @@ namespace TWAssistant
 				province = source.province;
 				faction = source.faction;
 				originalFertility = source.originalFertility;
+				incomingOsmosis = source.incomingOsmosis;
 				religion = source.religion;
 				maxFertility = source.maxFertility;
 				//
@@ -92,7 +91,7 @@ namespace TWAssistant
 						slots[whichRegion][whichSlot].ShowContent();
 					}
 				}
-				Console.WriteLine("Wea:{0} Foo:{1} Ord:{2} San:{3}/{4}/{5} Rel:{6}/{7} Osm:{8} Fer:{9} ", Wealth, Food, Order, getSanitation(0), getSanitation(1), getSanitation(2), Influence, Counterinfluence, ReligiousOsmosis, Fertility);
+				Console.WriteLine("Wea:{0} Foo:{1} Ord:{2} San:{3}/{4}/{5} Osm:{6} Fer:{7} ", Wealth, Food, Order, getSanitation(0), getSanitation(1), getSanitation(2), ReligiousOsmosis, Fertility);
 			}
 			public void RewardBuildings()
 			{
@@ -166,24 +165,6 @@ namespace TWAssistant
 					return osmosis;
 				}
 			}
-			public int Influence
-			{
-				get
-				{
-					if (!isCurrent)
-						HarvestBuildings();
-					return influence;
-				}
-			}
-			public int Counterinfluence
-			{
-				get
-				{
-					if (!isCurrent)
-						HarvestBuildings();
-					return counterinfluence;
-				}
-			}
 			public int Fertility
 			{
 				get
@@ -210,7 +191,7 @@ namespace TWAssistant
 				{
 					for (int whichSlot = 0; whichSlot < slots[whichRegion].Length; ++whichSlot)
 					{
-						fertility += slots[whichRegion][whichSlot].BuildingLevel.Irigation;
+						fertility += slots[whichRegion][whichSlot].BuildingLevel.irigation;
 					}
 				}
 				if (fertility > maxFertility)
@@ -237,22 +218,20 @@ namespace TWAssistant
 					{
 						BuildingLevel level = slots[whichRegion][whichSlot].BuildingLevel;
 						food += level.GetFood(fertility);
-						order += level.Order;
+						order += level.order;
 						for (int whichSanitation = 0; whichSanitation < sanitations.Length; ++whichSanitation)
-							sanitations[whichSanitation] += level.ProvincionalSanitation;
-						sanitations[whichRegion] += level.RegionalSanitation;
-						osmosis += level.ReligiousOsmosis;
+							sanitations[whichSanitation] += level.provincionalSanitation;
+						sanitations[whichRegion] += level.regionalSanitation;
+						osmosis += level.religiousOsmosis;
 						//
-						Religion? potentialReligion = slots[whichRegion][whichSlot].BuildingBranch.Religion;
+						Religion? potentialReligion = slots[whichRegion][whichSlot].BuildingBranch.religion;
 						if (potentialReligion.HasValue)
-							religionCalculator.AddInfluence(level.ReligiousInfluence, potentialReligion.Value);
-						for (int whichBonus = 0; whichBonus < level.WealthBonuses.Length; ++whichBonus)
-							wealthCalculator.AddBonus(level.WealthBonuses[whichBonus]);
+							religionCalculator.AddInfluence(level.religiousInfluence, potentialReligion.Value);
+						for (int whichBonus = 0; whichBonus < level.wealthBonuses.Length; ++whichBonus)
+							wealthCalculator.AddBonus(level.wealthBonuses[whichBonus]);
 					}
 				}
 				order += religionCalculator.Order;
-				influence = religionCalculator.Influence;
-				counterinfluence = religionCalculator.Counterinfluence;
 				wealth = wealthCalculator.Wealth;
 				isCurrent = true;
 			}
