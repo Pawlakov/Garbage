@@ -14,7 +14,7 @@ namespace TWAssistant
 			{
 				value = Convert.ToDouble(wealthBonusNode.InnerText);
 				isMultiplier = Convert.ToBoolean(wealthBonusNode.Attributes.GetNamedItem("is_multiplier").InnerText);
-				Enum.TryParse(wealthBonusNode.Attributes.GetNamedItem("category").InnerText, out category);
+				category = (BonusCategory)Enum.Parse(typeof(BonusCategory), wealthBonusNode.Attributes.GetNamedItem("category").InnerText);
 			}
 			public WealthBonus(XmlNode wealthBonusNode, BonusCategory iniCategory)
 			{

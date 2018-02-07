@@ -17,8 +17,8 @@ namespace TWAssistant
 				usefuliness = 0;
 				XmlNodeList levelNodeList = branchNode.ChildNodes;
 				name = branchNode.Attributes.GetNamedItem("name").InnerText;
-				Enum.TryParse(branchNode.Attributes.GetNamedItem("type").InnerText, out type);
-				Enum.TryParse(branchNode.Attributes.GetNamedItem("resource").InnerText, out resource);
+				type = (BuildingType)Enum.Parse(typeof(BuildingType), branchNode.Attributes.GetNamedItem("type").InnerText);
+				resource = (Resource)Enum.Parse(typeof(Resource), branchNode.Attributes.GetNamedItem("resource").InnerText);
 				levels = new BuildingLevel[levelNodeList.Count];
 				for (byte whichLevel = 0; whichLevel < levels.Length; whichLevel++)
 				{

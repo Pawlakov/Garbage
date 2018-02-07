@@ -4,7 +4,7 @@ namespace TWAssistant
 {
 	namespace Attila
 	{
-		public struct WealthBonus
+		public class WealthBonus
 		{
 			readonly BonusCategory category;
 			readonly bool isMultiplier;
@@ -13,7 +13,7 @@ namespace TWAssistant
 			//
 			public WealthBonus(XmlNode wealthBonusNode)
 			{
-				Enum.TryParse(wealthBonusNode.Attributes.GetNamedItem("c").InnerText, out category);
+				category = (BonusCategory)Enum.Parse(typeof(BonusCategory), wealthBonusNode.Attributes.GetNamedItem("c").InnerText);
 				//
 				isMultiplier = Convert.ToBoolean(wealthBonusNode.Attributes.GetNamedItem("m").InnerText);
 				if (category == BonusCategory.ALL && isMultiplier == false)
@@ -70,7 +70,7 @@ namespace TWAssistant
 						multipliers[(int)category] += value;
 					else
 					{
-						for (uint whichCategory = 0; whichCategory < Simulator.BonusCategoriesCount - 1; ++whichCategory)
+						for (uint whichCategory = 0; whichCategory < Globals.BonusCategoriesCount - 1; ++whichCategory)
 						{
 							multipliers[whichCategory] += value;
 						}

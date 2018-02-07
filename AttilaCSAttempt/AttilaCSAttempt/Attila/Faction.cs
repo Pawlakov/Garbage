@@ -9,10 +9,11 @@ namespace TWAssistant
 			readonly string name;
 			readonly int sanitation;
 			readonly int fertility;
+			readonly int growth;
 			readonly WealthBonus[] wealthBonuses;
 			readonly BuildingLibrary buildings;
 			//
-			public Faction(XmlNode factionNode, Religion stateRelgion, bool useLegacyTechs)
+			public Faction(XmlNode factionNode)
 			{
 				XmlNode temporary = factionNode.Attributes.GetNamedItem("n");
 				name = temporary.InnerText;
@@ -24,15 +25,16 @@ namespace TWAssistant
 				temporary = factionNode.Attributes.GetNamedItem("i");
 				if (temporary != null)
 					fertility = Convert.ToInt32(temporary.InnerText);
+				temporary = factionNode.Attributes.GetNamedItem("g");
+				if (temporary != null)
+					growth = Convert.ToInt32(temporary.InnerText);
 				//
 				XmlNodeList bonusNodesList = factionNode.ChildNodes;
 				wealthBonuses = new WealthBonus[bonusNodesList.Count];
 				for (int whichBonus = 0; whichBonus < wealthBonuses.Length; ++whichBonus)
-				{
 					wealthBonuses[whichBonus] = new WealthBonus(bonusNodesList[whichBonus]);
-				}
 				//
-				buildings = new BuildingLibrary(factionNode.Attributes.GetNamedItem("b").InnerText, stateRelgion, useLegacyTechs);
+				buildings = new BuildingLibrary(factionNode.Attributes.GetNamedItem("b").InnerText);
 			}
 			//
 			public string Name
@@ -46,6 +48,10 @@ namespace TWAssistant
 			public int Fertility
 			{
 				get { return fertility; }
+			}
+			public int Growth
+			{
+				get { return growth; }
 			}
 			public WealthBonus[] WealthBonuses
 			{

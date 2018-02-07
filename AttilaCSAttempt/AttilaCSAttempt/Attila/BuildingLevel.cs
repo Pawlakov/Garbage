@@ -15,6 +15,8 @@ namespace TWAssistant
 			readonly int foodPerFertility;
 			//
 			readonly public int order;
+			readonly public int growth;
+			readonly public int science;
 			readonly public WealthBonus[] wealthBonuses;
 			//
 			readonly public int regionalSanitation;
@@ -35,6 +37,8 @@ namespace TWAssistant
 				foodPerFertility = 0;
 				//
 				order = 0;
+				growth = 0;
+				science = 0;
 				//
 				regionalSanitation = 0;
 				provincionalSanitation = 0;
@@ -66,6 +70,14 @@ namespace TWAssistant
 				temporary = levelNode.Attributes.GetNamedItem("o");
 				if (temporary != null)
 					order = Convert.ToInt32(temporary.InnerText);
+				//
+				temporary = levelNode.Attributes.GetNamedItem("g");
+				if (temporary != null)
+					growth = Convert.ToInt32(temporary.InnerText);
+				//
+				temporary = levelNode.Attributes.GetNamedItem("sc");
+				if (temporary != null)
+					science = Convert.ToInt32(temporary.InnerText);
 				XmlNodeList bonusNodeList = levelNode.ChildNodes;
 				wealthBonuses = new WealthBonus[bonusNodeList.Count];
 				for (int whichBonus = 0; whichBonus<wealthBonuses.Length; ++whichBonus)

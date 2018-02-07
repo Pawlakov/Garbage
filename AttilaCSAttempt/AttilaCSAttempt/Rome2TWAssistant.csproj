@@ -73,10 +73,11 @@
     <Compile Include="Attila\BuildingLevel.cs" />
     <Compile Include="Attila\ProvinceTraditions.cs" />
     <Compile Include="Attila\ProvinceReligion.cs" />
+    <Compile Include="Attila\XorShift.cs" />
+    <Compile Include="Attila\Globals.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Attila\XMLs\Radious\twa_rm_buildings_wre_lachri.xml" />
     <None Include="Attila\XMLs\Vanilla\twa_buildings_ere_grechri.xml" />
     <None Include="Attila\XMLs\Vanilla\twa_buildings_ere_grechri_legacy.xml" />
     <None Include="Attila\XMLs\Vanilla\twa_buildings_ere_ropag.xml" />
@@ -86,8 +87,6 @@
     <None Include="Attila\XMLs\Vanilla\twa_buildings_wre_ropag.xml" />
     <None Include="Attila\XMLs\Vanilla\twa_buildings_wre_ropag_legacy.xml" />
     <None Include="Attila\XMLs\Vanilla\twa_factions.xml" />
-    <None Include="Attila\XMLs\Radious\twa_rm_factions.xml" />
-    <None Include="Attila\XMLs\Radious\twa_rm_buildings_ere_grechri.xml" />
     <None Include="Attila\XMLs\ModPack\twa_mpack_buildings_ere_grechri.xml" />
     <None Include="Attila\XMLs\ModPack\twa_mpack_buildings_ere_grechri_legacy.xml" />
     <None Include="Attila\XMLs\ModPack\twa_mpack_factions.xml" />
@@ -104,7 +103,6 @@
   <ItemGroup />
   <ItemGroup>
     <Folder Include="Attila\XMLs\" />
-    <Folder Include="Attila\XMLs\Radious\" />
     <Folder Include="Attila\XMLs\Vanilla\" />
     <Folder Include="Attila\XMLs\ModPack\" />
   </ItemGroup>

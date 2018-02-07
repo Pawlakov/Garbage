@@ -10,61 +10,75 @@ namespace TWAssistant
 			BuildingBranch cityCivilBuilding;
 			BuildingBranch townCivilBuilding;
 			BuildingBranch coastBuilding;
-			readonly BuildingBranch[] resourceBuildings;
+			BuildingBranch spiceBuilding;
 			//
+			readonly BuildingBranch[] resourceBuildings;
 			readonly List<BuildingBranch> cityBuildings;
 			readonly List<BuildingBranch> townBuildings;
 			//
-			public BuildingLibrary(string filename, Religion stateReligion, bool useLegacy)
+			public BuildingLibrary(string filename)
 			{
 				cityBuildings = new List<BuildingBranch>();
 				townBuildings = new List<BuildingBranch>();
-				resourceBuildings = new BuildingBranch[Simulator.ResourceTypesCount];
+				resourceBuildings = new BuildingBranch[Globals.ResourceTypesCount - 1];
 				//
 				XmlDocument sourceFile = new XmlDocument();
 				sourceFile.Load(filename);
-				XmlNodeList[] nodeList = new XmlNodeList[Simulator.BuildingTypesCount];
+				XmlNodeList[] nodeList = new XmlNodeList[Globals.BuildingTypesCount];
 				for (int whichType = 0; whichType < nodeList.Length; ++whichType)
 					nodeList[whichType] = sourceFile.SelectNodes("//branch[@t=\"" + ((BuildingType)whichType).ToString() + "\"]");
-				//
-				if (nodeList[(int)BuildingType.CENTERCITY].Count > 1 || nodeList[(int)BuildingType.CENTERCITY].Count > 1 || nodeList[(int)BuildingType.COAST].Count > 1)
-					throw new Exception("More than one civil or coast building.");
-				cityCivilBuilding = new BuildingBranch(nodeList[(int)BuildingType.CENTERCITY][0], stateReligion, useLegacy);
-				townCivilBuilding = new BuildingBranch(nodeList[(int)BuildingType.CENTERTOWN][0], stateReligion, useLegacy);
-				coastBuilding = new BuildingBranch(nodeList[(int)BuildingType.COAST][0], stateReligion, useLegacy);
+				if (nodeList[(int)BuildingType.CENTERCITY].Count != 1 || nodeList[(int)BuildingType.CENTERCITY].Count != 1 || nodeList[(int)BuildingType.COAST].Count != 1 || nodeList[(int)BuildingType.SPICE].Count != 1)
+					throw new Exception("Less or more than one civil, coast or spice buildings.");
+				cityCivilBuilding = new BuildingBranch(nodeList[(int)BuildingType.CENTERCITY][0]);
+				townCivilBuilding = new BuildingBranch(nodeList[(int)BuildingType.CENTERTOWN][0]);
+				coastBuilding = new BuildingBranch(nodeList[(int)BuildingType.COAST][0]);
+				spiceBuilding = new BuildingBranch(nodeList[(int)BuildingType.SPICE][0]);
 				foreach (XmlNode node in nodeList[(int)BuildingType.RESOURCE])
 				{
 					Resource resource;
-					Enum.TryParse(node.Attributes.GetNamedItem("r").InnerText, out resource);
+					resource = (Resource)Enum.Parse(typeof(Resource), node.Attributes.GetNamedItem("r").InnerText);
 					if (resourceBuildings[(int)resource] != null)
 						throw new Exception("Two building for one resource.");
-					resourceBuildings[(int)resource] = new BuildingBranch(node, stateReligion, useLegacy);
+					resourceBuildings[(int)resource] = new BuildingBranch(node);
 				}
-				BuildingBranch temporaryBranch;
 				foreach (XmlNode node in nodeList[(int)BuildingType.CITY])
-				{
-					temporaryBranch = new BuildingBranch(node, stateReligion, useLegacy);
-					if (!temporaryBranch.isReligionExclusive || temporaryBranch.religion == stateReligion)
-						cityBuildings.Add(temporaryBranch);
-				}
+					cityBuildings.Add(new BuildingBranch(node));
 				foreach (XmlNode node in nodeList[(int)BuildingType.TOWN])
-				{
-					temporaryBranch = new BuildingBranch(node, stateReligion, useLegacy);
-					if (!temporaryBranch.isReligionExclusive || temporaryBranch.religion == stateReligion)
-						townBuildings.Add(temporaryBranch);
-				}
+					townBuildings.Add(new BuildingBranch(node));
 			}
 			public BuildingLibrary(BuildingLibrary source)
 			{
 				cityCivilBuilding = source.cityCivilBuilding;
 				townCivilBuilding = source.townCivilBuilding;
 				coastBuilding = source.coastBuilding;
+				spiceBuilding = source.spiceBuilding;
 				resourceBuildings = source.resourceBuildings;
 				//
 				cityBuildings = new List<BuildingBranch>(source.cityBuildings);
 				townBuildings = new List<BuildingBranch>(source.townBuildings);
 			}
 			//
+			public void ApplyLimitations()
+			{
+				for (int whichBranch = 0; whichBranch < cityBuildings.Count; ++whichBranch)
+				{
+					cityBuildings[whichBranch].ApplyLegacy();
+					if (cityBuildings[whichBranch].isReligionExclusive && cityBuildings[whichBranch].religion != Globals.stateReligion)
+					{
+						cityBuildings.RemoveAt(whichBranch);
+						--whichBranch;
+					}
+				}
+				for (int whichBranch = 0; whichBranch < townBuildings.Count; ++whichBranch)
+				{
+					townBuildings[whichBranch].ApplyLegacy();
+					if (townBuildings[whichBranch].isReligionExclusive && townBuildings[whichBranch].religion != Globals.stateReligion)
+					{
+						townBuildings.RemoveAt(whichBranch);
+						--whichBranch;
+					}
+				}
+			}
 			public void ShowListOneType(BuildingType type)
 			{
 				List<BuildingBranch> list;
@@ -158,7 +172,7 @@ namespace TWAssistant
 			{
 				return resourceBuildings[(int)resource];
 			}
-			public BuildingBranch GetBuilding(Random random, BuildingType type)
+			public BuildingBranch GetBuilding(XorShift random, BuildingType type)
 			{
 				BuildingBranch result;
 				switch (type)
@@ -172,16 +186,19 @@ namespace TWAssistant
 					case BuildingType.COAST:
 						result = coastBuilding;
 						break;
+					case BuildingType.SPICE:
+						result = spiceBuilding;
+						break;
 					case BuildingType.CITY:
-						result = cityBuildings[random.Next(0, cityBuildings.Count)];
+						result = cityBuildings[(int)random.Next(0, (uint)cityBuildings.Count)];
 						cityBuildings.Remove(result);
 						break;
 					case BuildingType.TOWN:
-						result = townBuildings[random.Next(0, townBuildings.Count)];
+						result = townBuildings[(int)random.Next(0, (uint)townBuildings.Count)];
 						townBuildings.Remove(result);
 						break;
 					default:
-						throw new Exception("Here BuildingType should not be RESOURCE.");
+						throw new Exception("BuildingType should not be RESOURCE in this function.");
 				}
 				return result;
 			}

@@ -1,11 +1,10 @@
-﻿using System;
-namespace TWAssistant
+﻿namespace TWAssistant
 {
 	namespace Attila
 	{
 		public class BuildingSlot
 		{
-			BuildingType type;
+			readonly BuildingType type;
 			BuildingBranch buildingBranch;
 			BuildingLevel buildingLevel;
 			int? level;
@@ -17,7 +16,7 @@ namespace TWAssistant
 				buildingLevel = source.buildingLevel;
 				level = source.level;
 			}
-			public BuildingSlot(RegionData region, int index)
+			public BuildingSlot(RegionData region, bool useResource, int index)
 			{
 				level = null;
 				buildingBranch = null;
@@ -34,7 +33,10 @@ namespace TWAssistant
 					case 1:
 						if (region.IsCoastal)
 						{
-							type = BuildingType.COAST;
+							if(region.Resource == Resource.SPICE)
+								type = BuildingType.SPICE;
+							else
+								type = BuildingType.COAST;
 							level = 4;
 						}
 						else if (region.IsBig)
@@ -43,10 +45,10 @@ namespace TWAssistant
 							type = BuildingType.TOWN;
 						break;
 					case 2:
-						if (region.Resource != Resource.NONE)
+						if (region.Resource != Resource.NONE && region.Resource != Resource.SPICE && useResource)
 						{
 							type = BuildingType.RESOURCE;
-							level = 4;
+							//level = 4;
 						}
 						else if (region.IsBig)
 							type = BuildingType.CITY;
@@ -81,16 +83,12 @@ namespace TWAssistant
 				get { return level; }
 				set { level = value; }
 			}
-			public BuildingLevel Building
-			{
-				get { return buildingLevel; }
-			}
 			//
-			public void ShowContent()
+			public override string ToString()
 			{
-				Console.WriteLine("{0} {1}", BuildingToString, LevelToString);
+				return string.Format("{0} {1}", BuildingToString, LevelToString);
 			}
-			public void Fill(Random random, BuildingLibrary library, RegionData region)
+			public void Fill(XorShift random, BuildingLibrary library, RegionData region)
 			{
 				if (buildingLevel == null)
 				{
@@ -113,6 +111,7 @@ namespace TWAssistant
 					else
 					{
 						buildingLevel = buildingBranch[buildingBranch.GetLevel(random, level.Value)];
+						level = buildingLevel.level;
 					}
 				}
 			}

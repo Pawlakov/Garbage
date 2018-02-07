@@ -4,11 +4,11 @@ namespace TWAssistant
 {
 	namespace Attila
 	{
-		class Map
+		public class Map
 		{
 			readonly ProvinceData[] provinces;
 			//
-			public Map(string filename, int whichMod)
+			public Map(string filename)
 			{
 				XmlDocument sourceDocument = new XmlDocument();
 				sourceDocument.Load(filename);
@@ -16,13 +16,13 @@ namespace TWAssistant
 				provinces = new ProvinceData[provinceNodeList.Count];
 				for (int whichProvince = 0; whichProvince < provinces.Length; ++whichProvince)
 				{
-					provinces[whichProvince] = new ProvinceData(provinceNodeList[whichProvince], whichMod);
+					provinces[whichProvince] = new ProvinceData(provinceNodeList[whichProvince]);
 				}
 			}
 			//
 			public ProvinceData this[uint whichProvince]
 			{
-				get{return provinces[whichProvince];}
+				get { return provinces[whichProvince]; }
 			}
 			//
 			public void ShowList()

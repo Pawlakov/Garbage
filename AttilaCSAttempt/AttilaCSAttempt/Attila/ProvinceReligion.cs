@@ -12,12 +12,12 @@ namespace TWAssistant
 			public ProvinceReligion(ProvinceTraditions traditions, Religion religion)
 			{
 				this.religion = religion;
-				influence = traditions.GetTradionExactly(religion);
+				influence = traditions.GetTradionExactly(religion) + Globals.EnvInfluence + 0; // 0 is for incoming osmosis.
 				counterinfluence = traditions.GetTraditionExcept(religion);
 			}
 			public void AddInfluence(int ammount, Religion religion)
 			{
-				if (this.religion == religion)
+				if (this.religion == religion || religion == Religion.STATE)
 					influence += ammount;
 				else
 					counterinfluence += ammount;
@@ -34,9 +34,9 @@ namespace TWAssistant
 			{
 				get { return influence; }
 			}
-public int Counterinfluence
-{
-	get { return counterinfluence; }
+			public int Counterinfluence
+			{
+				get { return counterinfluence; }
 			}
 			public float StateReligionPercentage
 			{

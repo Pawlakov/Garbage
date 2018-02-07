@@ -2,16 +2,16 @@
 <building_library>
 	<!--CENTERCITY-->
 	<branch n="Civil" t="CENTERCITY">
-		<level n="Civil" l="1" f ="-30" o ="2" s="-1">
+		<level n="Civil" l="1" f ="-30" o ="2" s="-1" g="2">
 			<bonus c ="SUBSISTENCE" m="false">300</bonus>
 		</level>
-		<level n="Civil" l="2" f ="-60" o ="3" s="-2">
+		<level n="Civil" l="2" f ="-60" o ="3" s="-2" g="4">
 			<bonus c ="SUBSISTENCE" m="false">400</bonus>
 		</level>
-		<level n="Civil" l="3" f ="-100" o ="4" s="-3">
+		<level n="Civil" l="3" f ="-100" o ="4" s="-3" g="6">
 			<bonus c ="SUBSISTENCE" m="false">500</bonus>
 		</level>
-		<level n="Civil" l="4" f ="-140" o ="5" s="-4">
+		<level n="Civil" l="4" f ="-140" o ="5" s="-4" g="8">
 			<bonus c ="SUBSISTENCE" m="false">600</bonus>
 		</level>
 	</branch>
@@ -20,13 +20,13 @@
 		<level n="Civil" l="1" f ="-10">
 			<bonus c ="SUBSISTENCE" m="false">150</bonus>
 		</level>
-		<level n="Civil" l="2" f ="-20" o ="1">
+		<level n="Civil" l="2" f ="-20" o ="1" g="1">
 			<bonus c ="SUBSISTENCE" m="false">200</bonus>
 		</level>
-		<level n="Civil" l="3" f ="-40" o ="2" s="-1">
+		<level n="Civil" l="3" f ="-40" o ="2" s="-1" g="2">
 			<bonus c ="SUBSISTENCE" m="false">250</bonus>
 		</level>
-		<level n="Civil" l="4" f ="-80" o ="3" s="-2">
+		<level n="Civil" l="4" f ="-80" o ="3" s="-2" g="3">
 			<bonus c ="SUBSISTENCE" m="false">300</bonus>
 		</level>
 	</branch>
@@ -61,6 +61,21 @@
 		<level n="MilitaryPort" l="3"  s="-4">
 		</level>
 		<level n="MilitaryPort" l="4"  s="-6">
+		</level>
+	</branch>
+	<!--SPICE-->
+	<branch n="SpicePort" t="SPICE">
+		<level n="SpicePort" l="1">
+			<bonus c ="MARITIME_COMMERCE" m="false">150</bonus>
+		</level>
+		<level n="SpicePort" l="2" o="-2" s="-2">
+			<bonus c ="MARITIME_COMMERCE" m="false">300</bonus>
+		</level>
+		<level n="SpicePort" l="3" o="-4" s="-4">
+			<bonus c ="MARITIME_COMMERCE" m="false">500</bonus>
+		</level>
+		<level n="SpicePort" l="4" o="-6" s="-6">
+			<bonus c ="MARITIME_COMMERCE" m="false">825</bonus>
 		</level>
 	</branch>
 	<!--RESOURCE-->
@@ -176,7 +191,7 @@
 			<bonus c ="MARITIME_COMMERCE" m="true">0,2</bonus>
 		</level>
 	</branch>
-	<branch n="Marble" t="RESOURCE" r="MARBLE">
+	<branch n="Marble" t="RESOURCE" r="MARBLE" rel="STATE" rex="false">
 		<level n="Marble" l="1">
 		</level>
 		<level n="MarbleSculptor" l="2" o="-1" s="-2" r="1">
@@ -274,7 +289,7 @@
 		</level>
 	</branch>
 	<!--CITY-->
-	<branch n="Market" t="CITY">
+	<branch n="Centre" t="CITY">
 		<level n="Forum" l="1" o ="3">
 			<bonus c ="COMMERCE" m="false">225</bonus>
 		</level>
@@ -313,13 +328,13 @@
 		<level n="Forum" l="1" o ="3">
 			<bonus c ="COMMERCE" m="false">225</bonus>
 		</level>
-		<level n="Library" l="2" f="-20">
+		<level n="Library" l="2" f="-20" sc="5">
 			<bonus c ="CULTURE" m="false">450</bonus>
 		</level>
-		<level n="Library" l="3" f="-40" lcy="true">
+		<level n="Library" l="3" f="-40" lcy="true" sc="10">
 			<bonus c ="CULTURE" m="false">750</bonus>
 		</level>
-		<level n="Library" l="4" f="-80" lcy="true">
+		<level n="Library" l="4" f="-80" lcy="true" sc="20">
 			<bonus c ="CULTURE" m="false">1250</bonus>
 		</level>
 	</branch>
@@ -458,7 +473,7 @@
 		<level n="SerapisTemple" l="4" f="-125" o="10" r="10">
 			<bonus c="INDUSTRY" m="true">0,2</bonus>
 		</level>
-		<level n="IsisTemple" l="4" f="-125" o="10" r="10">
+		<level n="IsisTemple" l="4" f="-125" o="10" r="10" g="4">
 			<bonus c="AGRICULTURE" m="true">0,15</bonus>
 		</level>
 		<level n="HermesTemple" l="4" f="-125" o="10" r="10">
@@ -474,13 +489,13 @@
 		<level n="Hygiene" l="1" o="1" s="3" _s="2">
 			<bonus c ="MAINTENANCE" m="false">-25</bonus>
 		</level>
-		<level n="Sewers" l="2" s="6" _s="4" i="1">
+		<level n="Sewers" l="2" s="6" _s="4" i="1" g="7">
 			<bonus c ="MAINTENANCE" m="false">-50</bonus>
 		</level>
-		<level n="Sewers" l="3" s="9" _s="5" i="2" lcy="true">
+		<level n="Sewers" l="3" s="9" _s="5" i="2" lcy="true" g="10">
 			<bonus c ="MAINTENANCE" m="false">-100</bonus>
 		</level>
-		<level n="Sewers" l="4" s="12" _s="6" i="3" lcy="true">
+		<level n="Sewers" l="4" s="12" _s="6" i="3" lcy="true" g="13">
 			<bonus c ="MAINTENANCE" m="false">-200</bonus>
 		</level>
 		<level n="Waterworks" l="2" o="2" _s="8" i="1">
@@ -624,6 +639,16 @@
 		<level n="Garrison" l="3" f="-40" o ="7">
 		</level>
 		<level n="Garrison" l="4" f="-80" o ="9">
+		</level>
+	</branch>
+	<branch n="PaganTemple" t="TOWN" rel="ROMPAG" rex="true">
+		<level n="PaganTemple" l="1" r="1">
+		</level>
+		<level n="PaganTemple" l="2" r="2">
+		</level>
+		<level n="PaganTemple" l="3" r="3">
+		</level>
+		<level n="PaganTemple" l="4" r="4">
 		</level>
 	</branch>
 	<branch n="Fountain" t="TOWN">

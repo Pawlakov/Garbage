@@ -1,135 +1,32 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.IO;
 namespace TWAssistant
 {
 	namespace Attila
 	{
-		public enum Resource { NONE, IRON, LEAD, GEMSTONES, OLIVE, FUR, WINE, SILK, MARBLE, SALT, GOLD, DYE, LUMBER };
-		public enum BuildingType { TOWN, CENTERTOWN, CITY, CENTERCITY, COAST, RESOURCE };
-		public enum BonusCategory { ALL, AGRICULTURE, HUSBANDRY, CULTURE, INDUSTRY, COMMERCE, MARITIME_COMMERCE, SUBSISTENCE, MAINTENANCE }; // Maintenance HAS TO BE THE LAST ONE
-		public enum Religion { LACHRI, GRECHRI, ARICHRI, EACHRI, ROMPAG, CELPAG, GERPAG, SEMPAG, MANICH, ZORO, TENGRI, JUDA, MINO };
 		public class Simulator
 		{
-			//int whichMod;
-			Map map;
-			ProvinceData province;
-			Religion religion;
-			bool useLegacyTechs;
-			FactionsList factions;
-			Faction faction;
-			ProvinceCombination template;
+			uint roundSize;
+			uint currentListSize;
+			uint roundsDoneCount;
+			int cursorPosition;
+			object threadLock;
+			readonly uint firstListSize;
+			readonly double retainmentRate;
+			readonly int threadsCount;
 			//
-			int firstRoundTime;
-			int roundSize;
-			int maxListSize;
-			double reductionRate;
-			int parallelCount;
-			object parallelLock = new object();
-			//
-			int minimalOrder;
-			int minimalSanitation;
-			int fertility;
-			int osmosis;
-			//
-			public static int ResourceTypesCount
+			public Simulator()
 			{
-				get { return 13; }
-			}
-			public static int BuildingTypesCount
-			{
-				get { return 6; }
-			}
-			public static int BonusCategoriesCount
-			{
-				get { return 9; }
-			}
-			public static int ReligionTypesCount
-			{
-				get { return 13; }
-			}
-			//
-			public void Act()
-			{
-				/*
 				Console.Clear();
-				Console.Write("0-Vanilla/1-Radious/2-Modpack: ");
-				whichMod = Convert.ToInt32(Console.ReadLine());
-				*/
-				//
-				Console.Clear();
-				map = new Map("XMLs/twa_map.xml", 2);
-				Console.WriteLine("List of provinces:");
-				map.ShowList();
-				Console.Write("Pick a province: ");
-				province = map[Convert.ToUInt32(Console.ReadLine())];
-				//
-				Console.Clear();
-				Console.WriteLine("Avaible religions: ");
-				for (int whichReligion = 0; whichReligion < ReligionTypesCount; ++whichReligion)
-					Console.WriteLine("{0}. {1}", whichReligion, (Religion)whichReligion);
-				Console.Write("Pick a religion: ");
-				religion = (Religion)Convert.ToInt32(Console.ReadLine());
-				Console.Write("Use legacy techs? (if possible) true/false: ");
-				useLegacyTechs = Convert.ToBoolean(Console.ReadLine());
-				//
-				Console.Clear();
-				/*
-				switch (whichMod)
-				{
-					case 0:
-						factions = new FactionsList("XMLs/Vanilla/twa_factions.xml", religion, useLegacyTechs);
-						break;
-					case 1:
-						factions = new FactionsList("XMLs/Radious/twa_rm_factions.xml", religion, useLegacyTechs);
-						break;
-					case 2:
-						factions = new FactionsList("XMLs/ModPack/twa_mpack_factions.xml", religion, useLegacyTechs);
-						break;
-				}
-				*/
-				try
-				{
-					factions = new FactionsList("XMLs/ModPack/twa_mpack_factions.xml", religion, useLegacyTechs);
-				}
-				catch (Exception exception)
-				{
-					Console.WriteLine(exception.Message);
-					Console.WriteLine(exception.StackTrace);
-					Console.ReadKey();
-				}
-				//
-				Console.WriteLine("List of factions:");
-				factions.ShowList();
-				Console.Write("Pick a faction: ");
-				faction = factions[Convert.ToInt32(Console.ReadLine())];
-
-				//
-				Console.Clear();
-				Console.WriteLine("Default fertility in {0} is {1}", province.Name, province.Fertility);
-				Console.Write("Choose fertility: ");
-				fertility = Convert.ToInt32(Console.ReadLine());
-				Console.Write("Choose incoming osmosis: ");
-				osmosis = Convert.ToInt32(Console.ReadLine());
-				Console.Write("Choose minimal public order: ");
-				minimalOrder = Convert.ToInt32(Console.ReadLine());
-				Console.Write("Choose minimal sanitation: ");
-				minimalSanitation = Convert.ToInt32(Console.ReadLine());
-				//
-				template = new ProvinceCombination(province, faction, fertility, osmosis, 2, religion);
-				//ForceBuildings(template);
-				//
-				Console.Clear();
-				Console.Write("Choose first round time: ");
-				firstRoundTime = 1000 * Convert.ToInt32(Console.ReadLine());
-				Console.Write("Choose biggest list size: ");
-				maxListSize = Convert.ToInt32(Console.ReadLine());
-				Console.Write("Choose reduction rate per round: ");
-				reductionRate = Convert.ToDouble(Console.ReadLine());
-				Console.Write("Choose parallel lists count: ");
-				parallelCount = Convert.ToInt32(Console.ReadLine());
-				Generate(MinimalCondition);
+				threadLock = new object();
+				Console.Write("Choose first list size: ");
+				firstListSize = Convert.ToUInt32(Console.ReadLine());
+				Console.Write("Choose retainemnt rate: ");
+				retainmentRate = Convert.ToDouble(Console.ReadLine());
+				Console.Write("Choose thread count: ");
+				threadsCount = Convert.ToInt32(Console.ReadLine());
 			}
 			public int BetterInWealth(ProvinceCombination left, ProvinceCombination right)
 			{
@@ -139,137 +36,166 @@ namespace TWAssistant
 					return -1;
 				return 0;
 			}
-			/*public void ForceBuildings(ProvinceCombination template)
+			public int BetterInScience(ProvinceCombination left, ProvinceCombination right)
 			{
-				while (true)
-				{
-					Console.Clear();
-					template.ShowContent();
-					Console.Write("Force building/level? (0-No/1-Yes): ");
-					if (Convert.ToInt32(Console.ReadLine()) == 0)
-						break;
-					template.ForceBuilding();
-				}
-			}*/
-			public void Generate(Func<ProvinceCombination, bool> minimalCondition)
-			{
-				SortedSet<ProvinceCombination> valid = new SortedSet<ProvinceCombination>(new CombinationsComparator(BetterInWealth));
-				ProvinceCombination bestValid = null;
-				int capacity = maxListSize;
-				int doneRounds = 0;
-				int cursorPosition = 0;
-				//
-				Console.Clear();
-				while (capacity > 1)
-				{
-					SortedSet<ProvinceCombination>[] results = new SortedSet<ProvinceCombination>[parallelCount];
-					Parallel.For(0, parallelCount, (int whichResult) => results[whichResult] = Round(minimalCondition, capacity, (cursorPosition + whichResult)));
-					for (int whichResult = 0; whichResult < parallelCount; ++whichResult)
-						valid.UnionWith(results[whichResult]);
-					while (valid.Count > capacity)
-						valid.Remove(valid.Min);
-					bestValid = valid.Max;
-					foreach (ProvinceCombination combination in valid)
-						combination.RewardBuildings();
-					faction.EvaluateBuildings();
-					Console.Clear();
-					Console.WriteLine("COAST building left: {0}", faction.Buildings.GetCountByType(BuildingType.COAST));
-					Console.WriteLine("CITY building left: {0}", faction.Buildings.GetCountByType(BuildingType.CITY));
-					Console.WriteLine("TOWN building left: {0}", faction.Buildings.GetCountByType(BuildingType.TOWN));
-					//
-					Console.WriteLine("Best so far: ");
-					bestValid.ShowContent();
-					cursorPosition = Console.CursorTop;
-					Console.WriteLine("Round: {0} Capacity: {1}", doneRounds, capacity);
-					//
-					if (capacity > 1)
-					{
-						capacity = (int)(capacity * reductionRate);
-						while (valid.Count > capacity)
-							valid.Remove(valid.Min);
-					}
-					++doneRounds;
-				}
-				Console.Clear();
-				Console.WriteLine("AND THE WINNER IS...");
-				bestValid.ShowContent();
-				Console.ReadKey();
+				if (left.Science > right.Science)
+					return 1;
+				if (left.Science < right.Science)
+					return -1;
+				return BetterInWealth(left, right);
 			}
-			SortedSet<ProvinceCombination> Round(Func<ProvinceCombination, bool> minimalCondition, int capacity, int cursorLine)
+			public int BetterInGrowth(ProvinceCombination left, ProvinceCombination right)
 			{
+				if (left.Growth > right.Growth)
+					return 1;
+				if (left.Growth < right.Growth)
+					return -1;
+				return BetterInWealth(left, right);
+			}
+			public void GenerateFullProvince(ProvinceData province)
+			{
+				ProvinceCombination baseTemplate = new ProvinceCombination(province, false);
+				ProvinceCombination resourceTemplate = new ProvinceCombination(province, true);
+				ProvinceCombination baseCombination = GenerateOneCombination(baseTemplate, BetterInWealth);
+				ProvinceCombination resourceCombination = GenerateOneCombination(resourceTemplate, BetterInWealth);
+				ProvinceCombination growthCombination = GenerateOneCombination(baseTemplate, BetterInGrowth);
+				ProvinceCombination scienceCombination = GenerateOneCombination(baseTemplate, BetterInScience);
+				ProvinceCombination growthResourceCombination = GenerateOneCombination(resourceTemplate, BetterInGrowth);
+				ProvinceCombination scienceResourceCombination = GenerateOneCombination(resourceTemplate, BetterInScience);
+				StreamWriter stream = new StreamWriter(province.Name + ".txt");
+				stream.WriteLine("Base");
+				stream.WriteLine(baseCombination);
+				stream.WriteLine("Resource");
+				stream.WriteLine(resourceCombination);
+				stream.WriteLine("Growth");
+				stream.WriteLine(growthCombination);
+				stream.WriteLine("Science");
+				stream.WriteLine(scienceCombination);
+				stream.WriteLine("ResourceGrowth");
+				stream.WriteLine(growthResourceCombination);
+				stream.WriteLine("ResourceScience");
+				stream.WriteLine(scienceResourceCombination);
+				stream.Dispose();
+			}
+			public ProvinceCombination GenerateOneCombination(ProvinceCombination template, Comparison<ProvinceCombination> comparison)
+			{
+				// Every generation requires its own library due to building rewarding system.
+				BuildingLibrary library = new BuildingLibrary(Globals.faction.Buildings);
+				// List for every parallel thread.
+				SortedSet<ProvinceCombination>[] threadsResults = new SortedSet<ProvinceCombination>[threadsCount];
+				// Merged list of best valid combinations.
+				SortedSet<ProvinceCombination> mergedResults = new SortedSet<ProvinceCombination>(new CombinationsComparator(comparison));
+				// Current best (later also best overall).
+				ProvinceCombination bestValid = null;
+				//Current length of valid list.
+				currentListSize = firstListSize;
+				roundsDoneCount = 0;
+				cursorPosition = 0;
+				//
+				Console.Clear();
+				while (currentListSize > 1)
+				{
+					// Parallel rounds.
+					cursorPosition = Console.CursorTop;
+					Parallel.For(0, threadsCount, (int whichResult) => threadsResults[whichResult] = Round(template, library, cursorPosition + whichResult));
+					// Merging parallel results.
+					for (int whichResult = 0; whichResult < threadsCount; ++whichResult)
+						mergedResults.UnionWith(threadsResults[whichResult]);
+					// Removing overflow in merged list.
+					while ((uint)(mergedResults.Count) > currentListSize)
+						mergedResults.Remove(mergedResults.Min);
+					// Remembering the best.
+					bestValid = mergedResults.Max;
+					// Rewarding succesful buildings.
+					foreach (ProvinceCombination combination in mergedResults)
+						combination.RewardBuildings();
+					library.EvaluateBuildings();
+					// Showing current round's state.
+					Console.Clear();
+					Console.WriteLine("COAST levels left: {0}", library.GetCountByType(BuildingType.COAST));
+					Console.WriteLine("CITY levels left: {0}", library.GetCountByType(BuildingType.CITY));
+					Console.WriteLine("TOWN levels left: {0}", library.GetCountByType(BuildingType.TOWN));
+					Console.WriteLine("Best so far: ");
+					bestValid.ShowContent(false);
+					Console.WriteLine("Rounds done: {0} | Current list size: {1}", roundsDoneCount, currentListSize);
+					// 
+					currentListSize = (uint)(currentListSize * retainmentRate);
+					while ((uint)(mergedResults.Count) > currentListSize)
+						mergedResults.Remove(mergedResults.Min);
+					++roundsDoneCount;
+				}
+				return bestValid;
+			}
+			SortedSet<ProvinceCombination> Round(ProvinceCombination template, BuildingLibrary library, int cursorLine)
+			{
+				try
+				{
+					// General case.
+					if (roundSize > 0)
+					{
+						return ActualRound((uint allCount, uint validCount) => (validCount % roundSize != 0), template, library, cursorLine);
+					}
+					// First round case (round size evaluation).
+					return ActualRound((uint allCount, uint validCount) => (allCount < 0x00400000 && validCount < 0x00010000), template, library, cursorLine);
+				}
+				catch (Exception exception)
+				{
+					Console.WriteLine(exception);
+					Console.ReadKey();
+				}
+				return null;
+			}
+			SortedSet<ProvinceCombination> ActualRound(RoundEndCondition endCondition, ProvinceCombination template, BuildingLibrary library, int cursorLine)
+			{
+				uint allCount = 0;
+				uint validCount = 0;
+				string footer;
 				SortedSet<ProvinceCombination> result = new SortedSet<ProvinceCombination>(new CombinationsComparator(BetterInWealth));
-				Random random = new Random(cursorLine + minimalOrder + capacity);
-				Stopwatch stopwatch = new Stopwatch();
-				int doneCombinations = 0;
-				int doneValid = 0;
-				string report;
+				XorShift random = new XorShift((uint)(Guid.NewGuid().GetHashCode()));
 				//
-				if (roundSize > 0)
+				// Outer loop (do until whole round is done which is certain ammount of valid combinations)
+				do
 				{
-					do
+					// Inner loop (do until one valid combination is found)
+					while (true)
 					{
-						while (true)
+						ProvinceCombination subject = new ProvinceCombination(template);
+						++allCount;
+						subject.Fill(random, library);
+						if (MinimalCondition(subject))
 						{
-							ProvinceCombination subject = new ProvinceCombination(template);
-							++doneCombinations;
-							subject.Fill(random);
-							if (minimalCondition(subject))
-							{
-								result.Add(subject);
-								if (result.Count > capacity)
-									result.Remove(result.Min);
-								++doneValid;
-								break;
-							}
+							++validCount;
+							result.Add(subject);
+							if ((uint)(result.Count) > currentListSize)
+								result.Remove(result.Min);
+							break;
 						}
-						report = string.Format("Combinations per Valid: {0} | Valid Found: {1}/{2} | Current List: {3}/{4}----", doneCombinations / doneValid, doneValid, roundSize, result.Count, capacity);
-						lock (parallelLock)
-						{
-							Console.SetCursorPosition(0, cursorLine);
-							Console.Write(report);
-						}
-					} while (doneValid % roundSize != 0);
-				}
-				else
+					}
+					// Showing current state.
+					footer = string.Format("All: {0} | Valid: {1}/{2} | All / Valid: {3} | List: {4}/{5}----", allCount, validCount, roundSize, allCount / validCount, result.Count, currentListSize);
+					lock (threadLock)
+					{
+						Console.SetCursorPosition(0, cursorLine);
+						Console.Write(footer);
+					}
+				} while (endCondition(allCount, validCount));
+				// Setting required parameters after first round.
+				if (roundSize < 1)
 				{
-					stopwatch.Start();
-					do
-					{
-						while (true)
-						{
-							ProvinceCombination subject = new ProvinceCombination(template);
-							++doneCombinations;
-							subject.Fill(random);
-							if (minimalCondition(subject))
-							{
-								result.Add(subject);
-								if (result.Count > capacity)
-									result.Remove(result.Min);
-								++doneValid;
-								break;
-							}
-						}
-						report = string.Format("Combinations per Valid: {0} | Valid Found: {1}/{2} | Current List: {3}/{4}----", doneCombinations / doneValid, doneValid, roundSize, result.Count, capacity);
-						lock (parallelLock)
-						{
-							Console.SetCursorPosition(0, cursorLine);
-							Console.Write(report);
-						}
-					} while (stopwatch.ElapsedMilliseconds < firstRoundTime);
-					stopwatch.Stop();
-					roundSize = doneValid;
-					capacity = result.Count;
+					if (roundSize < validCount)
+						roundSize = validCount;
+					if (currentListSize > roundSize)
+						currentListSize = roundSize;
 				}
-				//
 				return result;
 			}
 			public bool MinimalCondition(ProvinceCombination subject)
 			{
-				return (subject.Order >= minimalOrder
+				return (subject.Order >= Globals.minimalOrder
 						&& subject.Food >= 0
-						&& subject.getSanitation(0) >= minimalSanitation
-						&& subject.getSanitation(1) >= minimalSanitation
-						&& subject.getSanitation(2) >= minimalSanitation);
+						&& subject.getSanitation(0) >= Globals.minimalSanitation
+						&& subject.getSanitation(1) >= Globals.minimalSanitation
+						&& subject.getSanitation(2) >= Globals.minimalSanitation);
 			}
 		}
 		class CombinationsComparator : IComparer<ProvinceCombination>
@@ -284,5 +210,6 @@ namespace TWAssistant
 				return comparison(x, y);
 			}
 		}
+		delegate bool RoundEndCondition(uint allCount, uint validCount);
 	}
 }

@@ -15,50 +15,42 @@ namespace TWAssistant
 			readonly public Religion? religion;
 			readonly public bool isReligionExclusive;
 			//
-			public BuildingBranch(XmlNode branchNode, Religion stateReligion, bool useLegacy)
+			public BuildingBranch(XmlNode branchNode)
 			{
-				
 				name = branchNode.Attributes.GetNamedItem("n").InnerText;
-				Enum.TryParse(branchNode.Attributes.GetNamedItem("t").InnerText, out type);
-				XmlNodeList levelNodeList = branchNode.ChildNodes;
-				levels = new BuildingLevel[levelNodeList.Count];
-				for (int whichLevel = 0; whichLevel < levels.Length; ++whichLevel)
+				try
 				{
-					try
-					{
+					type = (BuildingType)Enum.Parse(typeof(BuildingType), branchNode.Attributes.GetNamedItem("t").InnerText);
+					XmlNodeList levelNodeList = branchNode.ChildNodes;
+					levels = new BuildingLevel[levelNodeList.Count];
+					for (int whichLevel = 0; whichLevel < levels.Length; ++whichLevel)
 						levels[whichLevel] = new BuildingLevel(levelNodeList.Item(whichLevel));
-					}
-					catch (Exception exception)
+					//
+					resource = Resource.NONE;
+					religion = null;
+					isReligionExclusive = false;
+					XmlNode temporary = branchNode.Attributes.GetNamedItem("r");
+					if (type == BuildingType.RESOURCE)
+						resource = (Resource)Enum.Parse(typeof(Resource), temporary.InnerText);
+					if (type == BuildingType.RESOURCE && resource == Resource.NONE)
+						throw new Exception("Resource building with NONE resource(" + name + ").");
+					//
+					temporary = branchNode.Attributes.GetNamedItem("rel");
+					if (temporary != null)
 					{
-						Console.WriteLine("{0} fell off a bike.", name);
-						Console.WriteLine(exception.Message);
-						Console.WriteLine(exception.StackTrace);
-						Console.ReadKey();
+						Religion temporaryReligion;
+						temporaryReligion = (Religion)Enum.Parse(typeof(Religion), temporary.InnerText);
+						religion = temporaryReligion;
+						temporary = branchNode.Attributes.GetNamedItem("rex");
+						isReligionExclusive = Convert.ToBoolean(temporary.InnerText);
 					}
 				}
-				//
-				resource = Resource.NONE;
-				religion = null;
-				isReligionExclusive = false;
-				XmlNode temporary = branchNode.Attributes.GetNamedItem("r");
-				if (type == BuildingType.RESOURCE)
-					Enum.TryParse(temporary.InnerText, out resource);
-				if (type == BuildingType.RESOURCE && resource == Resource.NONE)
-					throw new Exception("Resource building with NONE resource(" + name + ").");
-				//
-				temporary = branchNode.Attributes.GetNamedItem("rel");
-				if (temporary != null)
+				catch (Exception exception)
 				{
-					Religion temporaryReligion;
-					Enum.TryParse(temporary.InnerText, out temporaryReligion);
-					religion = temporaryReligion;
-					temporary = branchNode.Attributes.GetNamedItem("rex");
-					isReligionExclusive = Convert.ToBoolean(temporary.InnerText);
-				}
-				for (int whichLevel = 0; whichLevel<levels.Length; ++whichLevel)
-				{
-					if (levels[whichLevel].isLegacy == !useLegacy)
-						levels[whichLevel].ForceVoid();
+					Console.WriteLine("Building fell off a bike. Catched in building.");
+					Console.WriteLine(exception.Message);
+					Console.WriteLine(exception.StackTrace);
+					Console.ReadKey();
 				}
 			}
 			//
@@ -89,21 +81,29 @@ namespace TWAssistant
 				for (int whichLevel = 0; whichLevel < levels.Length; ++whichLevel)
 					levels[whichLevel].Evaluate();
 			}
-			public int GetLevel(Random random)
+			public void ApplyLegacy()
+			{
+				for (int whichLevel = 0; whichLevel < levels.Length; ++whichLevel)
+				{
+					if (levels[whichLevel].isLegacy == !Globals.useLegacy)
+						levels[whichLevel].ForceVoid();
+				}
+			}
+			public int GetLevel(XorShift random)
 			{
 				int result;
 				do
 				{
-					result = random.Next(0, levels.Length);
+					result = (int)random.Next(0, (uint)levels.Length);
 				} while (levels[result].IsVoid == true);
 				return result;
 			}
-			public int GetLevel(Random random, int desiredLevel)
+			public int GetLevel(XorShift random, int desiredLevel)
 			{
 				int result;
 				do
 				{
-					result = random.Next(0, levels.Length);
+					result = (int)random.Next(0, (uint)levels.Length);
 				} while (levels[result].IsVoid == true || levels[result].level != desiredLevel);
 				return result;
 			}

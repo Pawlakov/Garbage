@@ -4,11 +4,11 @@ namespace TWAssistant
 {
 	namespace Attila
 	{
-		struct FactionsList
+		public class FactionsList
 		{
 			readonly Faction[] factions;
 			//
-			public FactionsList(string filename, Religion stateReligion, bool useLegacyTechs)
+			public FactionsList(string filename)
 			{
 				XmlDocument sourceFile = new XmlDocument();
 				sourceFile.Load(filename);
@@ -16,7 +16,7 @@ namespace TWAssistant
 				factions = new Faction[factionNodesList.Count];
 				for (int whichFaction = 0; whichFaction < factions.Length; ++whichFaction)
 				{
-					factions[whichFaction] = new Faction(factionNodesList[whichFaction], stateReligion, useLegacyTechs);
+					factions[whichFaction] = new Faction(factionNodesList[whichFaction]);
 				}
 
 			}

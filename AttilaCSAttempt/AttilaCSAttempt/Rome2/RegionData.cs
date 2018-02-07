@@ -16,7 +16,7 @@ namespace TWAssistant
 				isBig = iniIsBig;
 				name = regionNode.Attributes.GetNamedItem("name").InnerText;
 				isCoastal = Convert.ToBoolean(regionNode.Attributes.GetNamedItem("is_coastal").InnerText);
-				Enum.TryParse(regionNode.Attributes.GetNamedItem("resource").InnerText, out resource);
+				resource = (Resource)Enum.Parse(typeof(Resource), regionNode.Attributes.GetNamedItem("resource").InnerText);
 			}
 			//
 			public string Name
@@ -49,16 +49,11 @@ namespace TWAssistant
 					{
 						if (isCoastal)
 							return 6;
-						else
-							return 5;
+						return 5;
 					}
-					else
-					{
-						if (isCoastal)
-							return 4;
-						else
-							return 3;
-					}
+					if (isCoastal)
+						return 4;
+					return 3;
 				}
 			}
 		}

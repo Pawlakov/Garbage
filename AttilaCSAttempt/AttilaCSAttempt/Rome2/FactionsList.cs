@@ -4,7 +4,7 @@ namespace TWAssistant
 {
 	namespace Rome2
 	{
-		struct FactionsList
+		class FactionsList
 		{
 			private Faction[] factions;
 			//

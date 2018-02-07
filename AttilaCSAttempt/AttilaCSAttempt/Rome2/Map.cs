@@ -4,7 +4,7 @@ namespace TWAssistant
 {
 	namespace Rome2
 	{
-		struct Map
+		class Map
 		{
 			private ProvinceData[] provinces;
 			//

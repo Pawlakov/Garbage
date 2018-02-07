@@ -4,7 +4,7 @@ namespace TWAssistant
 {
 	namespace Attila
 	{
-		public struct RegionData
+		public class RegionData
 		{
 			readonly string name;
 			readonly Resource resource;
@@ -20,18 +20,26 @@ namespace TWAssistant
 				//
 				name = regionNode.Attributes.GetNamedItem("n").InnerText;
 				//
-				temporary = regionNode.Attributes.GetNamedItem("r");
-				if (temporary != null)
-					if (!Enum.TryParse(temporary.InnerText, out resource))
-						throw (new Exception("Couldn't figure out resource type."));
-				//
-				isCoastal = Convert.ToBoolean(regionNode.Attributes.GetNamedItem("c").InnerText);
-				//
-				isBig = iniIsBig;
-				//
-				temporary = regionNode.Attributes.GetNamedItem("o");
-				if (temporary != null)
-					slotsCountOffset = Convert.ToInt32(temporary.InnerText);
+				try
+				{
+					temporary = regionNode.Attributes.GetNamedItem("r");
+					if(temporary != null)
+						resource = (Resource)Enum.Parse(typeof(Resource), temporary.InnerText);
+					//
+					isCoastal = Convert.ToBoolean(regionNode.Attributes.GetNamedItem("c").InnerText);
+					//
+					isBig = iniIsBig;
+					//
+					temporary = regionNode.Attributes.GetNamedItem("o");
+					if (temporary != null)
+						slotsCountOffset = Convert.ToInt32(temporary.InnerText);
+				}
+				catch (Exception exception)
+				{
+					Console.WriteLine("Region {0} fell off a bike.", name);
+					Console.WriteLine(exception.Message);
+					Console.ReadKey();
+				}
 			}
 			//
 			public string Name
