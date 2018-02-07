@@ -48,14 +48,21 @@ namespace TWAssistant
 			}
 			public BuildingLibrary(BuildingLibrary source)
 			{
-				cityCivilBuilding = source.cityCivilBuilding;
-				townCivilBuilding = source.townCivilBuilding;
-				coastBuilding = source.coastBuilding;
-				spiceBuilding = source.spiceBuilding;
-				resourceBuildings = source.resourceBuildings;
+				cityCivilBuilding = new BuildingBranch(source.cityCivilBuilding);
+				townCivilBuilding = new BuildingBranch(source.townCivilBuilding);
+				coastBuilding = new BuildingBranch(source.coastBuilding);
+				spiceBuilding = new BuildingBranch(source.spiceBuilding);
 				//
-				cityBuildings = new List<BuildingBranch>(source.cityBuildings);
-				townBuildings = new List<BuildingBranch>(source.townBuildings);
+				resourceBuildings = new BuildingBranch[source.resourceBuildings.Length];
+				for (int whichBuilding = 0; whichBuilding < resourceBuildings.Length; ++whichBuilding)
+					resourceBuildings[whichBuilding] = source.resourceBuildings[whichBuilding];
+				//
+				cityBuildings = new List<BuildingBranch>(source.cityBuildings.Count);
+				for (int whichBuilding = 0; whichBuilding < source.cityBuildings.Count; ++whichBuilding)
+					cityBuildings.Add(new BuildingBranch(source.cityBuildings[whichBuilding]));
+				townBuildings = new List<BuildingBranch>(source.townBuildings.Count);
+				for (int whichBuilding = 0; whichBuilding < source.townBuildings.Count; ++whichBuilding)
+					townBuildings.Add(new BuildingBranch(source.townBuildings[whichBuilding]));
 			}
 			//
 			public void ApplyLimitations()

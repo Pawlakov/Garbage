@@ -91,6 +91,7 @@ namespace TWAssistant
 				currentListSize = firstListSize;
 				roundsDoneCount = 0;
 				cursorPosition = 0;
+				roundSize = 0;
 				//
 				Console.Clear();
 				while (currentListSize > 1)

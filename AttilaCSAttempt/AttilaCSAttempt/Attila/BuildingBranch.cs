@@ -9,7 +9,7 @@ namespace TWAssistant
 			readonly public string name;
 			readonly public BuildingType type;
 			//
-			readonly public BuildingLevel[] levels;
+			public BuildingLevel[] levels;
 			//
 			readonly public Resource resource;
 			readonly public Religion? religion;
@@ -18,57 +18,50 @@ namespace TWAssistant
 			public BuildingBranch(XmlNode branchNode)
 			{
 				name = branchNode.Attributes.GetNamedItem("n").InnerText;
-				try
+				type = (BuildingType)Enum.Parse(typeof(BuildingType), branchNode.Attributes.GetNamedItem("t").InnerText);
+				XmlNodeList levelNodeList = branchNode.ChildNodes;
+				levels = new BuildingLevel[levelNodeList.Count];
+				for (int whichLevel = 0; whichLevel < levels.Length; ++whichLevel)
+					levels[whichLevel] = new BuildingLevel(levelNodeList.Item(whichLevel));
+				//
+				resource = Resource.NONE;
+				religion = null;
+				isReligionExclusive = false;
+				XmlNode temporary = branchNode.Attributes.GetNamedItem("r");
+				if (type == BuildingType.RESOURCE)
+					resource = (Resource)Enum.Parse(typeof(Resource), temporary.InnerText);
+				if (type == BuildingType.RESOURCE && resource == Resource.NONE)
+					throw new Exception("Resource building with NONE resource(" + name + ").");
+				//
+				temporary = branchNode.Attributes.GetNamedItem("rel");
+				if (temporary != null)
 				{
-					type = (BuildingType)Enum.Parse(typeof(BuildingType), branchNode.Attributes.GetNamedItem("t").InnerText);
-					XmlNodeList levelNodeList = branchNode.ChildNodes;
-					levels = new BuildingLevel[levelNodeList.Count];
-					for (int whichLevel = 0; whichLevel < levels.Length; ++whichLevel)
-						levels[whichLevel] = new BuildingLevel(levelNodeList.Item(whichLevel));
-					//
-					resource = Resource.NONE;
-					religion = null;
-					isReligionExclusive = false;
-					XmlNode temporary = branchNode.Attributes.GetNamedItem("r");
-					if (type == BuildingType.RESOURCE)
-						resource = (Resource)Enum.Parse(typeof(Resource), temporary.InnerText);
-					if (type == BuildingType.RESOURCE && resource == Resource.NONE)
-						throw new Exception("Resource building with NONE resource(" + name + ").");
-					//
-					temporary = branchNode.Attributes.GetNamedItem("rel");
-					if (temporary != null)
-					{
-						Religion temporaryReligion;
-						temporaryReligion = (Religion)Enum.Parse(typeof(Religion), temporary.InnerText);
-						religion = temporaryReligion;
-						temporary = branchNode.Attributes.GetNamedItem("rex");
-						isReligionExclusive = Convert.ToBoolean(temporary.InnerText);
-					}
+					Religion temporaryReligion;
+					temporaryReligion = (Religion)Enum.Parse(typeof(Religion), temporary.InnerText);
+					religion = temporaryReligion;
+					temporary = branchNode.Attributes.GetNamedItem("rex");
+					isReligionExclusive = Convert.ToBoolean(temporary.InnerText);
 				}
-				catch (Exception exception)
-				{
-					Console.WriteLine("Building fell off a bike. Catched in building.");
-					Console.WriteLine(exception.Message);
-					Console.WriteLine(exception.StackTrace);
-					Console.ReadKey();
-				}
+			}
+			public BuildingBranch(BuildingBranch source)
+			{
+				name = source.name;
+				type = source.type;
+				//
+				levels = new BuildingLevel[source.levels.Length];
+				for (int whichLevel = 0; whichLevel < levels.Length; ++whichLevel)
+					levels[whichLevel] = source.levels[whichLevel];
+				//
+				resource = source.resource;
+				religion = source.religion;
+				isReligionExclusive = source.isReligionExclusive;
 			}
 			//
-			public int NumberOfLevels
-			{
-				get { return levels.Length; }
-			}
 			public int NonVoidCount
 			{
 				get
 				{
-					int result = 0;
-					foreach (BuildingLevel level in levels)
-					{
-						if (!level.IsVoid)
-							++result;
-					}
-					return result;
+					return levels.Length;
 				}
 			}
 			public BuildingLevel this[int whichLevel]
@@ -78,34 +71,77 @@ namespace TWAssistant
 			//
 			public void EvalueateLevels()
 			{
-				for (int whichLevel = 0; whichLevel < levels.Length; ++whichLevel)
-					levels[whichLevel].Evaluate();
+				int newSize = 0;
+				foreach (BuildingLevel level in levels)
+					if (level.Usefuliness > 0)
+						++newSize;
+				BuildingLevel[] newLevels = new BuildingLevel[newSize];
+				int oldIndex = 0;
+				int newIndex = 0;
+				while(oldIndex < levels.Length)
+				{
+					if (levels[oldIndex].Usefuliness > 0)
+					{
+						newLevels[newIndex] = levels[oldIndex];
+						++newIndex;
+					}
+					++oldIndex;
+				}
+				levels = newLevels;
+				foreach (BuildingLevel level in levels)
+					level.ResetUsefuliness();
 			}
 			public void ApplyLegacy()
 			{
-				for (int whichLevel = 0; whichLevel < levels.Length; ++whichLevel)
+				int newSize = 0;
+				foreach (BuildingLevel level in levels)
+					if (level.isLegacy != !Globals.useLegacy)
+						++newSize;
+				BuildingLevel[] newLevels = new BuildingLevel[newSize];
+				int oldIndex = 0;
+				int newIndex = 0;
+				while (oldIndex < levels.Length)
 				{
-					if (levels[whichLevel].isLegacy == !Globals.useLegacy)
-						levels[whichLevel].ForceVoid();
+					if (levels[oldIndex].isLegacy != !Globals.useLegacy)
+					{
+						newLevels[newIndex] = levels[oldIndex];
+						++newIndex;
+					}
+					++oldIndex;
 				}
+				levels = newLevels;
 			}
-			public int GetLevel(XorShift random)
+			public BuildingLevel GetLevel(XorShift random)
 			{
-				int result;
+				if (levels == null || levels.Length < 1)
+					throw new Exception("Tried to get level from empty building.");
+				int index;
+				index = (int)random.Next(0, (uint)levels.Length);
+				return levels[index];
+			}
+			public BuildingLevel GetLevel(XorShift random, int desiredLevel)
+			{
+				if (levels == null || levels.Length < 1)
+					throw new Exception("Tried to get level from empty building.");
+				while (!ContainsLevel(desiredLevel))
+				{
+					--desiredLevel;
+					if (desiredLevel == 0)
+						desiredLevel = 4;
+				}
+				int index;
 				do
 				{
-					result = (int)random.Next(0, (uint)levels.Length);
-				} while (levels[result].IsVoid == true);
-				return result;
+					index = (int)random.Next(0, (uint)levels.Length);
+				} while (levels[index].level != desiredLevel);
+				return levels[index];
 			}
-			public int GetLevel(XorShift random, int desiredLevel)
+			bool ContainsLevel(int desiredLevel)
 			{
-				int result;
-				do
-				{
-					result = (int)random.Next(0, (uint)levels.Length);
-				} while (levels[result].IsVoid == true || levels[result].level != desiredLevel);
-				return result;
+				foreach (BuildingLevel level in levels)
+					if (level.level == desiredLevel)
+						return true;
+				return false;
 			}
 		}
 	}

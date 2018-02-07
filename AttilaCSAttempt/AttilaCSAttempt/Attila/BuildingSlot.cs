@@ -95,22 +95,18 @@
 					if (buildingBranch == null)
 					{
 						if (type == BuildingType.RESOURCE)
-						{
 							buildingBranch = library.GetBuilding(region.Resource);
-						}
 						else
-						{
 							buildingBranch = library.GetBuilding(random, type);
-						}
 					}
 					if (level == null)
 					{
-						buildingLevel = buildingBranch[buildingBranch.GetLevel(random)];
+						buildingLevel = buildingBranch.GetLevel(random);
 						level = buildingLevel.level;
 					}
 					else
 					{
-						buildingLevel = buildingBranch[buildingBranch.GetLevel(random, level.Value)];
+						buildingLevel = buildingBranch.GetLevel(random, level.Value);
 						level = buildingLevel.level;
 					}
 				}

@@ -26,7 +26,7 @@ namespace TWAssistant
 			readonly public int religiousOsmosis;
 			//
 			int usefuliness;
-			bool isVoid;
+			bool isUseful;
 			//
 			public BuildingLevel(XmlNode levelNode)
 			{
@@ -47,7 +47,6 @@ namespace TWAssistant
 				religiousOsmosis = 0;
 				//
 				usefuliness = 0;
-				isVoid = false;
 				//
 				XmlNode temporary = levelNode.Attributes.GetNamedItem("n");
 				name = temporary.InnerText;
@@ -109,28 +108,14 @@ namespace TWAssistant
 			{
 				get { return usefuliness; }
 			}
-			public bool IsVoid
-			{
-				get { return isVoid; }
-			}
 			//
 			public void Reward()
 			{
 				++usefuliness;
 			}
-			public void Evaluate()
+			public void ResetUsefuliness()
 			{
-				if (usefuliness == 0)
-					isVoid = true;
-				else
-				{
-					usefuliness = 0;
-					isVoid = false;
-				}
-			}
-			public void ForceVoid()
-			{
-				isVoid = true;
+				usefuliness = 0;
 			}
 		}
 	}
