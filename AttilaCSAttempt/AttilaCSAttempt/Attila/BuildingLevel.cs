@@ -8,6 +8,7 @@ namespace TWAssistant
 		{
 			readonly public string name;
 			readonly public int level;
+			readonly public int levelOfTechnology;
 			readonly public bool? isLegacy;
 			//
 			readonly int food;
@@ -26,7 +27,6 @@ namespace TWAssistant
 			readonly public int religiousOsmosis;
 			//
 			int usefuliness;
-			bool isUseful;
 			//
 			public BuildingLevel(XmlNode levelNode)
 			{
@@ -52,6 +52,8 @@ namespace TWAssistant
 				name = temporary.InnerText;
 				temporary = levelNode.Attributes.GetNamedItem("l");
 				level = Convert.ToInt32(temporary.InnerText);
+				temporary = levelNode.Attributes.GetNamedItem("lot");
+				levelOfTechnology = Convert.ToInt32(temporary.InnerText);
 				temporary = levelNode.Attributes.GetNamedItem("lcy");
 				if (temporary != null)
 					isLegacy = Convert.ToBoolean(temporary.InnerText);
@@ -116,6 +118,27 @@ namespace TWAssistant
 			public void ResetUsefuliness()
 			{
 				usefuliness = 0;
+			}
+			public bool IsAvailable
+			{
+				get
+				{
+					if (levelOfTechnology < Globals.levelOfTechnology)
+					{
+						if (isLegacy == true)
+							return true;
+						return false;
+					}
+					if (isLegacy == null)
+						return true;
+					if (isLegacy == true)
+					{
+						if (levelOfTechnology == 0)
+							return true;
+						return Globals.useLegacy;
+					}
+					return !Globals.useLegacy;
+				}
 			}
 		}
 	}

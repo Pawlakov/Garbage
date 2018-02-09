@@ -59,10 +59,7 @@ namespace TWAssistant
 			//
 			public int NonVoidCount
 			{
-				get
-				{
-					return levels.Length;
-				}
+				get { return levels.Length; }
 			}
 			public BuildingLevel this[int whichLevel]
 			{
@@ -78,7 +75,7 @@ namespace TWAssistant
 				BuildingLevel[] newLevels = new BuildingLevel[newSize];
 				int oldIndex = 0;
 				int newIndex = 0;
-				while(oldIndex < levels.Length)
+				while (oldIndex < levels.Length)
 				{
 					if (levels[oldIndex].Usefuliness > 0)
 					{
@@ -91,18 +88,18 @@ namespace TWAssistant
 				foreach (BuildingLevel level in levels)
 					level.ResetUsefuliness();
 			}
-			public void ApplyLegacy()
+			public void ApplyTechnology()
 			{
 				int newSize = 0;
 				foreach (BuildingLevel level in levels)
-					if (level.isLegacy != !Globals.useLegacy)
+					if (level.IsAvailable)
 						++newSize;
 				BuildingLevel[] newLevels = new BuildingLevel[newSize];
 				int oldIndex = 0;
 				int newIndex = 0;
 				while (oldIndex < levels.Length)
 				{
-					if (levels[oldIndex].isLegacy != !Globals.useLegacy)
+					if (levels[oldIndex].IsAvailable)
 					{
 						newLevels[newIndex] = levels[oldIndex];
 						++newIndex;

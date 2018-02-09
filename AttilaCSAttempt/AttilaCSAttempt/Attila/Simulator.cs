@@ -173,7 +173,10 @@ namespace TWAssistant
 						}
 					}
 					// Showing current state.
-					footer = string.Format("All: {0} | Valid: {1}/{2} | All / Valid: {3} | List: {4}/{5}----", allCount, validCount, roundSize, allCount / validCount, result.Count, currentListSize);
+					if(roundSize > 0)
+						footer = string.Format("All: {0:0,0} | Valid: {1:0,0}/{2:0,0} | All / Valid: {3:0,0} | List: {4:0,0}/{5:0,0}----", allCount, validCount, roundSize, allCount / validCount, result.Count, currentListSize);
+					else
+						footer = string.Format("All: {0:0,0}/4 194 304 | Valid: {1:0,0}/65 536 | All / Valid: {2:0,0} | List: {3:0,0}/{4:0,0}----", allCount, validCount, allCount / validCount, result.Count, currentListSize);
 					lock (threadLock)
 					{
 						Console.SetCursorPosition(0, cursorLine);

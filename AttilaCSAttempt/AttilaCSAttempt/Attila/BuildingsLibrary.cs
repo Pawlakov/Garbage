@@ -69,7 +69,7 @@ namespace TWAssistant
 			{
 				for (int whichBranch = 0; whichBranch < cityBuildings.Count; ++whichBranch)
 				{
-					cityBuildings[whichBranch].ApplyLegacy();
+					cityBuildings[whichBranch].ApplyTechnology();
 					if (cityBuildings[whichBranch].isReligionExclusive && cityBuildings[whichBranch].religion != Globals.stateReligion)
 					{
 						cityBuildings.RemoveAt(whichBranch);
@@ -78,7 +78,7 @@ namespace TWAssistant
 				}
 				for (int whichBranch = 0; whichBranch < townBuildings.Count; ++whichBranch)
 				{
-					townBuildings[whichBranch].ApplyLegacy();
+					townBuildings[whichBranch].ApplyTechnology();
 					if (townBuildings[whichBranch].isReligionExclusive && townBuildings[whichBranch].religion != Globals.stateReligion)
 					{
 						townBuildings.RemoveAt(whichBranch);

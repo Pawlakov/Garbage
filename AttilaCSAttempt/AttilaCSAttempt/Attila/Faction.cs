@@ -1,5 +1,4 @@
-﻿using System;
-using System.Xml;
+﻿using System.Xml;
 namespace TWAssistant
 {
 	namespace Attila
@@ -7,34 +6,19 @@ namespace TWAssistant
 		public class Faction
 		{
 			readonly string name;
-			readonly int sanitation;
-			readonly int fertility;
-			readonly int growth;
-			readonly WealthBonus[] wealthBonuses;
 			readonly BuildingLibrary buildings;
+			readonly TechLevel[] techLevels;
 			//
 			public Faction(XmlNode factionNode)
 			{
-				XmlNode temporary = factionNode.Attributes.GetNamedItem("n");
-				name = temporary.InnerText;
-				sanitation = 0;
-				temporary = factionNode.Attributes.GetNamedItem("s");
-				if (temporary != null)
-					sanitation = Convert.ToInt32(temporary.InnerText);
-				fertility = 0;
-				temporary = factionNode.Attributes.GetNamedItem("i");
-				if (temporary != null)
-					fertility = Convert.ToInt32(temporary.InnerText);
-				temporary = factionNode.Attributes.GetNamedItem("g");
-				if (temporary != null)
-					growth = Convert.ToInt32(temporary.InnerText);
-				//
-				XmlNodeList bonusNodesList = factionNode.ChildNodes;
-				wealthBonuses = new WealthBonus[bonusNodesList.Count];
-				for (int whichBonus = 0; whichBonus < wealthBonuses.Length; ++whichBonus)
-					wealthBonuses[whichBonus] = new WealthBonus(bonusNodesList[whichBonus]);
-				//
+				name = factionNode.Attributes.GetNamedItem("n").InnerText;
 				buildings = new BuildingLibrary(factionNode.Attributes.GetNamedItem("b").InnerText);
+				//
+				XmlNodeList techlevelNodeList = factionNode.ChildNodes;
+				techLevels = new TechLevel[5];
+				techLevels[0] = new TechLevel(techlevelNodeList[0], null);
+				for (int whichLevel = 1; whichLevel < 5; ++whichLevel)
+					techLevels[whichLevel] = new TechLevel(techlevelNodeList[whichLevel], techLevels[whichLevel - 1]);
 			}
 			//
 			public string Name
@@ -43,19 +27,27 @@ namespace TWAssistant
 			}
 			public int Sanitation
 			{
-				get { return sanitation; }
+				get { return techLevels[Globals.levelOfTechnology].Sanitation; }
 			}
 			public int Fertility
 			{
-				get { return fertility; }
+				get { return techLevels[Globals.levelOfTechnology].Fertility; }
 			}
 			public int Growth
 			{
-				get { return growth; }
+				get { return techLevels[Globals.levelOfTechnology].Growth; }
+			}
+			public int Order
+			{
+				get{ return techLevels[Globals.levelOfTechnology].Order; }
+			}
+			public int Influence
+			{
+				get{ return techLevels[Globals.levelOfTechnology].Influence; }
 			}
 			public WealthBonus[] WealthBonuses
 			{
-				get { return wealthBonuses; }
+				get { return techLevels[Globals.levelOfTechnology].WealthBonuses; }
 			}
 			public BuildingLibrary Buildings
 			{

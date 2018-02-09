@@ -16,12 +16,11 @@ namespace TWAssistant
 			static public readonly Religion stateReligion;
 			static public readonly Faction faction;
 			static public readonly bool useLegacy;
-			// Levels of technology.
+			static public readonly int levelOfTechnology;
 			static public readonly Weather worstCaseWeather;
 			static public readonly int fertilityDrop;
 			static public readonly int minimalOrder;
 			static public readonly int minimalSanitation;
-			static public readonly WealthBonus[] wealthBonuses;
 			//
 			static Globals()
 			{
@@ -34,6 +33,9 @@ namespace TWAssistant
 					Console.WriteLine("{0}. {1}", whichReligion, (Religion)whichReligion);
 				Console.Write("Pick a religion: ");
 				stateReligion = (Religion)Convert.ToInt32(Console.ReadLine());
+				//
+				Console.Write("Pick level of technology (0-4): ");
+				levelOfTechnology = Convert.ToInt32(Console.ReadLine());
 				//
 				Console.Write("Use legacy technologies? (if possible) true/false: ");
 				useLegacy = Convert.ToBoolean(Console.ReadLine());
@@ -61,12 +63,6 @@ namespace TWAssistant
 				minimalSanitation = Convert.ToInt32(Console.ReadLine());
 				//
 				faction.Buildings.ApplyLimitations();
-				if (faction.WealthBonuses != null)
-				{
-					wealthBonuses = new WealthBonus[faction.WealthBonuses.Length];
-					for (int whichBonus = 0; whichBonus < faction.WealthBonuses.Length; ++whichBonus)
-						wealthBonuses[whichBonus] = faction.WealthBonuses[whichBonus];
-				}
 			}
 			//
 			public static int ResourceTypesCount
@@ -88,54 +84,67 @@ namespace TWAssistant
 			//
 			public static int EnvOrder(ProvinceData province)
 			{
+				int result = faction.Order;
 				switch (province.Climate)
 				{
 					case Climate.NORTH:
 						switch (worstCaseWeather)
 						{
 							case Weather.EXTREME:
-								return -4;
+								result += -4;
+								break;
 							case Weather.BAD:
-								return -3;
+								result += -3;
+								break;
 							case Weather.NORMAL:
-								return -2;
+								result += -2;
+								break;
 						}
 						break;
 					case Climate.MEDIUM:
 						switch (worstCaseWeather)
 						{
 							case Weather.EXTREME:
-								return -5;
+								result += -5;
+								break;
 							case Weather.BAD:
-								return -5;
+								result += -5;
+								break;
 							case Weather.NORMAL:
-								return 0;
+								result += 0;
+								break;
 						}
 						break;
 					case Climate.SOUTH:
 						switch (worstCaseWeather)
 						{
 							case Weather.EXTREME:
-								return -4;
+								result += -4;
+								break;
 							case Weather.BAD:
-								return -3;
+								result += -3;
+								break;
 							case Weather.NORMAL:
-								return 0;
+								result += 0;
+								break;
 						}
 						break;
 					case Climate.EAST:
 						switch (worstCaseWeather)
 						{
 							case Weather.EXTREME:
-								return -5;
+								result += -5;
+								break;
 							case Weather.BAD:
-								return -5;
+								result += -5;
+								break;
 							case Weather.NORMAL:
-								return 0;
+								result += 0;
+								break;
 						}
 						break;
 				}
-				return 0;
+				return result;
 			}
 			public static int EnvFood(ProvinceData province)
 			{
@@ -210,9 +219,10 @@ namespace TWAssistant
 			{
 				get
 				{
+					int result = faction.Influence;
 					if (stateReligion == Religion.ARICHRI)
-						return 1;
-					return 0;
+						result += 1;
+					return result;
 				}			}
 			public static int EnvScience
 			{
@@ -225,9 +235,10 @@ namespace TWAssistant
 			{
 				get
 				{
+					int result = faction.Growth;
 					if (stateReligion == Religion.ZORO)
-						return 1 + faction.Growth;
-					return faction.Growth;
+						result += 1;
+					return result;
 				}
 			}
 			public static int EnvFertility

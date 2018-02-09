@@ -75,6 +75,7 @@
     <Compile Include="Attila\ProvinceReligion.cs" />
     <Compile Include="Attila\XorShift.cs" />
     <Compile Include="Attila\Globals.cs" />
+    <Compile Include="Attila\TechLevel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -21,9 +21,9 @@ namespace TWAssistant
 				isCurrent = false;
 				wealth = 0;
 				//
-				if (Globals.wealthBonuses != null)
-					for (int whichBonus = 0; whichBonus < Globals.wealthBonuses.Length; ++whichBonus)
-						bonuses.Add(Globals.wealthBonuses[whichBonus]);
+				if (Globals.faction.WealthBonuses != null)
+					for (int whichBonus = 0; whichBonus < Globals.faction.WealthBonuses.Length; ++whichBonus)
+						bonuses.Add(Globals.faction.WealthBonuses[whichBonus]);
 			}
 			public float Wealth
 			{
