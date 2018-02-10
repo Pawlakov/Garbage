@@ -123,21 +123,24 @@ namespace TWAssistant
 			{
 				get
 				{
-					if (levelOfTechnology < Globals.levelOfTechnology)
+					if (levelOfTechnology > Globals.levelOfTechnology)
 					{
 						if (isLegacy == true)
 							return true;
 						return false;
 					}
-					if (isLegacy == null)
-						return true;
-					if (isLegacy == true)
+					else
 					{
-						if (levelOfTechnology == 0)
+						if (isLegacy == null)
 							return true;
-						return Globals.useLegacy;
+						if (isLegacy == true)
+						{
+							if (levelOfTechnology == 0)
+								return true;
+							return Globals.useLegacy;
+						}
+						return !Globals.useLegacy;
 					}
-					return !Globals.useLegacy;
 				}
 			}
 		}

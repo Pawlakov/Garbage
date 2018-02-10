@@ -9,7 +9,7 @@ namespace TWAssistant
 			Attila.Simulator simulator = new Attila.Simulator();
 			try
 			{
-				simulator.GenerateFullProvince(Attila.Globals.map[0]);
+				simulator.Act();
 			}
 			catch(Exception exception)
 			{

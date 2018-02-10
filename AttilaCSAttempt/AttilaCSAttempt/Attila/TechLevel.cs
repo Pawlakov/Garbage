@@ -71,6 +71,17 @@ namespace TWAssistant
 			void SumUpArrays()
 			{
 				WealthBonus[] newArray;
+				//
+				sanitation[1] += sanitation[0];
+				fertility[1] += fertility[0];
+				growth[1] += growth[0];
+				order[1] += order[0];
+				influence[1] += influence[0];
+				newArray = new WealthBonus[wealthBonuses[0].Length + wealthBonuses[1].Length];
+				wealthBonuses[0].CopyTo(newArray, 0);
+				wealthBonuses[1].CopyTo(newArray, wealthBonuses[0].Length);
+				wealthBonuses[1] = newArray;
+				//
 				if (previous != null)
 					for (int whichHalf = 0; whichHalf < 2; ++whichHalf)
 					{
@@ -84,15 +95,6 @@ namespace TWAssistant
 						previous.wealthBonuses[whichHalf].CopyTo(newArray, wealthBonuses[whichHalf].Length);
 						wealthBonuses[whichHalf] = newArray;
 					}
-				sanitation[1] += sanitation[0];
-				fertility[1] += fertility[0];
-				growth[1] += growth[0];
-				order[1] += order[0];
-				influence[1] += influence[0];
-				newArray = new WealthBonus[wealthBonuses[0].Length + wealthBonuses[1].Length];
-				wealthBonuses[0].CopyTo(newArray, 0);
-				wealthBonuses[1].CopyTo(newArray, wealthBonuses[0].Length);
-				wealthBonuses[1] = newArray;
 			}
 			//
 			public int Sanitation

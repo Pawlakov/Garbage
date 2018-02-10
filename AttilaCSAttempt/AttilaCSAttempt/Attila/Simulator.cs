@@ -52,6 +52,40 @@ namespace TWAssistant
 					return -1;
 				return BetterInWealth(left, right);
 			}
+			public void Act()
+			{
+				ProvinceData province;
+				ProvinceCombination result;
+				Globals.map.ShowList();
+				Console.Write("Pick a province: ");
+				province = Globals.map[Convert.ToUInt32(Console.ReadLine())];
+				//
+				Console.Clear();
+				Console.WriteLine("0. Base simulation");
+				Console.WriteLine("1. Resource simulation");
+				Console.WriteLine("2. Growth simulation");
+				Console.WriteLine("3. Science simulation");
+				Console.Write("Pick a type of simulation: ");
+				switch (Convert.ToUInt32(Console.ReadLine()))
+				{
+					default:
+						result = GenerateOneCombination(new ProvinceCombination(province, false), BetterInWealth);
+						break;
+					case 1:
+						result = GenerateOneCombination(new ProvinceCombination(province, true), BetterInWealth);
+						break;
+					case 2:
+						result = GenerateOneCombination(new ProvinceCombination(province, false), BetterInGrowth);
+						break;
+					case 3:
+						result = GenerateOneCombination(new ProvinceCombination(province, false), BetterInScience);
+						break;
+				}
+				Console.Clear();
+				Console.WriteLine("Final solution:");
+				result.ShowContent(false);
+				Console.ReadKey();
+			}
 			public void GenerateFullProvince(ProvinceData province)
 			{
 				ProvinceCombination baseTemplate = new ProvinceCombination(province, false);
@@ -60,8 +94,8 @@ namespace TWAssistant
 				ProvinceCombination resourceCombination = GenerateOneCombination(resourceTemplate, BetterInWealth);
 				ProvinceCombination growthCombination = GenerateOneCombination(baseTemplate, BetterInGrowth);
 				ProvinceCombination scienceCombination = GenerateOneCombination(baseTemplate, BetterInScience);
-				ProvinceCombination growthResourceCombination = GenerateOneCombination(resourceTemplate, BetterInGrowth);
-				ProvinceCombination scienceResourceCombination = GenerateOneCombination(resourceTemplate, BetterInScience);
+				//ProvinceCombination growthResourceCombination = GenerateOneCombination(resourceTemplate, BetterInGrowth);
+				//ProvinceCombination scienceResourceCombination = GenerateOneCombination(resourceTemplate, BetterInScience);
 				StreamWriter stream = new StreamWriter(province.Name + ".txt");
 				stream.WriteLine("Base");
 				stream.WriteLine(baseCombination);
@@ -71,10 +105,10 @@ namespace TWAssistant
 				stream.WriteLine(growthCombination);
 				stream.WriteLine("Science");
 				stream.WriteLine(scienceCombination);
-				stream.WriteLine("ResourceGrowth");
-				stream.WriteLine(growthResourceCombination);
-				stream.WriteLine("ResourceScience");
-				stream.WriteLine(scienceResourceCombination);
+				//stream.WriteLine("ResourceGrowth");
+				//stream.WriteLine(growthResourceCombination);
+				//stream.WriteLine("ResourceScience");
+				//stream.WriteLine(scienceResourceCombination);
 				stream.Dispose();
 			}
 			public ProvinceCombination GenerateOneCombination(ProvinceCombination template, Comparison<ProvinceCombination> comparison)
@@ -137,7 +171,7 @@ namespace TWAssistant
 						return ActualRound((uint allCount, uint validCount) => (validCount % roundSize != 0), template, library, cursorLine);
 					}
 					// First round case (round size evaluation).
-					return ActualRound((uint allCount, uint validCount) => (allCount < 0x00400000 && validCount < 0x00010000), template, library, cursorLine);
+					return ActualRound((uint allCount, uint validCount) => (allCount < 0x00400000 && validCount < 0x00020000), template, library, cursorLine);
 				}
 				catch (Exception exception)
 				{
@@ -176,7 +210,7 @@ namespace TWAssistant
 					if(roundSize > 0)
 						footer = string.Format("All: {0:0,0} | Valid: {1:0,0}/{2:0,0} | All / Valid: {3:0,0} | List: {4:0,0}/{5:0,0}----", allCount, validCount, roundSize, allCount / validCount, result.Count, currentListSize);
 					else
-						footer = string.Format("All: {0:0,0}/4 194 304 | Valid: {1:0,0}/65 536 | All / Valid: {2:0,0} | List: {3:0,0}/{4:0,0}----", allCount, validCount, allCount / validCount, result.Count, currentListSize);
+						footer = string.Format("All: {0:0,0}/4 194 304 | Valid: {1:0,0}/131 072 | All / Valid: {2:0,0} | List: {3:0,0}/{4:0,0}----", allCount, validCount, allCount / validCount, result.Count, currentListSize);
 					lock (threadLock)
 					{
 						Console.SetCursorPosition(0, cursorLine);

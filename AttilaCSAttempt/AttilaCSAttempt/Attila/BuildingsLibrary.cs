@@ -85,6 +85,13 @@ namespace TWAssistant
 						--whichBranch;
 					}
 				}
+				foreach (BuildingBranch building in resourceBuildings)
+					if(building != null)
+						building.ApplyTechnology();
+				cityCivilBuilding.ApplyTechnology();
+				townCivilBuilding.ApplyTechnology();
+				coastBuilding.ApplyTechnology();
+				spiceBuilding.ApplyTechnology();
 			}
 			public void ShowListOneType(BuildingType type)
 			{
